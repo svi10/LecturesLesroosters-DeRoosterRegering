@@ -4,43 +4,51 @@ Wij gaan een rooster maken
 import pandas as pd
 from typing import List, Set, Dict, Tuple, Optional
 
+
 def import_data():
     """
     Import the csv files of the courses and rooms as dataframes.
-    
+
         Return courses, rooms
     """
     courses_df = pd.read_csv('vakken.csv', sep=';')
     # Sort rooms on capacity and start with lowest capacity
     rooms_df = pd.read_csv('zalen.csv', sep=';').sort_values('Capaciteit')
-    
+
     return courses_df, rooms_df
-    
+
 
 class Schedule:
     """
     This class can be used to devide the courses over the 
     roomslots (room-timeslot pair)
     """
-    
+
     def __init__(self):
         self._courses_df, self._rooms_df = import_data()
         self._activities = self.activity_list()
-        
+
         self._roomslots = []
         room_ids = self.room_ids()
-        
+        room_capacities = self.room_capacities()
+
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
         for timeslot in range(0, 20):
-            for roomID in room_ids:
-                roomslot = Roomslot(roomID, timeslot)
+            for roomID, capacity in zip(room_ids, room_capacities):
+                roomslot = Roomslot(roomID, timeslot, capacity)
                 self._roomslots.append(roomslot)
 
-        
+
     def room_ids(self) -> list:
+        """Make list of all room ids"""
         return self._rooms_df['Zaalnummer'].tolist()
-        
-    
+
+
+    def room_capacities(self) -> list:
+        """Make list of all room capacities"""
+        return self._rooms_df['Capaciteit'].tolist()
+
+
     def activity_list(self):
         """
         Make a list of all possible activities with the number of expected 
@@ -90,19 +98,27 @@ class Schedule:
         """
         Add all activities to a different timeslot
         """
-        roomslot_number = 0
-        for activity in self._activities:
-            
-            roomslot = self._roomslots[roomslot_number]
-            roomslot.assign_activity(activity['Activity'])
-            
-            roomslot_number += 1
+        # Add all activities to the schedule
+        for activity in self._activities: 
+            self.add_to_schedule(activity)
     
     def add_to_schedule(self, activity: Dict[str, int]):
         """
         Add activity to the next possible room based on capacity
         """
         N_students = activity['E(studenten)']
+        print(f"N_students: {N_students}")
+
+        # Find an available room for the activity
+        for roomslot in self._roomslots:
+            # Check if room available and has the right capacity
+            if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
+                # Asign activity to roomslot
+                roomslot.assign_activity(activity['Activity'])
+                # Save number of students in the room
+                roomslot._N_participants = N_students
+                # Stop searching for an available room
+                break
 
 
     def show_schedule(self):
@@ -112,33 +128,42 @@ class Schedule:
         timeslots = []
         rooms = []
         activities = []
-        
+        capacities = []
+        N_students = []
+    
         for roomslot in self._roomslots:
             timeslots.append(roomslot._timeslot)
             rooms.append(roomslot._roomID)
             activities.append(roomslot._activity)
-        
+            capacities.append(roomslot._capacity)
+            N_students.append(roomslot._N_participants)
+            
+    
         data = {}
         data["Timeslot"] = timeslots
         data["RoomID"] = rooms
         data["Activity"] = activities
-        
+        data["Number of participants"] = N_students
+        data["Room capacity"] = capacities
+    
         return pd.DataFrame(data=data)
-    
-    
+
+
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
-    
+
 
 class Roomslot:
     """
     A roomslot is a room-timeslot pair. A roomslot can only have one activity.
     """
     
-    def __init__(self, roomID, timeslot):
+    def __init__(self, roomID, timeslot, capacity):
         self._roomID = roomID
+        self._capacity = capacity
         self._timeslot = timeslot
-        self._activity = ''
+        self._activity = 'Available'
+        self._N_participants = 0
         self._malus_points_roomslot = ''
     
     def assign_activity(self, activity):

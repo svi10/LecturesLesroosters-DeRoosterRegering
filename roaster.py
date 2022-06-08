@@ -68,19 +68,19 @@ class Schedule:
             for i in range(N_lectures):
                 activity = {}
                 activity['Activity'] = "Hoorcollege " + vak
-                activity['Capacity'] = row[1]['E(studenten)']
+                activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
             
             for i in range(N_toturials):
                 activity = {}
                 activity['Activity'] = "Werkcollege " + vak
-                activity['Capacity'] = row[1]['E(studenten)']
+                activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
             
             for i in range(N_practicals):
                 activity = {}
                 activity['Activity'] = "Practicum " + vak
-                activity['Capacity'] = row[1]['E(studenten)']
+                activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
 
         return activities
@@ -99,8 +99,11 @@ class Schedule:
             roomslot_number += 1
     
     def add_to_schedule(self, activity: Dict[str, int]):
-        a=1
-        
+        """
+        Add activity to the next possible room based on capacity
+        """
+        N_students = activity['E(studenten)']
+
 
     def show_schedule(self):
         """

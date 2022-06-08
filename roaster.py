@@ -2,7 +2,7 @@
 Wij gaan een rooster maken
 """
 import pandas as pd
-
+from typing import List, Set, Dict, Tuple, Optional
 
 def import_data():
     """
@@ -11,7 +11,8 @@ def import_data():
         Return courses, rooms
     """
     courses_df = pd.read_csv('vakken.csv', sep=';')
-    rooms_df = pd.read_csv('zalen.csv', sep=';')
+    # Sort rooms on capacity and start with lowest capacity
+    rooms_df = pd.read_csv('zalen.csv', sep=';').sort_values('Capaciteit')
     
     return courses_df, rooms_df
     
@@ -30,27 +31,27 @@ class Schedule:
         room_ids = self.room_ids()
         
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
-        for timeslot in range(20):
+        for timeslot in range(1, 21):
             for roomID in room_ids:
                 roomslot = Roomslot(roomID, timeslot)
                 self._roomslots.append(roomslot)
 
         
-    def room_ids(self):
+    def room_ids(self) -> list:
         return self._rooms_df['Zaalnummer'].tolist()
         
     
     def activity_list(self):
         """
-        Make a list of all possible activities
+        Make a list of all possible activities with the number of expected 
+        participants.
         
         Example:
             
-        ['Hoorcollege Advanced Heuristics', 
-         'Practicum Advanced Heuristics', 
-         'Hoorcollege Algoritmen en complexiteit', 
-         'werkcollege Algoritmen en complexiteit', 
-         'Practicum Algoritmen en complexiteit',
+        [['Hoorcollege Advanced Heuristics', 22], 
+         ['Practicum Advanced Heuristics', 22], 
+         ['Hoorcollege Algoritmen en complexiteit', 47], 
+         ['Werkcollege Algoritmen en complexiteit', 47],
          ...
          ]
         """
@@ -65,18 +66,27 @@ class Schedule:
             N_toturials = row[1]["#Werkcolleges"]
              
             for i in range(N_lectures):
-                activities.append( ("Hoorcollege " + vak) )
+                activity = {}
+                activity['Activity'] = "Hoorcollege " + vak
+                activity['Capacity'] = row[1]['E(studenten)']
+                activities.append(activity)
             
             for i in range(N_toturials):
-                activities.append("Werkcollege " + vak)
+                activity = {}
+                activity['Activity'] = "Werkcollege " + vak
+                activity['Capacity'] = row[1]['E(studenten)']
+                activities.append(activity)
             
             for i in range(N_practicals):
-                activities.append("Practicum " + vak)
+                activity = {}
+                activity['Activity'] = "Practicum " + vak
+                activity['Capacity'] = row[1]['E(studenten)']
+                activities.append(activity)
 
         return activities
-        
-    
-    def make_schedule(self):
+
+
+    def make_schedule(self) -> None:
         """
         Add all activities to a different timeslot
         """
@@ -84,10 +94,13 @@ class Schedule:
         for activity in self._activities:
             
             roomslot = self._roomslots[roomslot_number]
-            roomslot.assign_activity(activity)
+            roomslot.assign_activity(activity['Activity'])
             
             roomslot_number += 1
-
+    
+    def add_to_schedule(self, activity: Dict[str, int]):
+        a=1
+        
 
     def show_schedule(self):
         """

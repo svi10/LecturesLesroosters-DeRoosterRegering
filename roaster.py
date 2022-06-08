@@ -31,7 +31,7 @@ class Schedule:
         room_ids = self.room_ids()
         
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
-        for timeslot in range(1, 21):
+        for timeslot in range(0, 20):
             for roomID in room_ids:
                 roomslot = Roomslot(roomID, timeslot)
                 self._roomslots.append(roomslot)
@@ -139,11 +139,22 @@ class Roomslot:
         self._roomID = roomID
         self._timeslot = timeslot
         self._activity = ''
+        self._malus_points_roomslot = ''
     
     def assign_activity(self, activity):
         "Assign an activity to this roomslot"
         self._activity = activity
+
+    def calculate_maluspoint(self):
+        "Per student that does not fit in the room, add one point"
+        malus_points = 0
+        attendance = self._number_of_participants:
         
+        for (attendance = _number_of_participants; self._capacity < attendance; attendance -=1) {
+            malus_points +=1
+        }
+        self._malus_points_roomslot = malus_points
+
 if __name__ == "__main__":
     schedule = Schedule()
     

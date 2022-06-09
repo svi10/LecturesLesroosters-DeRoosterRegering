@@ -3,6 +3,7 @@ Wij gaan een rooster maken
 """
 import pandas as pd
 from typing import List, Set, Dict, Tuple, Optional
+from IPython.display import display
 
 
 def import_data():
@@ -53,9 +54,9 @@ class Schedule:
         """
         Make a list of all possible activities with the number of expected 
         participants.
-        
+
         Example:
-            
+
         [['Hoorcollege Advanced Heuristics', 22], 
          ['Practicum Advanced Heuristics', 22], 
          ['Hoorcollege Algoritmen en complexiteit', 47], 
@@ -72,19 +73,19 @@ class Schedule:
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
             N_toturials = row[1]["#Werkcolleges"]
-             
+
             for i in range(N_lectures):
                 activity = {}
                 activity['Activity'] = "Hoorcollege " + vak
                 activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
-            
+
             for i in range(N_toturials):
                 activity = {}
                 activity['Activity'] = "Werkcollege " + vak
                 activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
-            
+
             for i in range(N_practicals):
                 activity = {}
                 activity['Activity'] = "Practicum " + vak
@@ -107,7 +108,6 @@ class Schedule:
         Add activity to the next possible room based on capacity
         """
         N_students = activity['E(studenten)']
-        print(f"N_students: {N_students}")
 
         # Find an available room for the activity
         for roomslot in self._roomslots:
@@ -157,7 +157,7 @@ class Roomslot:
     """
     A roomslot is a room-timeslot pair. A roomslot can only have one activity.
     """
-    
+
     def __init__(self, roomID, timeslot, capacity):
         self._roomID = roomID
         self._capacity = capacity
@@ -165,20 +165,11 @@ class Roomslot:
         self._activity = 'Available'
         self._N_participants = 0
         self._malus_points_roomslot = ''
-    
+
     def assign_activity(self, activity):
         "Assign an activity to this roomslot"
         self._activity = activity
 
-    def calculate_maluspoint(self):
-        "Per student that does not fit in the room, add one point"
-        malus_points = 0
-        attendance = self._number_of_participants:
-        
-        for (attendance = _number_of_participants; self._capacity < attendance; attendance -=1) {
-            malus_points +=1
-        }
-        self._malus_points_roomslot = malus_points
 
 if __name__ == "__main__":
     schedule = Schedule()
@@ -186,4 +177,4 @@ if __name__ == "__main__":
     schedule.make_schedule()
     df = schedule.show_schedule()
     schedule.save_schedule()
-    print(df)
+    df.style

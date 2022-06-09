@@ -1,1 +1,0 @@
-Hier gaan we hardstikke (Is hartstikke niet met een t?) brainstormen leuk joh

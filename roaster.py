@@ -137,16 +137,30 @@ class Schedule:
             activities.append(roomslot._activity)
             capacities.append(roomslot._capacity)
             N_students.append(roomslot._N_participants)
-            
-    
+
         data = {}
         data["Timeslot"] = timeslots
         data["RoomID"] = rooms
         data["Activity"] = activities
         data["Number of participants"] = N_students
         data["Room capacity"] = capacities
+        # data["Malus points"] = malus_points
     
         return pd.DataFrame(data=data)
+    
+
+    def calculate_malus_points(self):
+        ""
+        malus_points = 0
+        for roomslot in self._roomslots:
+            malus_points_roomslot = roomslot._N_participants - roomslot._capacity
+
+            if malus_points_roomslot <= 0:
+                malus_points_roomslot = 0
+
+            malus_points += malus_points_roomslot
+
+        return malus_points
 
 
     def save_schedule(self):
@@ -170,15 +184,7 @@ class Roomslot:
         "Assign an activity to this roomslot"
         self._activity = activity
 
-    def calculate_maluspoint(self):
-        "Per student that does not fit in the room, add one point"
-        malus_points = 0
-        attendance = self._number_of_participants:
-        
-        for (attendance = _number_of_participants; self._capacity < attendance; attendance -=1) {
-            malus_points +=1
-        }
-        self._malus_points_roomslot = malus_points
+
 
 if __name__ == "__main__":
     schedule = Schedule()
@@ -186,4 +192,6 @@ if __name__ == "__main__":
     schedule.make_schedule()
     df = schedule.show_schedule()
     schedule.save_schedule()
+    total_malus_points = schedule.calculate_malus_points()
+    print(total_malus_points)
     print(df)

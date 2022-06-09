@@ -68,10 +68,10 @@ class Schedule:
         for row in self._courses_df.iterrows():
             # Name of the course
             vak = row[1]['Vakken']
-            # Number of lectures, practicals and toturials
+            # Number of lectures, practicals and tutorials
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
-            N_toturials = row[1]["#Werkcolleges"]
+            N_tutorials = row[1]["#Werkcolleges"]
              
             for i in range(N_lectures):
                 activity = {}
@@ -79,7 +79,7 @@ class Schedule:
                 activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
             
-            for i in range(N_toturials):
+            for i in range(N_tutorials):
                 activity = {}
                 activity['Activity'] = "Werkcollege " + vak
                 activity['E(studenten)'] = row[1]['E(studenten)']
@@ -194,4 +194,4 @@ if __name__ == "__main__":
     schedule.save_schedule()
     total_malus_points = schedule.calculate_malus_points()
     print(total_malus_points)
-    print(df)
+    print(df.to_string())

@@ -12,9 +12,9 @@ def import_data():
 
         Return courses, rooms
     """
-    courses_df = pd.read_csv('vakken.csv', sep=';')
+    courses_df = pd.read_csv('data/vakken.csv', sep=';')
     # Sort rooms on capacity and start with lowest capacity
-    rooms_df = pd.read_csv('zalen.csv', sep=';').sort_values('Capaciteit')
+    rooms_df = pd.read_csv('data/zalen.csv', sep=';').sort_values('Capaciteit')
 
     return courses_df, rooms_df
 
@@ -69,18 +69,18 @@ class Schedule:
         for row in self._courses_df.iterrows():
             # Name of the course
             vak = row[1]['Vakken']
-            # Number of lectures, practicals and toturials
+            # Number of lectures, practicals and tutorials
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
-            N_toturials = row[1]["#Werkcolleges"]
-
+            N_tutorials = row[1]["#Werkcolleges"]
+             
             for i in range(N_lectures):
                 activity = {}
                 activity['Activity'] = "Hoorcollege " + vak
                 activity['E(studenten)'] = row[1]['E(studenten)']
                 activities.append(activity)
-
-            for i in range(N_toturials):
+            
+            for i in range(N_tutorials):
                 activity = {}
                 activity['Activity'] = "Werkcollege " + vak
                 activity['E(studenten)'] = row[1]['E(studenten)']
@@ -137,16 +137,30 @@ class Schedule:
             activities.append(roomslot._activity)
             capacities.append(roomslot._capacity)
             N_students.append(roomslot._N_participants)
-            
-    
+
         data = {}
         data["Timeslot"] = timeslots
         data["RoomID"] = rooms
         data["Activity"] = activities
         data["Number of participants"] = N_students
         data["Room capacity"] = capacities
+        # data["Malus points"] = malus_points
     
         return pd.DataFrame(data=data)
+    
+
+    def calculate_malus_points(self):
+        ""
+        malus_points = 0
+        for roomslot in self._roomslots:
+            malus_points_roomslot = roomslot._N_participants - roomslot._capacity
+
+            if malus_points_roomslot <= 0:
+                malus_points_roomslot = 0
+
+            malus_points += malus_points_roomslot
+
+        return malus_points
 
 
     def save_schedule(self):
@@ -177,4 +191,6 @@ if __name__ == "__main__":
     schedule.make_schedule()
     df = schedule.show_schedule()
     schedule.save_schedule()
-    df.style
+    total_malus_points = schedule.calculate_malus_points()
+    print(total_malus_points)
+    print(df.to_string())

@@ -157,8 +157,8 @@ class Schedule:
         data["Number of participants"] = N_students
         data["Room capacity"] = capacities
         
-    
-        return pd.DataFrame(data=data)
+
+        return pd.DataFrame(data=data).sort_values(by="Timeslot")
     
 
     def calculate_malus_points(self):

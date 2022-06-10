@@ -81,7 +81,10 @@ class Schedule:
             # Number of lectures, practicals and tutorials
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
+            max_students_practicum = row[1]["Max. stud.2"]
             N_tutorials = row[1]["#Werkcolleges"]
+            max_students_tutorials = row[1]["Max. stud."]
+            N_students = row[1]["E(studenten)"]
              
             for i in range(N_lectures):
                 activity = {}
@@ -103,6 +106,7 @@ class Schedule:
 
         return activities
 
+        
 
     def make_schedule(self) -> None:
         """

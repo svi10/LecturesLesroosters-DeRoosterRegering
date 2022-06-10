@@ -24,7 +24,6 @@ class Schedule:
                 roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                 self._roomslots.append(roomslot)
 
-
     def room_ids(self) -> list:
         """Make list of all room ids"""
         return self._rooms_df['Zaalnummer'].tolist()
@@ -130,7 +129,7 @@ class Schedule:
         data["Activity"] = activities
         data["Number of participants"] = N_students
         data["Room capacity"] = capacities
-        # data["Malus points"] = malus_points
+        
     
         return pd.DataFrame(data=data)
     

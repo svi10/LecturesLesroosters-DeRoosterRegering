@@ -2,7 +2,6 @@
 Wij gaan een rooster maken
 """
 
-
 from code.classes import Schedule
 
 

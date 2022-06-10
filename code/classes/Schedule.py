@@ -23,6 +23,26 @@ class Schedule:
             for roomID, capacity in zip(room_ids, room_capacities):
                 roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                 self._roomslots.append(roomslot)
+       
+        self.sort_roomslots()
+
+
+
+    def sort_roomslots(self):
+        """
+        """
+        roomslot_tuple = []
+        # Make dictionary of the roomslots {Capacity: Roomslot, Capacity: Roomslot, etc.}
+        for roomslot in self._roomslots:
+            roomslot_tuple.append((roomslot._capacity, roomslot))
+        
+        # Sort dictionary on capacity
+        sorted_list = sorted(roomslot_tuple, key=lambda tup: tup[0])
+
+        # Make list of sorted roomslots
+        self._roomslots = []
+        for item in sorted_list:
+            self._roomslots.append(item[1])
 
 
     def room_ids(self) -> list:
@@ -93,8 +113,6 @@ class Schedule:
         Add activity to the next possible room based on capacity
         """
         N_students = activity['E(studenten)']
-        print(f"N_students: {N_students}")
-
         # Find an available room for the activity
         for roomslot in self._roomslots:
             # Check if room available and has the right capacity
@@ -105,7 +123,7 @@ class Schedule:
                 roomslot._N_participants = N_students
                 # Stop searching for an available room
                 break
-
+        
 
     def show_schedule(self):
         """
@@ -136,7 +154,9 @@ class Schedule:
     
 
     def calculate_malus_points(self):
-        ""
+        """
+        
+        """
         malus_points = 0
         for roomslot in self._roomslots:
             malus_points_roomslot = roomslot._N_participants - roomslot._capacity

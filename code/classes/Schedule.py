@@ -32,7 +32,7 @@ class Schedule:
         """
         """
         roomslot_tuple = []
-        # Make dictionary of the roomslots {Capacity: Roomslot, Capacity: Roomslot, etc.}
+        # Make list of tuples of the roomslots [(Capacity, Roomslot), (Capacity, Roomslot)]
         for roomslot in self._roomslots:
             roomslot_tuple.append((roomslot._capacity, roomslot))
         
@@ -155,18 +155,25 @@ class Schedule:
 
     def calculate_malus_points(self):
         """
-        
+        Calculate the malus points for the schedule. The more malus points a 
+        schedule has, the worse it is.
         """
-        malus_points = 0
+        total_malus_points = 0
         for roomslot in self._roomslots:
-            malus_points_roomslot = roomslot._N_participants - roomslot._capacity
+           
+            # There is 1 malus point for each student that is to many in a room
+            malus_points = roomslot._N_participants - roomslot._capacity
+            # If the capacity is sufficient, no malus points are awarded
+            if malus_points <= 0:
+                malus_points = 0
 
-            if malus_points_roomslot <= 0:
-                malus_points_roomslot = 0
+            # If an activity is at a timeslot from 17h-19h, 5 malus points are awarded
+            if (roomslot._timeslot + 1) % 5 == 0 and roomslot._activity != 'Available':
+                malus_points += 5
 
-            malus_points += malus_points_roomslot
+            total_malus_points += malus_points
 
-        return malus_points
+        return total_malus_points
 
 
     def save_schedule(self):

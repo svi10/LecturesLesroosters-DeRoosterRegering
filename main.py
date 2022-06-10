@@ -4,7 +4,6 @@ Wij gaan een rooster maken
 
 from code.classes import Schedule
 
-
 if __name__ == "__main__":
     schedule = Schedule.Schedule()
     

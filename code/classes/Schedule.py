@@ -17,13 +17,18 @@ class Schedule:
         self._roomslots = []
         room_ids = self.room_ids()
         room_capacities = self.room_capacities()
+        largest_room_ID = self._rooms_df['Zaalnummer'].iloc[-1]
+        largest_room_capacity = self._rooms_df['Capaciteit'].iloc[-1]
 
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
-        for timeslot in range(0, 20):
-            for roomID, capacity in zip(room_ids, room_capacities):
-                roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
+        for timeslot in range(0, 25):
+            if  (timeslot + 1) % 5 == 0:
+                roomslot = Roomslot.Roomslot(largest_room_ID, timeslot, largest_room_capacity)
                 self._roomslots.append(roomslot)
-       
+            else:
+                for roomID, capacity in zip(room_ids, room_capacities):
+                    roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
+                    self._roomslots.append(roomslot)
         self.sort_roomslots()
 
 

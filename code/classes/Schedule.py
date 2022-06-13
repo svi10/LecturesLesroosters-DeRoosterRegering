@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 from typing import List, Set, Dict, Tuple, Optional
 from . import Roomslot
 from code import helpers
@@ -86,19 +87,27 @@ class Schedule:
                 activities.append(activity)
             
             for i in range(N_tutorials):
-                activity = {}
-                activity['Activity'] = "Werkcollege " + vak
-                activity['E(studenten)'] = row[1]['E(studenten)']
-                activities.append(activity)
+                N_groups = math.ceil(row[1]['E(studenten)'] / int(row[1]['Max. stud.']))
+
+                for group in range(N_groups):
+                    activity = {}
+                    activity['Activity'] = "Werkcollege " + vak + '.' + (str(group))
+                    activity['E(studenten)'] = row[1]['E(studenten)']
+                    activity['Max. stud.'] = row[1]['Max. stud.']
+                    activities.append(activity)
             
             for i in range(N_practicals):
-                activity = {}
-                activity['Activity'] = "Practicum " + vak
-                activity['E(studenten)'] = row[1]['E(studenten)']
-                activities.append(activity)
+                N_groups = math.ceil(row[1]['E(studenten)'] / int(row[1]['Max. stud.2']))
+
+                for group in range(N_groups):
+                    activity = {}
+                    activity['Activity'] = "Practicum " + vak + '.' + (str(group))
+                    activity['E(studenten)'] = row[1]['E(studenten)']
+                    activity['Max. stud.'] = row[1]['Max. stud.']
+                    activities.append(activity)
 
         return activities
-
+        
 
     def make_schedule(self) -> None:
         """

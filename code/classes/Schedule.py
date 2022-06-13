@@ -1,7 +1,9 @@
+from tokenize import String
 import pandas as pd
 import math
 from typing import List, Set, Dict, Tuple, Optional
-from . import Roomslot
+from sqlalchemy import Float
+from . import Roomslot, Student
 from code import helpers
 
 
@@ -14,8 +16,10 @@ class Schedule:
     def __init__(self):
         self._courses_df = helpers.import_data("vakken")
         self._rooms_df = helpers.import_data("zalen")
-        self._activities = self.activity_list()
 
+        self._students_df = helpers.import_data("studenten_en_vakken")
+        self._students = self.student_list()
+        self._activities = self.activity_list()
         self._roomslots = []
         room_ids = self.room_ids()
         room_capacities = self.room_capacities()
@@ -32,8 +36,6 @@ class Schedule:
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     self._roomslots.append(roomslot)
         self.sort_roomslots()
-
-
 
     def sort_roomslots(self):
         """
@@ -193,5 +195,27 @@ class Schedule:
         return total_malus_points
 
 
+    def student_list(self):
+        """
+        Makes a list with all students as Student class instances
+        """
+        students = []
+
+        for row in self._students_df.iterrows():
+            name = row[1]["Achternaam"] + ', ' + row[1]["Voornaam"]
+            student_number = row[1]["Stud.Nr."]
+            courses = []
+            for i in range (0, 5):                
+                if isinstance((row[1][f"Vak{i + 1}"]),str):
+                    course = row[1][f"Vak{i + 1}"]
+                    courses.append(course)
+                                         
+            print(courses)
+            student = Student.Student(name, student_number, courses)        
+            students.append(student)    
+
+        return students
+
+        
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

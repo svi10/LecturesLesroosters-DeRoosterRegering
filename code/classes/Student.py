@@ -6,10 +6,12 @@ class Student:
     """
     
 
-    def __init__(self):
-        self._students_df = helpers.import_data("studentenvakken")
-        
-        self._name = []
-        self._activities = []
-        self._courses_df = []
-        self._malus_points = []
+    def __init__(self, name, studentnumber, courses):
+        self._name = name
+        self._studentnumber = studentnumber
+        self._activities = None
+        self._courses = courses
+        self._malus_points = 0
+
+    def __repr__(self):
+        return f"{self._name}"

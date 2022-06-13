@@ -18,13 +18,18 @@ class Schedule:
         self._roomslots = []
         room_ids = self.room_ids()
         room_capacities = self.room_capacities()
+        largest_room_ID = self._rooms_df['Zaalnummer'].iloc[-1]
+        largest_room_capacity = self._rooms_df['Capaciteit'].iloc[-1]
 
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
-        for timeslot in range(0, 20):
-            for roomID, capacity in zip(room_ids, room_capacities):
-                roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
+        for timeslot in range(0, 25):
+            if  (timeslot + 1) % 5 == 0:
+                roomslot = Roomslot.Roomslot(largest_room_ID, timeslot, largest_room_capacity)
                 self._roomslots.append(roomslot)
-       
+            else:
+                for roomID, capacity in zip(room_ids, room_capacities):
+                    roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
+                    self._roomslots.append(roomslot)
         self.sort_roomslots()
 
 
@@ -33,7 +38,7 @@ class Schedule:
         """
         """
         roomslot_tuple = []
-        # Make dictionary of the roomslots {Capacity: Roomslot, Capacity: Roomslot, etc.}
+        # Make list of tuples of the roomslots [(Capacity, Roomslot), (Capacity, Roomslot)]
         for roomslot in self._roomslots:
             roomslot_tuple.append((roomslot._capacity, roomslot))
         
@@ -44,7 +49,6 @@ class Schedule:
         self._roomslots = []
         for item in sorted_list:
             self._roomslots.append(item[1])
-
 
     def room_ids(self) -> list:
         """Make list of all room ids"""
@@ -78,7 +82,10 @@ class Schedule:
             # Number of lectures, practicals and tutorials
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
+            max_students_practicum = row[1]["Max. stud.2"]
             N_tutorials = row[1]["#Werkcolleges"]
+            max_students_tutorials = row[1]["Max. stud."]
+            N_students = row[1]["E(studenten)"]
              
             for i in range(N_lectures):
                 activity = {}
@@ -157,25 +164,32 @@ class Schedule:
         data["Activity"] = activities
         data["Number of participants"] = N_students
         data["Room capacity"] = capacities
-        # data["Malus points"] = malus_points
-    
-        return pd.DataFrame(data=data)
+        
+
+        return pd.DataFrame(data=data).sort_values(by="Timeslot")
     
 
     def calculate_malus_points(self):
         """
-        
+        Calculate the malus points for the schedule. The more malus points a 
+        schedule has, the worse it is.
         """
-        malus_points = 0
+        total_malus_points = 0
         for roomslot in self._roomslots:
-            malus_points_roomslot = roomslot._N_participants - roomslot._capacity
+           
+            # There is 1 malus point for each student that is to many in a room
+            malus_points = roomslot._N_participants - roomslot._capacity
+            # If the capacity is sufficient, no malus points are awarded
+            if malus_points <= 0:
+                malus_points = 0
 
-            if malus_points_roomslot <= 0:
-                malus_points_roomslot = 0
+            # If an activity is at a timeslot from 17h-19h, 5 malus points are awarded
+            if (roomslot._timeslot + 1) % 5 == 0 and roomslot._activity != 'Available':
+                malus_points += 5
 
-            malus_points += malus_points_roomslot
+            total_malus_points += malus_points
 
-        return malus_points
+        return total_malus_points
 
 
     def save_schedule(self):

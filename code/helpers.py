@@ -1,13 +1,17 @@
 import pandas as pd
 
-def import_data():
+def import_data(destination):
     """
     Import the csv files of the courses and rooms as dataframes.
 
         Return courses, rooms
     """
-    courses_df = pd.read_csv('data/vakken.csv', sep=';')
+    df = pd.read_csv(f'data/{destination}.csv', sep=',')
     # Sort rooms on capacity and start with lowest capacity
-    rooms_df = pd.read_csv('data/zalen.csv', sep=';').sort_values('Capaciteit')
+    if destination == "zalen":
+        df.sort_values('Max. capaciteit')
+    
 
-    return courses_df, rooms_df
+    return df
+
+

@@ -3,6 +3,7 @@ Wij gaan een rooster maken
 """
 
 from code.classes import Schedule
+from code.classes import Student
 
 if __name__ == "__main__":
     schedule = Schedule.Schedule()

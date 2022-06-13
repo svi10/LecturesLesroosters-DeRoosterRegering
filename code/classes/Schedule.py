@@ -25,8 +25,9 @@ class Schedule:
         largest_room_ID = self._rooms_df['Zaalnummber'].iloc[-1]
         largest_room_capacity = self._rooms_df['Max. capaciteit'].iloc[-1]
 
-        # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
+        # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots). Largest room has an extra timeslot (17-19u every day, so +5 timeslots)
         for timeslot in range(0, 25):
+            # Make roomslots for largest room, 17-19u every day
             if  (timeslot + 1) % 5 == 0:
                 roomslot = Roomslot.Roomslot(largest_room_ID, timeslot, largest_room_capacity)
                 self._roomslots.append(roomslot)
@@ -209,7 +210,7 @@ class Schedule:
                     course = row[1][f"Vak{i + 1}"]
                     courses.append(course)
                                          
-            print(courses)
+            # print(courses)
             student = Student.Student(name, student_number, courses)        
             students.append(student)    
 

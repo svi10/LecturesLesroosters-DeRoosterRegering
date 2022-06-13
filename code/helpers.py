@@ -9,7 +9,8 @@ def import_data(destination):
     df = pd.read_csv(f'data/{destination}.csv', sep=',')
     # Sort rooms on capacity and start with lowest capacity
     if destination == "zalen":
-        df.sort_values('Max. capaciteit')
+        df.sort_values("Max. capaciteit")
+        print(df)
     
 
     return df

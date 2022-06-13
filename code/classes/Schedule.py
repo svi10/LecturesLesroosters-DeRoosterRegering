@@ -1,7 +1,9 @@
+from tokenize import String
 import pandas as pd
 import math
 from typing import List, Set, Dict, Tuple, Optional
-from . import Roomslot
+from sqlalchemy import Float
+from . import Roomslot, Student
 from code import helpers
 
 
@@ -12,14 +14,17 @@ class Schedule:
     """
 
     def __init__(self):
-        self._courses_df, self._rooms_df = helpers.import_data()
-        self._activities = self.activity_list()
+        self._courses_df = helpers.import_data("vakken")
+        self._rooms_df = helpers.import_data("zalen")
 
+        self._students_df = helpers.import_data("studenten_en_vakken")
+        self._students = self.student_list()
+        self._activities = self.activity_list()
         self._roomslots = []
         room_ids = self.room_ids()
         room_capacities = self.room_capacities()
-        largest_room_ID = self._rooms_df['Zaalnummer'].iloc[-1]
-        largest_room_capacity = self._rooms_df['Capaciteit'].iloc[-1]
+        largest_room_ID = self._rooms_df['Zaalnummber'].iloc[-1]
+        largest_room_capacity = self._rooms_df['Max. capaciteit'].iloc[-1]
 
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots)
         for timeslot in range(0, 25):
@@ -31,8 +36,6 @@ class Schedule:
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     self._roomslots.append(roomslot)
         self.sort_roomslots()
-
-
 
     def sort_roomslots(self):
         """
@@ -52,12 +55,12 @@ class Schedule:
 
     def room_ids(self) -> list:
         """Make list of all room ids"""
-        return self._rooms_df['Zaalnummer'].tolist()
+        return self._rooms_df['Zaalnummber'].tolist()
 
 
     def room_capacities(self) -> list:
         """Make list of all room capacities"""
-        return self._rooms_df['Capaciteit'].tolist()
+        return self._rooms_df['Max. capaciteit'].tolist()
 
 
     def activity_list(self):
@@ -78,39 +81,39 @@ class Schedule:
 
         for row in self._courses_df.iterrows():
             # Name of the course
-            vak = row[1]['Vakken']
+            vak = row[1]['Vak']
             # Number of lectures, practicals and tutorials
             N_lectures = row[1]["#Hoorcolleges"]
             N_practicals = row[1]["#Practica"]
-            max_students_practicum = row[1]["Max. stud.2"]
+            max_students_practicum = row[1]["Max. stud. Practicum"]
             N_tutorials = row[1]["#Werkcolleges"]
-            max_students_tutorials = row[1]["Max. stud."]
-            N_students = row[1]["E(studenten)"]
+            max_students_tutorials = row[1]["Max. stud. Werkcollege"]
+            N_students = row[1]["Verwacht"]
              
             for i in range(N_lectures):
                 activity = {}
                 activity['Activity'] = "Hoorcollege " + vak
-                activity['E(studenten)'] = row[1]['E(studenten)']
+                activity['Verwacht'] = row[1]['Verwacht']
                 activities.append(activity)
             
             for i in range(N_tutorials):
-                N_groups = math.ceil(row[1]['E(studenten)'] / int(row[1]['Max. stud.']))
+                N_groups = math.ceil(row[1]['Verwacht'] / int(row[1]['Max. stud. Werkcollege']))
 
                 for group in range(N_groups):
                     activity = {}
                     activity['Activity'] = "Werkcollege " + vak + '.' + (str(group))
-                    activity['E(studenten)'] = row[1]['E(studenten)']
-                    activity['Max. stud.'] = row[1]['Max. stud.']
+                    activity['Verwacht'] = row[1]['Verwacht']
+                    activity['Max. stud. Werkcollege'] = row[1]['Max. stud. Werkcollege']
                     activities.append(activity)
             
             for i in range(N_practicals):
-                N_groups = math.ceil(row[1]['E(studenten)'] / int(row[1]['Max. stud.2']))
+                N_groups = math.ceil(row[1]['Verwacht'] / int(row[1]['Max. stud. Practicum']))
 
                 for group in range(N_groups):
                     activity = {}
                     activity['Activity'] = "Practicum " + vak + '.' + (str(group))
-                    activity['E(studenten)'] = row[1]['E(studenten)']
-                    activity['Max. stud.'] = row[1]['Max. stud.']
+                    activity['Verwacht'] = row[1]['Verwacht']
+                    activity['Max. stud. Practicum'] = row[1]['Max. stud. Practicum']
                     activities.append(activity)
 
         return activities
@@ -128,7 +131,7 @@ class Schedule:
         """
         Add activity to the next possible room based on capacity
         """
-        N_students = activity['E(studenten)']
+        N_students = activity['Verwacht']
         # Find an available room for the activity
         for roomslot in self._roomslots:
             # Check if room available and has the right capacity
@@ -192,5 +195,27 @@ class Schedule:
         return total_malus_points
 
 
+    def student_list(self):
+        """
+        Makes a list with all students as Student class instances
+        """
+        students = []
+
+        for row in self._students_df.iterrows():
+            name = row[1]["Achternaam"] + ', ' + row[1]["Voornaam"]
+            student_number = row[1]["Stud.Nr."]
+            courses = []
+            for i in range (0, 5):                
+                if isinstance((row[1][f"Vak{i + 1}"]),str):
+                    course = row[1][f"Vak{i + 1}"]
+                    courses.append(course)
+                                         
+            print(courses)
+            student = Student.Student(name, student_number, courses)        
+            students.append(student)    
+
+        return students
+
+        
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

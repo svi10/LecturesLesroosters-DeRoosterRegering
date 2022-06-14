@@ -5,7 +5,7 @@ class Activity:
     It can add, remove and show students.
     """
 
-    def __init__(self, activitytype, name, student_list):
+    def __init__(self, activitytype, name, student_list, activity_N):
         self._type = activitytype
         self._name = name
         self._student_set = set(student_list.values())

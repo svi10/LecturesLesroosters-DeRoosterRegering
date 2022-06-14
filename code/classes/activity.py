@@ -15,14 +15,18 @@ class Activity:
     def add_student(self, students):
         self._student_set.update(students)
 
-    def remove_student(student):
+
+    def remove_student(self, student):
         self._student_set.discard(student)
+
 
     def show_students(self):
         return self._student_set
 
+
     def get_name(self):
         return self._name
+
 
 # if __name__ == "__main__":
 #     activitytype = "tutorial"

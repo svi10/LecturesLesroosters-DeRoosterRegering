@@ -1,7 +1,10 @@
 from tokenize import String
 import pandas as pd
 import math
+import random
 from typing import List, Set, Dict, Tuple, Optional
+
+from soupsieve import select
 
 from code.classes.course import Course
 from . import Roomslot, Student
@@ -19,12 +22,15 @@ class Schedule:
         self._courses_df = helpers.import_data("vakken")
         self._courses = {}
         self.make_courses()
-        print(self._courses)
-        
+
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
+        
+
         self._students = self.student_list()
+        self.add_students_to_courses()
+
         self._activities = self.activity_list()
         self._roomslots = []
         room_ids = self.room_ids()
@@ -42,15 +48,48 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     self._roomslots.append(roomslot)
+       
         self.sort_roomslots()
 
+
     def make_courses(self):
+        """
+        Make a dictionary of course objects for each course in the Course DataFrame
+        """
         for row in self._courses_df.iterrows():
             self._courses[row[1]["Vak"]] = Course(row[1])
 
 
+    def add_students_to_courses(self):
+        """
+        Add to each course the students that signed in for that course
+        """
+
+        for course in self._courses.values():
+            # Filter the students that are signed in to "course"
+            selected_students = self._students_df[(self._students_df["Vak1"] == f"{course.course_name}") | 
+                                                  (self._students_df["Vak2"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak3"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak4"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak5"] == f"{course.course_name}") ]
+
+            # Get student numbers
+            students_Nrs = selected_students["Stud.Nr."].tolist()
+            # Get student names
+            students_name = [self._students.get(key) for key in students_Nrs]
+           
+            # Make dictionary of students participating in the course
+            students = {}
+            for student_Nr, student_name in zip(students_Nrs, students_name):
+                students[student_Nr] = student_name
+            
+            # Add students to course
+            course.student_list = students
+
+
     def sort_roomslots(self):
         """
+        Sort the roomslots by capacity (largest -> smallest)
         """
         roomslot_tuple = []
         # Make list of tuples of the roomslots [(Capacity, Roomslot), (Capacity, Roomslot)]
@@ -64,6 +103,7 @@ class Schedule:
         self._roomslots = []
         for item in sorted_list:
             self._roomslots.append(item[1])
+
 
     def room_ids(self) -> list:
         """Make list of all room ids"""
@@ -135,25 +175,38 @@ class Schedule:
         """
         Add all activities to a different timeslot
         """
+        roomslots = set(self._roomslots)
+        
         # Add all activities to the schedule
         for activity in self._activities: 
-            self.add_to_schedule(activity)
-    
-    def add_to_schedule(self, activity: Dict[str, int]):
-        """
-        Add activity to the next possible room based on capacity
-        """
-        N_students = activity['Verwacht']
-        # Find an available room for the activity
-        for roomslot in self._roomslots:
-            # Check if room available and has the right capacity
-            if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
-                # Asign activity to roomslot
-                roomslot.assign_activity(activity['Activity'])
-                # Save number of students in the room
-                roomslot._N_participants = N_students
-                # Stop searching for an available room
-                break
+            # Get random roomslot 
+            roomslot = random.choice(tuple(roomslots))
+            roomslots.remove(roomslot)
+            
+            self.add_to_roomslot(activity, roomslot)
+
+
+    def add_to_roomslot(self, activity, roomslot):
+        roomslot.assign_activity(activity['Activity'])
+        roomslot._N_participants = activity['Verwacht']
+        pass
+
+    # def add_to_roomslot(self, activity: Dict[str, int]):
+    #     """
+    #     Add activity to the next possible room based on capacity
+    #     """
+    #     N_students = activity['Verwacht']
+    #     activity_name = activity['Activity']
+    #     # Find an available room for the activity
+    #     for roomslot in self._roomslots:
+    #         # Check if room available and has the right capacity
+    #         if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
+    #             # Asign activity to roomslot
+    #             roomslot.assign_activity(activity['Activity'])
+    #             # Save number of students in the room
+    #             roomslot._N_participants = N_students
+    #             # Stop searching for an available room
+    #             break
         
 
     def show_schedule(self):
@@ -211,7 +264,7 @@ class Schedule:
         """
         Makes a list with all students as Student class instances
         """
-        students = []
+        students = dict()
 
         for row in self._students_df.iterrows():
             name = row[1]["Achternaam"] + ', ' + row[1]["Voornaam"]
@@ -221,10 +274,9 @@ class Schedule:
                 if isinstance((row[1][f"Vak{i + 1}"]),str):
                     course = row[1][f"Vak{i + 1}"]
                     courses.append(course)
-                                         
-            # print(courses)
+                                        
             student = Student.Student(name, student_number, courses)        
-            students.append(student)    
+            students[student_number] = student
 
         return students
 

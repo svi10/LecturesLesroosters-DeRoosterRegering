@@ -3,6 +3,8 @@ import pandas as pd
 import math
 from typing import List, Set, Dict, Tuple, Optional
 
+from soupsieve import select
+
 from code.classes.course import Course
 from . import Roomslot, Student
 from . import activity, course
@@ -23,9 +25,11 @@ class Schedule:
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
-        self.add_students_to_courses("Lineaire Algebra")
+        
 
         self._students = self.student_list()
+        self.add_students_to_courses()
+
         self._activities = self.activity_list()
         self._roomslots = []
         room_ids = self.room_ids()
@@ -43,6 +47,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     self._roomslots.append(roomslot)
+       
         self.sort_roomslots()
 
 
@@ -54,16 +59,31 @@ class Schedule:
             self._courses[row[1]["Vak"]] = Course(row[1])
 
 
-    def add_students_to_courses(self, course):
-        selected_students = self._students_df[(self._students_df["Vak1"] == f"{course}") | 
-                                              (self._students_df["Vak2"] == f"{course}") |
-                                              (self._students_df["Vak3"] == f"{course}") |
-                                              (self._students_df["Vak4"] == f"{course}") |
-                                              (self._students_df["Vak5"] == f"{course}") ]
+    def add_students_to_courses(self):
+        """
+        Add to each course the students that signed in for that course
+        """
 
-        student_list = selected_students["Stud. Nr."].tolist()
-        print(student_list)
-        print(f"Number of students {len(student_list)}")
+        for course in self._courses.values():
+            # Filter the students that are signed in to "course"
+            selected_students = self._students_df[(self._students_df["Vak1"] == f"{course.course_name}") | 
+                                                  (self._students_df["Vak2"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak3"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak4"] == f"{course.course_name}") |
+                                                  (self._students_df["Vak5"] == f"{course.course_name}") ]
+
+            # Get student numbers
+            students_Nrs = selected_students["Stud.Nr."].tolist()
+            # Get student names
+            students_name = [self._students.get(key) for key in students_Nrs]
+           
+            # Make dictionary of students participating in the course
+            students = {}
+            for student_Nr, student_name in zip(students_Nrs, students_name):
+                students[student_Nr] = student_name
+            
+            # Add students to course
+            course.student_list = students
 
 
     def sort_roomslots(self):

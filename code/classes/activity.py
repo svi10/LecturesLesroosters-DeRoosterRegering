@@ -8,7 +8,7 @@ class Activity:
     def __init__(self, activitytype, name, student_list):
         self._type = activitytype
         self._name = name
-        self._student_set = set(student_list)
+        self._student_set = set(student_list.values())
         self._room = None
         self._timeslot = None
 

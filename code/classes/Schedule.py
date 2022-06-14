@@ -50,6 +50,7 @@ class Schedule:
                     self._roomslots.append(roomslot)
        
         self.sort_roomslots()
+        self.check()
 
 
     def make_courses(self):
@@ -113,6 +114,10 @@ class Schedule:
     def room_capacities(self) -> list:
         """Make list of all room capacities"""
         return self._rooms_df['Max. capaciteit'].tolist()
+
+
+    def check(self):
+        self._courses["Lineaire Algebra"].make_activities()
 
 
     def activity_list(self):

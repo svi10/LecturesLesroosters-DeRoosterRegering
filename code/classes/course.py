@@ -1,4 +1,6 @@
 import numpy as np
+from . import activity
+import math
 
 class Course:
 
@@ -28,8 +30,6 @@ class Course:
                 for student_list in split_student_list:
                     activity = Activity(key, self.course_name, student_list, group)
                     self.activities.append(activity)
-
-        return activities
 
 
     def __repr__(self):

@@ -1,6 +1,7 @@
 from tokenize import String
 import pandas as pd
 import math
+import random
 from typing import List, Set, Dict, Tuple, Optional
 
 from soupsieve import select
@@ -174,26 +175,38 @@ class Schedule:
         """
         Add all activities to a different timeslot
         """
+        roomslots = set(self._roomslots)
+        
         # Add all activities to the schedule
         for activity in self._activities: 
-            self.add_to_schedule(activity)
-    
+            # Get random roomslot 
+            roomslot = random.choice(tuple(roomslots))
+            roomslots.remove(roomslot)
+            
+            self.add_to_roomslot(activity, roomslot)
 
-    def add_to_schedule(self, activity: Dict[str, int]):
-        """
-        Add activity to the next possible room based on capacity
-        """
-        N_students = activity['Verwacht']
-        # Find an available room for the activity
-        for roomslot in self._roomslots:
-            # Check if room available and has the right capacity
-            if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
-                # Asign activity to roomslot
-                roomslot.assign_activity(activity['Activity'])
-                # Save number of students in the room
-                roomslot._N_participants = N_students
-                # Stop searching for an available room
-                break
+
+    def add_to_roomslot(self, activity, roomslot):
+        roomslot.assign_activity(activity['Activity'])
+        roomslot._N_participants = activity['Verwacht']
+        pass
+
+    # def add_to_roomslot(self, activity: Dict[str, int]):
+    #     """
+    #     Add activity to the next possible room based on capacity
+    #     """
+    #     N_students = activity['Verwacht']
+    #     activity_name = activity['Activity']
+    #     # Find an available room for the activity
+    #     for roomslot in self._roomslots:
+    #         # Check if room available and has the right capacity
+    #         if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
+    #             # Asign activity to roomslot
+    #             roomslot.assign_activity(activity['Activity'])
+    #             # Save number of students in the room
+    #             roomslot._N_participants = N_students
+    #             # Stop searching for an available room
+    #             break
         
 
     def show_schedule(self):

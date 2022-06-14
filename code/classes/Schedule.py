@@ -19,11 +19,12 @@ class Schedule:
         self._courses_df = helpers.import_data("vakken")
         self._courses = {}
         self.make_courses()
-        print(self._courses)
-        
+
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
+        self.add_students_to_courses("Lineaire Algebra")
+
         self._students = self.student_list()
         self._activities = self.activity_list()
         self._roomslots = []
@@ -44,13 +45,27 @@ class Schedule:
                     self._roomslots.append(roomslot)
         self.sort_roomslots()
 
+
     def make_courses(self):
+        """
+        Make a dictionary of course objects for each course in the Course DataFrame
+        """
         for row in self._courses_df.iterrows():
             self._courses[row[1]["Vak"]] = Course(row[1])
 
 
+    def add_students_to_courses(self, course):
+        selected_students = self._students_df[(self._students_df["Vak1"] == f"{course}") | 
+                                              (self._students_df["Vak2"] == f"{course}") |
+                                              (self._students_df["Vak3"] == f"{course}") |
+                                              (self._students_df["Vak4"] == f"{course}") |
+                                              (self._students_df["Vak5"] == f"{course}") ]
+
+        student_list = selected_students[""]
+
     def sort_roomslots(self):
         """
+        Sort the roomslots by capacity (largest -> smallest)
         """
         roomslot_tuple = []
         # Make list of tuples of the roomslots [(Capacity, Roomslot), (Capacity, Roomslot)]
@@ -211,7 +226,7 @@ class Schedule:
         """
         Makes a list with all students as Student class instances
         """
-        students = []
+        students = dict()
 
         for row in self._students_df.iterrows():
             name = row[1]["Achternaam"] + ', ' + row[1]["Voornaam"]
@@ -221,10 +236,9 @@ class Schedule:
                 if isinstance((row[1][f"Vak{i + 1}"]),str):
                     course = row[1][f"Vak{i + 1}"]
                     courses.append(course)
-                                         
-            # print(courses)
+                                        
             student = Student.Student(name, student_number, courses)        
-            students.append(student)    
+            students[student_number] = student   
 
         return students
 

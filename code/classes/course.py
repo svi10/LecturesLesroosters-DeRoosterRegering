@@ -9,6 +9,8 @@ class Course:
         self.activities = {"Lectures": data["#Hoorcolleges"], "Tutorials": data["#Werkcolleges"], "Practicals": data["#Practica"]}
         self.max_students = {"Lectures": data["Verwacht"], "Tutorials": data["Max. stud. Werkcollege"], "Practicals": data["Max. stud. Practicum"]}
 
+        self.student_list = set()
+
     def make_activities(self):
         pass
 

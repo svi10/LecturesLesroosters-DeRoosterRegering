@@ -11,6 +11,7 @@ class Roomslot:
         self._N_participants = 0
         self._malus_points_roomslot = ''
     
+
     def assign_activity(self, activity):
         "Assign an activity to this roomslot"
         self._activity = activity

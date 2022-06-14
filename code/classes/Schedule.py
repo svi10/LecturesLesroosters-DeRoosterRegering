@@ -2,7 +2,10 @@ from tokenize import String
 import pandas as pd
 import math
 from typing import List, Set, Dict, Tuple, Optional
+
+from code.classes.course import Course
 from . import Roomslot, Student
+from . import activity, course
 from code import helpers
 
 
@@ -14,6 +17,10 @@ class Schedule:
 
     def __init__(self):
         self._courses_df = helpers.import_data("vakken")
+        self._courses = {}
+        self.make_courses()
+        print(self._courses)
+        
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
@@ -36,6 +43,11 @@ class Schedule:
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     self._roomslots.append(roomslot)
         self.sort_roomslots()
+
+    def make_courses(self):
+        for row in self._courses_df.iterrows():
+            self._courses[row[1]["Vak"]] = Course(row[1])
+
 
     def sort_roomslots(self):
         """

@@ -61,7 +61,10 @@ class Schedule:
                                               (self._students_df["Vak4"] == f"{course}") |
                                               (self._students_df["Vak5"] == f"{course}") ]
 
-        student_list = selected_students[""]
+        student_list = selected_students["Stud. Nr."].tolist()
+        print(student_list)
+        print(f"Number of students {len(student_list)}")
+
 
     def sort_roomslots(self):
         """
@@ -79,6 +82,7 @@ class Schedule:
         self._roomslots = []
         for item in sorted_list:
             self._roomslots.append(item[1])
+
 
     def room_ids(self) -> list:
         """Make list of all room ids"""
@@ -154,6 +158,7 @@ class Schedule:
         for activity in self._activities: 
             self.add_to_schedule(activity)
     
+
     def add_to_schedule(self, activity: Dict[str, int]):
         """
         Add activity to the next possible room based on capacity
@@ -238,7 +243,7 @@ class Schedule:
                     courses.append(course)
                                         
             student = Student.Student(name, student_number, courses)        
-            students[student_number] = student   
+            students[student_number] = student
 
         return students
 

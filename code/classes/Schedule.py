@@ -20,39 +20,43 @@ class Schedule:
 
     def __init__(self):
         self._courses_df = helpers.import_data("vakken")
-        self._courses =  self.make_courses()
-       
-
         self._rooms_df = helpers.import_data("zalen")
-
         self._students_df = helpers.import_data("studenten_en_vakken")
 
+        self._courses =  self.course_list()
         self._students = self.student_list()
-        self.add_students_to_courses()
-
         self._activities = self.activity_list()
-        self._roomslots = []
+        self._roomslots = self.roomslot_list()
+
+        self.add_students_to_courses()
+        self.sort_roomslots()
+       
+        
+        self.check()
+
+    def roomslot_list(self):
+        roomslots = []
+
         room_ids = self.room_ids()
         room_capacities = self.room_capacities()
         largest_room_ID = self._rooms_df['Zaalnummber'].iloc[-1]
         largest_room_capacity = self._rooms_df['Max. capaciteit'].iloc[-1]
-
+        
         # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots). Largest room has an extra timeslot (17-19u every day, so +5 timeslots)
         for timeslot in range(0, 25):
             # Make roomslots for largest room, 17-19u every day
-            if  (timeslot + 1) % 5 == 0:
+            if (timeslot + 1) % 5 == 0:
                 roomslot = Roomslot.Roomslot(largest_room_ID, timeslot, largest_room_capacity)
-                self._roomslots.append(roomslot)
+                roomslots.append(roomslot)
             else:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
-                    self._roomslots.append(roomslot)
-       
-        self.sort_roomslots()
-        self.check()
+                    roomslots.append(roomslot)
 
 
-    def make_courses(self):
+        return roomslots
+
+    def course_list(self):
         """
         Make a dictionary of course objects for each course in the Course DataFrame
         """

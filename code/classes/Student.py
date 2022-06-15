@@ -6,7 +6,7 @@ class Student:
     """
     
     def __init__(self, data):
-        self._student_name = data["Achternaam"] + ', ' + data[1]["Voornaam"]
+        self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
         self._studentnumber = data["Stud.Nr."]
         self._activities = set()
         self._courses = self.add_all_courses()

@@ -80,16 +80,18 @@ class Schedule:
 
             # Get student numbers
             students_Nrs = selected_students["Stud.Nr."].tolist()
-            # Get student names
-            students_name = [self._students.get(key) for key in students_Nrs]
-           
+            # Get student object
+            students_object = [self._students.get(key) for key in students_Nrs]
+
             # Make dictionary of students participating in the course
             students = {}
-            for student_Nr, student_name in zip(students_Nrs, students_name):
-                students[student_Nr] = student_name
+            for student_Nr, students_object in zip(students_Nrs, students_object):
+                students[student_Nr] = students_object
             
             # Add students to course
             course.student_list = students
+            # Divide the students over the course activities
+            course.make_activities()
 
 
     def sort_roomslots(self):
@@ -123,7 +125,7 @@ class Schedule:
     def check(self):
         print(self._courses["Lineaire Algebra"])
         self._courses["Lineaire Algebra"].make_activities()
-        
+
 
     def activity_list(self):
         """
@@ -277,7 +279,7 @@ class Schedule:
         students = dict()
 
         for row in self._students_df.iterrows():
-            self._students[row[1]["Stud.Nr."]] = Student.Student(row[1])
+            students[row[1]["Stud.Nr."]] = Student.Student(row[1])
 
         return students
     

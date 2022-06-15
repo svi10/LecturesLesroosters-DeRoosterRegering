@@ -9,14 +9,14 @@ class Student:
         self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
         self._studentnumber = data["Stud.Nr."]
         self._activities = set()
-        self._courses = self.add_all_courses()
+        self._courses = self.add_all_courses(data)
         self._malus_points = 0
 
     def add_all_courses(self, data):
         courses = []
         for i in range (0, 5):                
-                if isinstance((data[1][f"Vak{i + 1}"]),str):
-                    course = data[1][f"Vak{i + 1}"]
+                if isinstance((data[f"Vak{i + 1}"]),str):
+                    course = data[f"Vak{i + 1}"]
                     courses.append(course)
         return courses
 
@@ -26,6 +26,7 @@ class Student:
 
     def add_activity(self, activity):
         self._activities.add(activity)
+
 
     def __repr__(self):
         return f"{self._name}"

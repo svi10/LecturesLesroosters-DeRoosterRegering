@@ -1,12 +1,11 @@
+from typing import Dict
 import numpy as np
 from . import activity as act
 import math
 
 
 class Course:
-    """
-    This class contains all the course information
-    """
+
     def __init__(self, data) -> None:
 
         self.course_name = data["Vak"]
@@ -19,6 +18,7 @@ class Course:
         self.capacity = {"Lectures": self.value(data["Verwacht"]), 
                          "Tutorials": self.value(data["Max. stud. Werkcollege"]), 
                          "Practicals": self.value(data["Max. stud. Practicum"])}
+        
         self.student_list = {}
         
         self.activities = []
@@ -36,22 +36,23 @@ class Course:
 
     def make_activities(self): 
         """
-        TODO
+        TODO Maak de activiteiten
         """
 
         for activity in self.N_activities:
             # Make an activity of every lecture
-            if activity == "Lectures":
+            if activity == "Lectures" and self.N_activities[activity] > 0 and len(self.student_list) > 0:
                 # TODO: Group number
                 new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
                 self.activities.append(new_activity)
 
             # Make activities for all practicals and tutorials
-            elif self.N_activities[activity] > 0: 
+            elif self.N_activities[activity] > 0 and len(self.student_list) > 0: 
                 # Calculate the number of groups are needed for the amount of students
-                number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]) )
+                number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]))
+
                 # Equally devide the students over the number of groups
-                divided_groups = np.array_split(self.student_list, number_of_groups)
+                divided_groups = self.divide_students(self.student_list, number_of_groups)
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
@@ -74,6 +75,18 @@ class Course:
            
             group_id += 1
 
+    def divide_students(self, student_list: Dict, number_of_groups: int):
+        
+        def split_dict(d, n):
+            keys = list(d.keys())
+            for i in range(0, len(keys), n):
+                yield {k: d[k] for k in keys[i: i + n]}
+        
+        groups = []
+        for item in split_dict(student_list, number_of_groups):
+            groups.append(item)
+
+        return groups
 
     def __repr__(self):
         return f"{self.course_name}"

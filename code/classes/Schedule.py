@@ -28,7 +28,6 @@ class Schedule:
         self._students_df = helpers.import_data("studenten_en_vakken")
 
         self._students = self.student_list()
-        print(self._students)
         self.add_students_to_courses()
 
         self._activities = self.activity_list()
@@ -50,7 +49,6 @@ class Schedule:
                     self._roomslots.append(roomslot)
        
         self.sort_roomslots()
-        self.check()
 
 
     def make_courses(self):
@@ -76,16 +74,18 @@ class Schedule:
 
             # Get student numbers
             students_Nrs = selected_students["Stud.Nr."].tolist()
-            # Get student names
-            students_name = [self._students.get(key) for key in students_Nrs]
-           
+            # Get student object
+            students_object = [self._students.get(key) for key in students_Nrs]
+
             # Make dictionary of students participating in the course
             students = {}
-            for student_Nr, student_name in zip(students_Nrs, students_name):
-                students[student_Nr] = student_name
+            for student_Nr, students_object in zip(students_Nrs, students_object):
+                students[student_Nr] = students_object
             
             # Add students to course
             course.student_list = students
+            # Divide the students over the course activities
+            course.make_activities()
 
 
     def sort_roomslots(self):
@@ -119,7 +119,7 @@ class Schedule:
     def check(self):
         print(self._courses["Lineaire Algebra"])
         self._courses["Lineaire Algebra"].make_activities()
-        
+
 
     def activity_list(self):
         """
@@ -280,8 +280,8 @@ class Schedule:
                 if isinstance((row[1][f"Vak{i + 1}"]),str):
                     course = row[1][f"Vak{i + 1}"]
                     courses.append(course)
-                                        
-            student = Student.Student(name, student_number, courses)        
+
+            student = Student.Student(name, student_number, courses)
             students[student_number] = student
 
         return students

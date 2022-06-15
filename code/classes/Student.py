@@ -20,5 +20,6 @@ class Student:
     def add_activity(self, activity):
         self._activities.add(activity)
 
+
     def __repr__(self):
         return f"{self._name}"

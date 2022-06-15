@@ -49,13 +49,7 @@ class Course:
             # Make activities for all practicals and tutorials
             elif self.N_activities[activity] > 0 and len(self.student_list) > 0: 
                 # Calculate the number of groups are needed for the amount of students
-                number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]) )
-                print(f"Course name: {self.course_name}")
-                print(f"N Students: {len(self.student_list)}")
-                print(f"Capaciteit: {self.capacity[activity]}")
-                print(f"N activiteiten: {self.N_activities[activity]}")
-                print(f"Number of groups: {number_of_groups}")
-                print(f"students: {self.student_list}")
+                number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]))
 
                 # Equally devide the students over the number of groups
                 divided_groups = self.divide_students(self.student_list, number_of_groups)

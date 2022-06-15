@@ -2,6 +2,7 @@ import numpy as np
 from . import activity as act
 import math
 
+
 class Course:
 
     def __init__(self, data) -> None:
@@ -37,26 +38,21 @@ class Course:
         """
 
         for activity in self.N_activities:
-            print(f"Activity in for loop: \n {activity}")
             # Make an activity of every lecture
             if activity == "Lectures":
                 # TODO: Group number
-                print(f"Student list for lectures:\n {self.student_list}")
                 new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
                 self.activities.append(new_activity)
 
             # Make activities for all practicals and tutorials
-            else: 
+            elif self.N_activities[activity] > 0: 
                 # Calculate the number of groups are needed for the amount of students
-                print(f"Number of students: {len(self.student_list)}")
-                print(f"Capacity: {self.capacity[activity]}")
-                print(f"The division: \n {len(self.student_list) / self.capacity[activity]}")
                 number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]) )
                 # Equally devide the students over the number of groups
-                devided_groups = np.array_split(self.student_list, number_of_groups)
+                divided_groups = np.array_split(self.student_list, number_of_groups)
 
                 # Make the groups
-                self.make_groups(devided_groups, self.N_activities[activity], activity, self.course_name)
+                self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
 
 
     def make_groups(self, groups, N_activities, activity_type, course_name):

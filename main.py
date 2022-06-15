@@ -11,5 +11,5 @@ if __name__ == "__main__":
     df = schedule.show_schedule()
     schedule.save_schedule()
     total_malus_points = schedule.calculate_malus_points()
-    print('The total number of malus points for this schedule is: %d.\n' %total_malus_points)
+    print(f'\n The total number of malus points for this schedule is: {total_malus_points}. \n')
     print(df.to_string())

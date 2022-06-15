@@ -26,12 +26,13 @@ class Schedule:
         self._courses =  self.course_dict()
         # print(f"Courses: \n {self._courses}")
         self._students = self.student_dict()
+        self.add_students_to_courses()
         # print(f"Students: \n {self._students}")
         self._activities = self.activity_set()
         # print(f"Activities: {self._activities}")
         self._roomslots = self.roomslot_list()
 
-        self.add_students_to_courses()
+        
         self.sort_roomslots()
        
 
@@ -57,8 +58,8 @@ class Schedule:
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
 
-
         return roomslots
+
 
     def course_dict(self):
         """
@@ -92,7 +93,7 @@ class Schedule:
             students = {}
             for student_Nr, students_object in zip(students_Nrs, students_object):
                 students[student_Nr] = students_object
-            
+
             # Add students to course
             course.student_list = students
             # Divide the students over the course activities
@@ -127,7 +128,6 @@ class Schedule:
         return self._rooms_df['Max. capaciteit'].tolist()
 
 
-
     def activity_set(self):
         """
         Make a list of all possible activities. TODO
@@ -136,7 +136,7 @@ class Schedule:
 
         for course in self._courses.values():
             print(f"Course: {course}")
-            print(f"Activities: \n {course.activities}")
+            print(f"Activities: \n {course.activities} \n \n")
             for activity in course.activities:
                 activities.add(activity)
 
@@ -148,15 +148,17 @@ class Schedule:
         Add all activities to a different timeslot
         """
         roomslots = set(self._roomslots)
-        print(f"Activities: {self._activities}")
+        # print(f"Activities: {self._activities}")
         # Add all activities to the schedule
         for activity in self._activities: 
+            if len(roomslots) == 0:
+                break
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
             roomslots.remove(roomslot)
             
-            print(f"Roomslot: {roomslot}")
-            print(f"Roomslots: \n {roomslots}")
+            # print(f"Roomslot: {roomslot}")
+            # print(f"Roomslots: \n {roomslots}")
 
             self.add_to_roomslot(activity, roomslot)
 

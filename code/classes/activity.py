@@ -29,6 +29,9 @@ class Activity:
     def get_course_name(self):
         return self._name
 
+    def __repr__(self) -> str:
+        return f"{self._name}"
+
 
 # if __name__ == "__main__":
 #     activitytype = "tutorial"

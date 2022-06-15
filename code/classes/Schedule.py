@@ -23,18 +23,19 @@ class Schedule:
         self._rooms_df = helpers.import_data("zalen")
         self._students_df = helpers.import_data("studenten_en_vakken")
 
-        self._courses =  self.course_list()
-        self._students = self.student_list()
-        self._activities = self.activity_list()
+        self._courses =  self.course_dict()
+        self._students = self.student_dict()
+        self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
 
         self.add_students_to_courses()
         self.sort_roomslots()
        
-        
-        self.check()
 
     def roomslot_list(self):
+        """
+        TODO
+        """
         roomslots = []
 
         room_ids = self.room_ids()
@@ -56,7 +57,7 @@ class Schedule:
 
         return roomslots
 
-    def course_list(self):
+    def course_dict(self):
         """
         Make a dictionary of course objects for each course in the Course DataFrame
         """
@@ -122,12 +123,8 @@ class Schedule:
         return self._rooms_df['Max. capaciteit'].tolist()
 
 
-    def check(self):
-        print(self._courses["Lineaire Algebra"])
-        self._courses["Lineaire Algebra"].make_activities()
 
-
-    def activity_list(self):
+    def activity_set(self):
         """
         Make a list of all possible activities with the number of expected 
         participants.
@@ -141,44 +138,11 @@ class Schedule:
          ...
          ]
         """
-        activities = []
+        activities = set()
 
-        for row in self._courses_df.iterrows():
-            # Name of the course
-            vak = row[1]['Vak']
-            # Number of lectures, practicals and tutorials
-            N_lectures = row[1]["#Hoorcolleges"]
-            N_practicals = row[1]["#Practica"]
-            max_students_practicum = row[1]["Max. stud. Practicum"]
-            N_tutorials = row[1]["#Werkcolleges"]
-            max_students_tutorials = row[1]["Max. stud. Werkcollege"]
-            N_students = row[1]["Verwacht"]
-             
-            for i in range(N_lectures):
-                activity = {}
-                activity['Activity'] = "Hoorcollege " + vak
-                activity['Verwacht'] = row[1]['Verwacht']
-                activities.append(activity)
-            
-            for i in range(N_tutorials):
-                N_groups = math.ceil(row[1]['Verwacht'] / int(row[1]['Max. stud. Werkcollege']))
-
-                for group in range(N_groups):
-                    activity = {}
-                    activity['Activity'] = "Werkcollege " + vak + '.' + (str(group))
-                    activity['Verwacht'] = row[1]['Verwacht']
-                    activity['Max. stud. Werkcollege'] = row[1]['Max. stud. Werkcollege']
-                    activities.append(activity)
-            
-            for i in range(N_practicals):
-                N_groups = math.ceil(row[1]['Verwacht'] / int(row[1]['Max. stud. Practicum']))
-
-                for group in range(N_groups):
-                    activity = {}
-                    activity['Activity'] = "Practicum " + vak + '.' + (str(group))
-                    activity['Verwacht'] = row[1]['Verwacht']
-                    activity['Max. stud. Practicum'] = row[1]['Max. stud. Practicum']
-                    activities.append(activity)
+        for course in self._courses.values():
+            for activity in course.activities:
+                activities.add(activity)
 
         return activities
         
@@ -272,7 +236,7 @@ class Schedule:
         return total_malus_points
 
 
-    def student_list(self):
+    def student_dict(self):
         """
         Makes a list with all students as Student class instances
         """

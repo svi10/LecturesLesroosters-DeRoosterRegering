@@ -88,5 +88,5 @@ class Course:
 
         return groups
 
-    def __repr__(self):
-        return f"{self.course_name}"
+    # def __repr__(self):
+    #     return f"{self.course_name}"

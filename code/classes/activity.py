@@ -26,8 +26,7 @@ class Activity:
     def show_students(self):
         return self._student_set
 
-
-    def get_name(self):
+    def get_course_name(self):
         return self._name
 
 

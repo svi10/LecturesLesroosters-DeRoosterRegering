@@ -56,7 +56,9 @@ class Course:
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
-
+                # Make activity
+                new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
+                self.activities.append(new_activity)
 
     def make_groups(self, groups, N_activities, activity_type, course_name):
         """
@@ -88,5 +90,5 @@ class Course:
 
         return groups
 
-    # def __repr__(self):
-    #     return f"{self.course_name}"
+    def __repr__(self):
+        return f"{self.course_name}"

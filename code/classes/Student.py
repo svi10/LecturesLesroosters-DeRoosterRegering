@@ -29,4 +29,4 @@ class Student:
 
 
     def __repr__(self):
-        return f"{self._name}"
+        return f"{self._student_name}"

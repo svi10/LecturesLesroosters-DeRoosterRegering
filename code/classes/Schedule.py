@@ -24,8 +24,11 @@ class Schedule:
         self._students_df = helpers.import_data("studenten_en_vakken")
 
         self._courses =  self.course_dict()
+        # print(f"Courses: \n {self._courses}")
         self._students = self.student_dict()
+        # print(f"Students: \n {self._students}")
         self._activities = self.activity_set()
+        # print(f"Activities: {self._activities}")
         self._roomslots = self.roomslot_list()
 
         self.add_students_to_courses()
@@ -64,6 +67,7 @@ class Schedule:
         courses = {}
         for row in self._courses_df.iterrows():
             courses[row[1]["Vak"]] = Course(row[1])
+        
         return courses
 
     def add_students_to_courses(self):
@@ -126,21 +130,13 @@ class Schedule:
 
     def activity_set(self):
         """
-        Make a list of all possible activities with the number of expected 
-        participants.
-        
-        Example:
-            
-        [['Hoorcollege Advanced Heuristics', 22], 
-         ['Practicum Advanced Heuristics', 22], 
-         ['Hoorcollege Algoritmen en complexiteit', 47], 
-         ['Werkcollege Algoritmen en complexiteit', 47],
-         ...
-         ]
+        Make a list of all possible activities. TODO
         """
         activities = set()
 
         for course in self._courses.values():
+            print(f"Course: {course}")
+            print(f"Activities: \n {course.activities}")
             for activity in course.activities:
                 activities.add(activity)
 
@@ -152,62 +148,53 @@ class Schedule:
         Add all activities to a different timeslot
         """
         roomslots = set(self._roomslots)
-        
+        print(f"Activities: {self._activities}")
         # Add all activities to the schedule
         for activity in self._activities: 
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
             roomslots.remove(roomslot)
             
+            print(f"Roomslot: {roomslot}")
+            print(f"Roomslots: \n {roomslots}")
+
             self.add_to_roomslot(activity, roomslot)
 
 
     def add_to_roomslot(self, activity, roomslot):
-        roomslot.assign_activity(activity['Activity'])
-        roomslot._N_participants = activity['Verwacht']
+        roomslot.assign_activity(activity)
+        roomslot._N_participants = activity.total_students()
         pass
-
-    # def add_to_roomslot(self, activity: Dict[str, int]):
-    #     """
-    #     Add activity to the next possible room based on capacity
-    #     """
-    #     N_students = activity['Verwacht']
-    #     activity_name = activity['Activity']
-    #     # Find an available room for the activity
-    #     for roomslot in self._roomslots:
-    #         # Check if room available and has the right capacity
-    #         if roomslot._activity == 'Available' and roomslot._capacity >= N_students:
-    #             # Asign activity to roomslot
-    #             roomslot.assign_activity(activity['Activity'])
-    #             # Save number of students in the room
-    #             roomslot._N_participants = N_students
-    #             # Stop searching for an available room
-    #             break
         
 
     def show_schedule(self):
         """
         Show schedule in a dataframe
         """
-        timeslots = []
-        rooms = []
-        activities = []
-        capacities = []
+        timeslot = []
+        room = []
+        course_name = []
+        activity_type = []
+        capacity = []
         N_students = []
     
         for roomslot in self._roomslots:
-            timeslots.append(roomslot._timeslot)
-            rooms.append(roomslot._roomID)
-            activities.append(roomslot._activity)
-            capacities.append(roomslot._capacity)
-            N_students.append(roomslot._N_participants)
+            data = roomslot.get_data()
+
+            timeslot.append(data["Timeslot"])
+            room.append(data["Room ID"])
+            course_name.append(data["Course name"])
+            activity_type.append(data["Type"])
+            capacity.append(data["Capacity"])
+            N_students.append(data["Number of participants"])
 
         data = {}
-        data["Timeslot"] = timeslots
-        data["RoomID"] = rooms
-        data["Activity"] = activities
+        data["Timeslot"] = timeslot
+        data["RoomID"] = room
+        data["Course name"] = course_name
+        data["Type"] = activity_type
         data["Number of participants"] = N_students
-        data["Room capacity"] = capacities
+        data["Room capacity"] = capacity
         
 
         return pd.DataFrame(data=data).sort_values(by="Timeslot")

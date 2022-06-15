@@ -26,9 +26,9 @@ class Schedule:
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
-        
 
         self._students = self.student_list()
+        print(self._students)
         self.add_students_to_courses()
 
         self._activities = self.activity_list()
@@ -117,8 +117,9 @@ class Schedule:
 
 
     def check(self):
+        print(self._courses["Lineaire Algebra"])
         self._courses["Lineaire Algebra"].make_activities()
-
+        
 
     def activity_list(self):
         """

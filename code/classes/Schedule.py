@@ -20,15 +20,14 @@ class Schedule:
 
     def __init__(self):
         self._courses_df = helpers.import_data("vakken")
-        self._courses = {}
-        self.make_courses()
+        self._courses =  self.make_courses()
+       
 
         self._rooms_df = helpers.import_data("zalen")
 
         self._students_df = helpers.import_data("studenten_en_vakken")
 
         self._students = self.student_list()
-        print(self._students)
         self.add_students_to_courses()
 
         self._activities = self.activity_list()
@@ -57,9 +56,10 @@ class Schedule:
         """
         Make a dictionary of course objects for each course in the Course DataFrame
         """
+        courses = {}
         for row in self._courses_df.iterrows():
-            self._courses[row[1]["Vak"]] = Course(row[1])
-
+            courses[row[1]["Vak"]] = Course(row[1])
+        return courses
 
     def add_students_to_courses(self):
         """
@@ -273,19 +273,9 @@ class Schedule:
         students = dict()
 
         for row in self._students_df.iterrows():
-            name = row[1]["Achternaam"] + ', ' + row[1]["Voornaam"]
-            student_number = row[1]["Stud.Nr."]
-            courses = []
-            for i in range (0, 5):                
-                if isinstance((row[1][f"Vak{i + 1}"]),str):
-                    course = row[1][f"Vak{i + 1}"]
-                    courses.append(course)
-                                        
-            student = Student.Student(name, student_number, courses)        
-            students[student_number] = student
+            self._students[row[1]["Stud.Nr."]] = Student.Student(row[1])
 
         return students
-
-        
+    
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

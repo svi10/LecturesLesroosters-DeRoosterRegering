@@ -4,7 +4,9 @@ import math
 
 
 class Course:
-
+    """
+    This class contains all the course information
+    """
     def __init__(self, data) -> None:
 
         self.course_name = data["Vak"]

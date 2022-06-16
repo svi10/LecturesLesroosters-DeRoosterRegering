@@ -131,8 +131,6 @@ class Schedule:
         activities = set()
 
         for course in self._courses.values():
-            print(f"Course: {course}")
-            print(f"Activities: \n {course.activities} \n \n")
             for activity in course.activities:
                 activities.add(activity)
 

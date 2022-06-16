@@ -33,7 +33,7 @@ class Roomslot:
             data["Number of participants"] = 0
             data["Type"] = "-"
         else:
-            data["Course name"] = self._activity_object.get_course_name()
+            data["Course name"] = self._activity_object.get_course_name() + "." + str(self._activity_object.get_course_id())
             data["Number of participants"] = self._activity_object.total_students()
             data["Type"] = self._activity_object._type
 

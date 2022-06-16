@@ -12,6 +12,7 @@ class Student:
         self._courses = self.add_all_courses(data)
         self._malus_points = 0
 
+
     def add_all_courses(self, data):
         courses = []
         for i in range (0, 5):                

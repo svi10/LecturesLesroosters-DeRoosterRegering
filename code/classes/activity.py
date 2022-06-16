@@ -14,18 +14,33 @@ class Activity:
        
 
     def add_student(self, students):
+        """
+        Adds a student to the list of students in a activity
+        """
         self._student_set.update(students)
 
     def total_students(self):
+        """
+        Returns the total amount of students in the activity
+        """
         return len(self._student_set)
 
     def remove_student(self, student):
+        """
+        Removes a single student from the list of students in a activity
+        """
         self._student_set.discard(student)
 
     def show_students(self):
+        """
+        Returns a set including all the students
+        """
         return self._student_set
 
     def get_course_name(self):
+        """
+        Gets the name of the course 
+        """
         return self._course_name
 
     def __repr__(self) -> str:

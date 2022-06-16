@@ -52,7 +52,7 @@ class Course:
                 number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]))
 
                 # Number of students per groups
-                group_size = int(len(self.student_list) / number_of_groups)
+                group_size = math.ceil(len(self.student_list) / number_of_groups)
 
                 # Equally devide the students over the number of groups
                 divided_groups = self.divide_students(self.student_list, group_size)

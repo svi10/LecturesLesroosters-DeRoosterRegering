@@ -4,7 +4,7 @@ import math
 import random
 from typing import List, Set, Dict, Tuple, Optional
 
-from soupsieve import select
+# from soupsieve import select
 
 from code.classes.course import Course
 from . import Roomslot, Student
@@ -150,7 +150,8 @@ class Schedule:
             roomslots.remove(roomslot)
 
             self.add_to_roomslot(activity, roomslot)
-
+            activity._timeslot = roomslot._timeslot
+        
 
     def add_to_roomslot(self, activity, roomslot):
         roomslot.assign_activity(activity)

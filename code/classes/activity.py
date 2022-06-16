@@ -11,6 +11,7 @@ class Activity:
         self._student_set = set(student_list.values())
         self._room = None
         self._timeslot = None
+        self._group_id = group_id
        
 
     def add_student(self, students):
@@ -28,9 +29,12 @@ class Activity:
 
     def get_course_name(self):
         return self._name
+    
+    def get_course_id(self):
+        return self._group_id 
 
     def __repr__(self) -> str:
-        return f"{self._name}"
+        return f"{self._name}, {self._group_id}"
 
 
 # if __name__ == "__main__":

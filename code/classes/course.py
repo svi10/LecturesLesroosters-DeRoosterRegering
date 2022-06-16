@@ -44,6 +44,7 @@ class Course:
                 # TODO: Group number
                 new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
                 self.activities.append(new_activity)
+                self.activity_to_students(new_activity, self.student_list)
 
             # Make activities for all practicals and tutorials
             elif self.N_activities[activity] > 0 and len(self.student_list) > 0: 
@@ -58,9 +59,6 @@ class Course:
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
-
-
-
 
 
     def make_groups(self, groups, N_activities, activity_type, course_name):

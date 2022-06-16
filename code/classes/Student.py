@@ -21,11 +21,15 @@ class Student:
                     courses.append(course)
         return courses
 
+
     def malus_conflict(self):
         """
         Calculate the malus points for the student caused by conflicting activities
         """
-        print(f"Activiteiten student: \n {self._activities} \n")
+
+        timeslots = [x._timeslot for x in self._activities]
+        print(timeslots)
+
 
 
         pass

@@ -11,6 +11,8 @@ from . import Roomslot, Student
 from . import activity, course
 from code import helpers
 
+import numpy as np
+
 
 class Schedule:
     """
@@ -28,10 +30,10 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
-        
-        self.sort_roomslots()
+        self.make_schedule()
        
-        # self.check()
+        self.check()
+
 
     def roomslot_list(self):
         """
@@ -157,8 +159,7 @@ class Schedule:
     def add_to_roomslot(self, activity, roomslot):
         roomslot.assign_activity(activity)
         roomslot._N_participants = activity.total_students()
-        pass
-        
+
 
     def show_schedule(self):
         """
@@ -233,5 +234,15 @@ class Schedule:
 
     
     def check(self):
-        for student in self._students.values():
-            student.malus_conflict()
+        # for activity in self._activities:
+        #     print(f"timeslot: {activity._timeslot}")
+
+        # for student in self._students.values():
+        #     student.malus_conflict()
+        
+        selected_students = self._students_df[(self._students_df["Vak5"] == np.NaN)]
+                                                #   (self._students_df["Vak2"] == f"{course.course_name}") |
+                                                #   (self._students_df["Vak3"] == f"{course.course_name}") |
+                                                #   (self._students_df["Vak4"] == f"{course.course_name}") |
+                                                #   (self._students_df["Vak5"] == f"{course.course_name}") ]
+        print(f"Selected Courses: \n {selected_students}\n")

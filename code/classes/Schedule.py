@@ -26,11 +26,12 @@ class Schedule:
         self._courses =  self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
-        self._activities = self.activity_set()
+        self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
         
         self.sort_roomslots()
        
+        # self.check()
 
     def roomslot_list(self):
         """
@@ -226,5 +227,11 @@ class Schedule:
 
         return students
     
+
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
+
+    
+    def check(self):
+        for student in self._students.values():
+            student.malus_conflict()

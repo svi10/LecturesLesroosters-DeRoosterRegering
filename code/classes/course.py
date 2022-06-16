@@ -58,9 +58,9 @@ class Course:
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
-                # Make activity
-                new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
-                self.activities.append(new_activity)
+
+
+
 
 
     def make_groups(self, groups, N_activities, activity_type, course_name):
@@ -77,8 +77,18 @@ class Course:
             for i in range(N_activities):
                 new_activity = act.Activity(activity_type, course_name, group, group_id)
                 self.activities.append(new_activity)
+                self.activity_to_students(new_activity, group)
            
             group_id += 1
+
+
+    def activity_to_students(self, activity, students: Dict) -> None:
+        """
+        Add the activity to the students in that group
+        """
+        for student in students.values():
+            student.add_activity(activity)
+
 
     def divide_students(self, student_list: Dict, number_of_groups: int):
         

@@ -21,6 +21,15 @@ class Student:
                     courses.append(course)
         return courses
 
+    def malus_conflict(self):
+        """
+        Calculate the malus points for the student caused by conflicting activities
+        """
+        print(f"Activiteiten student: \n {self._activities} \n")
+
+
+        pass
+
     def add_course(self, course):
         self._courses.add(course)
 

@@ -237,12 +237,8 @@ class Schedule:
         # for activity in self._activities:
         #     print(f"timeslot: {activity._timeslot}")
 
-        # for student in self._students.values():
-        #     student.malus_conflict()
+        for student in self._students.values():
+            student.malus_conflict()
         
-        selected_students = self._students_df[(self._students_df["Vak5"] == np.NaN)]
-                                                #   (self._students_df["Vak2"] == f"{course.course_name}") |
-                                                #   (self._students_df["Vak3"] == f"{course.course_name}") |
-                                                #   (self._students_df["Vak4"] == f"{course.course_name}") |
-                                                #   (self._students_df["Vak5"] == f"{course.course_name}") ]
-        print(f"Selected Courses: \n {selected_students}\n")
+        # selected_students = self._students_df[self._students_df['Vak1'].isna()]
+        # print(f"Selected Courses: \n {selected_students}\n")

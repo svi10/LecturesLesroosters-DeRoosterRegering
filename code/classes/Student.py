@@ -28,9 +28,9 @@ class Student:
         """
 
         timeslots = [x._timeslot for x in self._activities]
-        print(timeslots)
-
-
+        if len(timeslots) == 0:
+            print(self._student_name)
+            print(f"Courses: \n {self._courses} \n")
 
         pass
 

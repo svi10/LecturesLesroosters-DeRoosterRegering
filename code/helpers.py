@@ -1,3 +1,4 @@
+from typing import List
 import pandas as pd
 
 def import_data(destination):
@@ -13,4 +14,12 @@ def import_data(destination):
 
     return df
 
+def doubles_counter(input: List) -> int:
+    
+    doubles = {i:input.count(i) for i in input}
+    N_doubles = 0
+    for i in doubles.values():
+        N_doubles += i - 1
+    
+    return N_doubles
 

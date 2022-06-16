@@ -31,8 +31,6 @@ class Schedule:
         self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
         self.make_schedule()
-       
-        self.check()
 
 
     def roomslot_list(self):
@@ -56,6 +54,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
+        self.check()
 
         return roomslots
 
@@ -213,7 +212,7 @@ class Schedule:
                 malus_points += 5
 
             total_malus_points += malus_points
-
+        
         return total_malus_points
 
 
@@ -234,11 +233,5 @@ class Schedule:
 
     
     def check(self):
-        # for activity in self._activities:
-        #     print(f"timeslot: {activity._timeslot}")
-
         for student in self._students.values():
-            student.malus_conflict()
-        
-        # selected_students = self._students_df[self._students_df['Vak1'].isna()]
-        # print(f"Selected Courses: \n {selected_students}\n")
+            print(f"MP: {student.malus_conflict()}")

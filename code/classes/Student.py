@@ -24,15 +24,14 @@ class Student:
 
     def malus_conflict(self):
         """
-        Calculate the malus points for the student caused by conflicting activities
+        Calculate the malus points for the student caused by conflicting activities.
+        Each conflict results in 1 malus point.
         """
+        timeslots = [activity._timeslot for activity in self._activities]
+        malus_points: int = helpers.doubles_counter(timeslots)
 
-        timeslots = [x._timeslot for x in self._activities]
-        if len(timeslots) == 0:
-            print(self._student_name)
-            print(f"Courses: \n {self._courses} \n")
+        return malus_points
 
-        pass
 
     def add_course(self, course):
         self._courses.add(course)

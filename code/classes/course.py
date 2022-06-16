@@ -33,7 +33,6 @@ class Course:
         return value
 
 
-
     def make_activities(self): 
         """
         TODO Maak de activiteiten
@@ -62,6 +61,7 @@ class Course:
                 # Make activity
                 new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
                 self.activities.append(new_activity)
+
 
     def make_groups(self, groups, N_activities, activity_type, course_name):
         """

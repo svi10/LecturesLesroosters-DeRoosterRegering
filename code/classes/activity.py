@@ -7,7 +7,7 @@ class Activity:
 
     def __init__(self, activitytype, name, student_list, group_id):
         self._type = activitytype
-        self._name = name
+        self._course_name = name
         self._student_set = set(student_list.values())
         self._room = None
         self._timeslot = None
@@ -23,15 +23,14 @@ class Activity:
     def remove_student(self, student):
         self._student_set.discard(student)
 
-
     def show_students(self):
         return self._student_set
 
     def get_course_name(self):
-        return self._name
+        return self._course_name
 
     def __repr__(self) -> str:
-        return f"{self._name}"
+        return f"{self._course_name}"
 
 
 # if __name__ == "__main__":

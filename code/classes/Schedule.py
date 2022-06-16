@@ -24,15 +24,10 @@ class Schedule:
         self._students_df = helpers.import_data("studenten_en_vakken")
 
         self._courses =  self.course_dict()
-        # print(f"Courses: \n {self._courses}")
         self._students = self.student_dict()
         self.add_students_to_courses()
-        # print(f"Students: \n {self._students}")
         self._activities = self.activity_set()
-        print(f"Activities: {len(self._activities)}")
         self._roomslots = self.roomslot_list()
-        print(f"Roomslots: {len(self._roomslots)}")
-
         
         self.sort_roomslots()
        
@@ -149,18 +144,12 @@ class Schedule:
         Add all activities to a different timeslot
         """
         roomslots = set(self._roomslots)
-        # print(f"Activities: {self._activities}")
         # Add all activities to the schedule
-        for activity in self._activities: 
-            # if len(roomslots) == 0:
-            #     break
+        for activity in self._activities:
 
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
             roomslots.remove(roomslot)
-            
-            # print(f"Roomslot: {roomslot}")
-            # print(f"Roomslots: \n {roomslots}")
 
             self.add_to_roomslot(activity, roomslot)
 
@@ -219,7 +208,7 @@ class Schedule:
                 malus_points = 0
 
             # If an activity is at a timeslot from 17h-19h, 5 malus points are awarded
-            if (roomslot._timeslot + 1) % 5 == 0 and roomslot._activity != 'Available':
+            if (roomslot._timeslot + 1) % 5 == 0 and roomslot._course_name != 'Available':
                 malus_points += 5
 
             total_malus_points += malus_points

@@ -7,7 +7,8 @@ class Roomslot:
         self._roomID = roomID
         self._capacity = capacity
         self._timeslot = timeslot
-        self._activity = 'Available'
+        self._course_name = 'Available'
+        self._activity = 0
         self._activity_object = None
         self._N_participants = 0
         self._malus_points_roomslot = ''
@@ -15,7 +16,7 @@ class Roomslot:
 
     def assign_activity(self, activity):
         "Assign an activity to this roomslot"
-        self._activity = activity.get_course_name()
+        self._course_name = activity.get_course_name()
         self._activity_object = activity
 
 

@@ -29,8 +29,9 @@ class Schedule:
         self.add_students_to_courses()
         # print(f"Students: \n {self._students}")
         self._activities = self.activity_set()
-        # print(f"Activities: {self._activities}")
+        print(f"Activities: {len(self._activities)}")
         self._roomslots = self.roomslot_list()
+        print(f"Roomslots: {len(self._roomslots)}")
 
         
         self.sort_roomslots()
@@ -149,8 +150,9 @@ class Schedule:
         # print(f"Activities: {self._activities}")
         # Add all activities to the schedule
         for activity in self._activities: 
-            if len(roomslots) == 0:
-                break
+            # if len(roomslots) == 0:
+            #     break
+
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
             roomslots.remove(roomslot)

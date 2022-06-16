@@ -51,8 +51,11 @@ class Course:
                 # Calculate the number of groups are needed for the amount of students
                 number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]))
 
+                # Number of students per groups
+                group_size = int(len(self.student_list) / number_of_groups)
+
                 # Equally devide the students over the number of groups
-                divided_groups = self.divide_students(self.student_list, number_of_groups)
+                divided_groups = self.divide_students(self.student_list, group_size)
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)

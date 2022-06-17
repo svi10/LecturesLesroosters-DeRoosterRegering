@@ -31,6 +31,7 @@ class Schedule:
         self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
         self.make_schedule()
+        self.check()
 
 
     def roomslot_list(self):
@@ -54,7 +55,6 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
-        self.check()
 
         return roomslots
 
@@ -234,4 +234,4 @@ class Schedule:
     
     def check(self):
         for student in self._students.values():
-            print(f"MP: {student.malus_conflict()}")
+            print(f"MP: {student.malus_gap_hours()}")

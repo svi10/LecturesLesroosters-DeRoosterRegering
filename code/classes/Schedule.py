@@ -187,11 +187,10 @@ class Schedule:
         data["Number of participants"] = N_students
         data["Room capacity"] = capacity
         
-
         return pd.DataFrame(data=data).sort_values(by="Timeslot")
     
 
-    def calculate_malus_points(self):
+    def schedule_malus_points(self):
         """
         Calculate the malus points for the schedule. The more malus points a 
         schedule has, the worse it is.
@@ -213,6 +212,17 @@ class Schedule:
         
         return total_malus_points
 
+    def students_malus_points(self):
+        malus_points = 0
+        for student in self._students.values():
+            malus_points += student.malus_conflict()
+            malus_points += student.malus_gap_hours()
+
+        return malus_points
+
+    def total_malus_points(self):
+        return (self.students_malus_points() + self.schedule_malus_points())
+
 
     def student_dict(self):
         """
@@ -225,7 +235,6 @@ class Schedule:
 
         return students
     
-
     
     def show_student(self, studentnumber):
         data = {}
@@ -245,7 +254,6 @@ class Schedule:
         data["roomslot"] = roomslot
         data["malus_points"] = student._malus_points
         return pd.DataFrame(data=data).sort_values(by="timeslot")
-
 
 
     def save_schedule(self):

@@ -28,7 +28,6 @@ class Schedule:
         self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
         self.make_schedule()
-        self.check()
 
 
     def roomslot_list(self):
@@ -52,6 +51,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
+        
 
         return roomslots
 
@@ -230,6 +230,8 @@ class Schedule:
     def show_student(self, studentnumber):
         data = {}
         student = self._students[studentnumber]
+        student.malus_conflict()
+        student.malus_gap_hours()
         course_name = []
         timeslot = []
         roomslot = []
@@ -241,8 +243,10 @@ class Schedule:
         data["course_name"] = course_name
         data["timeslot"] = timeslot
         data["roomslot"] = roomslot
-
+        data["malus_points"] = student._malus_points
         return pd.DataFrame(data=data).sort_values(by="timeslot")
+
+
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

@@ -13,7 +13,6 @@ from code import helpers
 
 import numpy as np
 
-
 class Schedule:
     """
     This class can be used to devide the courses over the 
@@ -28,10 +27,11 @@ class Schedule:
         self._courses =  self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
-        self._activities = self.activity_set() # TODO Aantal activities berekenen.
+        self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
         self.make_schedule()
-
+        self.check()
+       
 
     def roomslot_list(self):
         """
@@ -54,7 +54,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
-        self.check()
+        # self.check()
 
         return roomslots
 
@@ -158,7 +158,7 @@ class Schedule:
     def add_to_roomslot(self, activity, roomslot):
         roomslot.assign_activity(activity)
         roomslot._N_participants = activity.total_students()
-
+        
 
     def show_schedule(self):
         """
@@ -227,11 +227,13 @@ class Schedule:
 
         return students
     
-
+    
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
 
-    
+
     def check(self):
         for student in self._students.values():
             print(f"MP: {student.malus_conflict()}")
+            student.malus_gap_hours()
+        

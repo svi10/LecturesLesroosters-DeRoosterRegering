@@ -219,7 +219,7 @@ class Schedule:
 
         return malus_points
 
-    def total_malus_points(self)
+    def total_malus_points(self):
         return (self.students_malus_points() + self.schedule_malus_points())
 
 

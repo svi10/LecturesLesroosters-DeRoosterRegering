@@ -40,4 +40,4 @@ class Roomslot:
         return data
 
     def __repr__(self) -> str:
-        return f"{self._timeslot}, {self._roomID}"
+        return f"{self._roomID}"

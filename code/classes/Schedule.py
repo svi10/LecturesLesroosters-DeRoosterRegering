@@ -3,9 +3,6 @@ import pandas as pd
 import math
 import random
 from typing import List, Set, Dict, Tuple, Optional
-
-# from soupsieve import select
-
 from code.classes.course import Course
 from . import Roomslot, Student
 from . import activity, course
@@ -149,6 +146,7 @@ class Schedule:
 
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
+            activity._roomslot = roomslot 
             roomslots.remove(roomslot)
 
             self.add_to_roomslot(activity, roomslot)
@@ -228,10 +226,25 @@ class Schedule:
         return students
     
 
+    
+    def show_student(self, studentnumber):
+        data = {}
+        student = self._students[studentnumber]
+        course_name = []
+        timeslot = []
+        roomslot = []
+        for activity in student._activities:
+            course_name.append(activity._course_name)
+            timeslot.append(activity._timeslot)
+            roomslot.append(activity._roomslot)
+
+        data["course_name"] = course_name
+        data["timeslot"] = timeslot
+        data["roomslot"] = roomslot
+
+        return pd.DataFrame(data=data).sort_values(by="timeslot")
+
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
 
     
-    def check(self):
-        for student in self._students.values():
-            print(f"MP: {student.malus_gap_hours()}")

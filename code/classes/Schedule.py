@@ -26,14 +26,7 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
-<<<<<<< HEAD
-        self.make_schedule()
-        self.check()
-       
-=======
-        # self.make_random_schedule()
 
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
     def roomslot_list(self):
         """
@@ -56,12 +49,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
-<<<<<<< HEAD
-        # self.check()
-=======
         
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
-
         return roomslots
 
 
@@ -166,6 +154,12 @@ class Schedule:
         roomslot.assign_activity(activity)
         roomslot._N_participants = activity.total_students()
         
+
+    # def make_greedy_schedule(self):
+    #     """
+        
+    #     """
+
 
     def show_schedule(self):
         """

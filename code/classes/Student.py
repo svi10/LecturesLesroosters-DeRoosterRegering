@@ -1,5 +1,6 @@
 from code import helpers
 
+
 class Student:
     """
     This class includes all student information
@@ -30,46 +31,51 @@ class Student:
         timeslots = [activity._timeslot for activity in self._activities]
         malus_points: int = helpers.doubles_counter(timeslots)
 
+        self._malus_points += malus_points
         return malus_points
 
 
     def malus_gap_hours(self):
         """
-        Calculate the malus points for each time a student has one or two gap hours. 
-        One gap hour results in 1 malus point. Two gap hours result in three malus points.
+        Calculate malus points for the student caused by gap hours in the schedule. 1 gap hours gives 
+        1 malus point. 2 consecutive gap hours gives 3 malus points. 3 consecutive gap hours is not allowed.
         """
-        malus_points_gaps = 0
         timeslots = [activity._timeslot for activity in self._activities]
-        timeslots.sort()
-        print(timeslots)
+        # Distribute timeslots over the 5 days of the week
         week = []
-        
-        # Create list per days, where i is start of next day
-        for i in range(5, 30, 5):
-            day = []
+        for i in range(5,26,5):
+            day = set()
+            remove = []
 
-            # Separate timeslots according to day
             for timeslot in timeslots:
                 if timeslot < i:
-                    day.append(timeslot)
-                    timeslots.remove(timeslot)
-
-            # Add day to week
-            week.append(day)
-
-            if len(day) > 1:
-                for timeslot in day:
-                    if day[+1] < i and day[+1] - timeslot == 2:
-                        malus_points_gaps += 3
-                    elif day[+1] < i and day[+1] - timeslot == 1:
-                        malus_points_gaps += 1
-
-        print(week)
+                    day.add(timeslot)
+                    remove.append(timeslot)
             
-        # print(f"Student: {self._student_name}")
-        # print(f"Timeslots: {timeslots}")
-        print(f"Malus points: {malus_points_gaps}")
-        return malus_points_gaps
+            for i in remove:
+                timeslots.remove(i)
+
+            week.append(sorted(day))
+
+        # Calculate the number of gap hours and corresponding malus points
+        malus_points = 0
+        for day in week:
+           
+            for i in range(len(day)):
+                if day[i] != day[-1]:
+                    gap_hours = day[i+1] - day[i] - 1
+
+                    # Reward malus points
+                    if gap_hours == 1:
+                        malus_points += 1
+                    
+                    if gap_hours == 2:
+                        malus_points += 3
+                    
+                    if gap_hours == 3:
+                        malus_points += 30
+        self._malus_points += malus_points
+        return malus_points
         
         
     def add_course(self, course):

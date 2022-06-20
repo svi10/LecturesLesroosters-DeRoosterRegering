@@ -3,9 +3,6 @@ import pandas as pd
 import math
 import random
 from typing import List, Set, Dict, Tuple, Optional
-
-# from soupsieve import select
-
 from code.classes.course import Course
 from . import Roomslot, Student
 from . import activity, course
@@ -29,9 +26,14 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
+<<<<<<< HEAD
         self.make_schedule()
         self.check()
        
+=======
+        # self.make_random_schedule()
+
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
     def roomslot_list(self):
         """
@@ -54,7 +56,11 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
+<<<<<<< HEAD
         # self.check()
+=======
+        
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
         return roomslots
 
@@ -139,7 +145,7 @@ class Schedule:
         return activities
         
 
-    def make_schedule(self) -> None:
+    def make_random_schedule(self) -> None:
         """
         Add all activities to a different timeslot
         """
@@ -149,6 +155,7 @@ class Schedule:
 
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
+            activity._roomslot = roomslot 
             roomslots.remove(roomslot)
 
             self.add_to_roomslot(activity, roomslot)
@@ -189,11 +196,10 @@ class Schedule:
         data["Number of participants"] = N_students
         data["Room capacity"] = capacity
         
-
         return pd.DataFrame(data=data).sort_values(by="Timeslot")
     
 
-    def calculate_malus_points(self):
+    def schedule_malus_points(self):
         """
         Calculate the malus points for the schedule. The more malus points a 
         schedule has, the worse it is.
@@ -215,6 +221,17 @@ class Schedule:
         
         return total_malus_points
 
+    def students_malus_points(self):
+        malus_points = 0
+        for student in self._students.values():
+            malus_points += student.malus_conflict()
+            malus_points += student.malus_gap_hours()
+
+        return malus_points
+
+    def total_malus_points(self):
+        return (self.students_malus_points() + self.schedule_malus_points())
+
 
     def student_dict(self):
         """
@@ -228,6 +245,7 @@ class Schedule:
         return students
     
     
+<<<<<<< HEAD
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
 
@@ -237,3 +255,29 @@ class Schedule:
             print(f"MP: {student.malus_conflict()}")
             student.malus_gap_hours()
         
+=======
+    def show_student(self, studentnumber):
+        data = {}
+        student = self._students[studentnumber]
+        student.malus_conflict()
+        student.malus_gap_hours()
+        course_name = []
+        timeslot = []
+        roomslot = []
+        for activity in student._activities:
+            course_name.append(activity._course_name)
+            timeslot.append(activity._timeslot)
+            roomslot.append(activity._roomslot)
+
+        data["course_name"] = course_name
+        data["timeslot"] = timeslot
+        data["roomslot"] = roomslot
+        data["malus_points"] = student._malus_points
+        return pd.DataFrame(data=data).sort_values(by="timeslot")
+
+
+    def save_schedule(self):
+        self.show_schedule().to_csv("Rooster.csv")
+
+    
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137

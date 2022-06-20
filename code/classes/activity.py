@@ -11,6 +11,7 @@ class Activity:
         self._student_set = set(student_list.values())
         self._timeslot = None
         self._group_id = group_id
+        self._roomslot = None
        
 
     def add_student(self, students):

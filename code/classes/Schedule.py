@@ -2,6 +2,7 @@ from tokenize import String
 import pandas as pd
 import math
 import random
+import copy
 from typing import List, Set, Dict, Tuple, Optional
 from code.classes.course import Course
 from . import Roomslot, Student
@@ -159,34 +160,17 @@ class Schedule:
 
     def make_greedy_schedule_bottomup(self):
         """
-        Apply greedy algorithm to schedule
+        Puts activities with lowest number of students into smallest rooms
         """
-        roomslots = self._roomslots
-        activities = self._activities
-
-        # TODO sort activities according to groupsize
-        roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-        activities.sort(key=lambda activities:activities._student_amount, reverse=True)
-        
-        for activity, roomslot in zip(activities, roomslots):
+        # Sort roomslots according to capacity and activities according to groupsize
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+        self._activities.sort(key=lambda activities:activities._student_amount, reverse=True)
+    
+        # Link activities to roomslots
+        for activity, roomslot in zip(self._activities, self._roomslots):
             activity._roomslot = roomslot 
-            roomslots.remove(roomslot)
-            self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
-            print(roomslot._course_name)
-
-        for roomslot in self._roomslots:
-            print(roomslot._course_name)
-        # for roomslot in self._roomslots:
-        #     print(roomslot._course_name)
-
-
-        # # Add all activities to the schedule
-        # for activity in self._activities:
-
-        #     # Get random roomslot 
-        #     roomslot = random.choice(tuple(roomslots))
-        #     
+            self.add_to_roomslot(activity, roomslot)
 
 
     def show_schedule(self):

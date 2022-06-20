@@ -5,6 +5,7 @@ Wij gaan een rooster maken
 from code.classes import Schedule
 from code.classes import Student
 
+from code.algorithms import random
 
 if __name__ == "__main__":
     # Initialize schedule
@@ -27,7 +28,8 @@ if __name__ == "__main__":
 
 
     #-----------------------Random
-
+    random_algorithm = random.Random(schedule)
+    random_algorithm.run(100, True)
 
 
     #-----------------------Hillclimber random

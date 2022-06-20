@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     #-----------------------Random
     random_algorithm = random.Random(schedule)
-    random_algorithm.run(100, True)
+    random_algorithm.run(10, animate=False)
 
 
     #-----------------------Hillclimber random

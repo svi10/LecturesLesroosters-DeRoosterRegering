@@ -239,17 +239,6 @@ class Schedule:
         return students
     
     
-<<<<<<< HEAD
-    def save_schedule(self):
-        self.show_schedule().to_csv("Rooster.csv")
-
-
-    def check(self):
-        for student in self._students.values():
-            print(f"MP: {student.malus_conflict()}")
-            student.malus_gap_hours()
-        
-=======
     def show_student(self, studentnumber):
         data = {}
         student = self._students[studentnumber]
@@ -274,4 +263,3 @@ class Schedule:
         self.show_schedule().to_csv("Rooster.csv")
 
     
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137

@@ -27,7 +27,7 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_set() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
-        self.make_schedule()
+        # self.make_random_schedule()
 
 
     def roomslot_list(self):
@@ -136,7 +136,7 @@ class Schedule:
         return activities
         
 
-    def make_schedule(self) -> None:
+    def make_random_schedule(self) -> None:
         """
         Add all activities to a different timeslot
         """

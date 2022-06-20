@@ -56,7 +56,6 @@ class Student:
                 timeslots.remove(i)
 
             week.append(sorted(day))
-        print(f"Days: \n {week}")
 
         # Calculate the number of gap hours and corresponding malus points
         malus_points = 0

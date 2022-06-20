@@ -10,7 +10,6 @@ from code import helpers
 
 import numpy as np
 
-
 class Schedule:
     """
     This class can be used to devide the courses over the 
@@ -27,8 +26,8 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_list() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
-        # self.make_random_schedule()
-
+        
+       
 
     def roomslot_list(self):
         """
@@ -171,7 +170,6 @@ class Schedule:
         roomslot.assign_activity(activity)    
         roomslot._N_participants = activity.total_students()
         
-
 
     def show_schedule(self):
         """

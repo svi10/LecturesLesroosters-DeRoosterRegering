@@ -42,9 +42,10 @@ class Course:
             # Make an activity of every lecture
             if activity == "Lectures" and self.N_activities[activity] > 0 and len(self.student_list) > 0:
                 # TODO: Group number
-                new_activity = act.Activity(activity, self.course_name, self.student_list, 0) 
-                self.activities.append(new_activity)
-                self.activity_to_students(new_activity, self.student_list)
+                for i in range(self.N_activities[activity]):
+                    new_activity = act.Activity(activity, self.course_name, self.student_list, i) 
+                    self.activities.append(new_activity)
+                    self.activity_to_students(new_activity, self.student_list)
 
             # Make activities for all practicals and tutorials
             elif self.N_activities[activity] > 0 and len(self.student_list) > 0: 

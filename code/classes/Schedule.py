@@ -150,6 +150,17 @@ class Schedule:
 
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
+
+
+    def swap_roomslots(self, roomslot1, roomslot2):
+        # Swap activities in the roomslots
+        save = roomslot1._activity_object
+        roomslot1._activity_object = roomslot2._activity_object
+        roomslot2._activity_object = save
+
+        # Update the data in the roomslots based on their new activities
+        roomslot1.update_data()
+        roomslot2.update_data()
     
 
     def make_greedy_schedule_topdown(self) -> None:
@@ -180,6 +191,24 @@ class Schedule:
             activity._timeslot = roomslot._timeslot
             self.add_to_roomslot(activity, roomslot)
         
+
+        pass
+
+    
+    def two_random_roomslots(self):
+        """
+        Pick at random two nonidentical roomslots from all roomslots
+        """
+        roomslot1 = roomslot = random.choice(tuple(self._roomslots))
+        roomslot2 = roomslot = random.choice(tuple(self._roomslots))
+
+        while roomslot1 == roomslot2:
+            roomslot2 = roomslot = random.choice(tuple(self._roomslots))
+        
+        return roomslot1, roomslot2
+        
+
+
 
     def add_to_roomslot(self, activity, roomslot):
         

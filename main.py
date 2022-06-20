@@ -13,7 +13,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_random_schedule()
+    schedule.make_greedy_schedule_topdown()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 
@@ -41,6 +41,8 @@ if __name__ == "__main__":
 
 
     #-----------------------Greedy ()
-
+    # schedule.make_greedy_schedule_bottomup()
+    # schedule.make_greedy_schedule_topdown()
+    
 
     #-----------------------Hillclimber greedy

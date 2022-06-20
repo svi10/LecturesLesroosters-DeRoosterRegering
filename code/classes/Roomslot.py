@@ -27,7 +27,7 @@ class Roomslot:
         data["Timeslot"] = self._timeslot
         data["Capacity"] = self._capacity
         data["Room ID"] = self._roomID
-
+        
         if self._activity_object == None:
             data["Course name"] = "Empty"
             data["Number of participants"] = 0
@@ -42,7 +42,7 @@ class Roomslot:
     def update_data(self):
         if self._activity_object != None:
             self._course_name = self._activity_object.get_course_name()
-            self._N_participants = len(self._activity_object._student_set)
+            self._N_participants = len(self._activity_object._student_list)
             self._activity_object._roomslot = self
             self._activity_object._timeslot = self._timeslot
 

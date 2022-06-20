@@ -10,7 +10,6 @@ from code import helpers
 
 import numpy as np
 
-
 class Schedule:
     """
     This class can be used to devide the courses over the 
@@ -25,10 +24,16 @@ class Schedule:
         self._courses =  self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
-        self._activities = self.activity_set() # TODO Aantal activities berekenen.
+        self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
+<<<<<<< HEAD
+        self.make_schedule()
+        self.check()
+       
+=======
         # self.make_random_schedule()
 
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
     def roomslot_list(self):
         """
@@ -51,7 +56,11 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
+<<<<<<< HEAD
+        # self.check()
+=======
         
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
         return roomslots
 
@@ -156,7 +165,7 @@ class Schedule:
     def add_to_roomslot(self, activity, roomslot):
         roomslot.assign_activity(activity)
         roomslot._N_participants = activity.total_students()
-
+        
 
     def show_schedule(self):
         """
@@ -236,6 +245,17 @@ class Schedule:
         return students
     
     
+<<<<<<< HEAD
+    def save_schedule(self):
+        self.show_schedule().to_csv("Rooster.csv")
+
+
+    def check(self):
+        for student in self._students.values():
+            print(f"MP: {student.malus_conflict()}")
+            student.malus_gap_hours()
+        
+=======
     def show_student(self, studentnumber):
         data = {}
         student = self._students[studentnumber]
@@ -260,3 +280,4 @@ class Schedule:
         self.show_schedule().to_csv("Rooster.csv")
 
     
+>>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137

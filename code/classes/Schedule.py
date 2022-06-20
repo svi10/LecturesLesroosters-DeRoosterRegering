@@ -155,8 +155,8 @@ class Schedule:
         """
         Make a very greedy schedule
         """
-        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=False)
+        self._activities.sort(key=lambda activity:activity._student_amount, reverse=False)
         
         for activity,roomslot in zip(self._activities,self._roomslots):
             activity._roomslot = roomslot            

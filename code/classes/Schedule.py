@@ -26,14 +26,8 @@ class Schedule:
         self.add_students_to_courses()
         self._activities = self.activity_set()
         self._roomslots = self.roomslot_list()
-<<<<<<< HEAD
-        self.make_schedule()
-        self.check()
-       
-=======
         # self.make_random_schedule()
 
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
     def roomslot_list(self):
         """
@@ -56,11 +50,7 @@ class Schedule:
                 for roomID, capacity in zip(room_ids, room_capacities):
                     roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
-<<<<<<< HEAD
-        # self.check()
-=======
         
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137
 
         return roomslots
 
@@ -160,7 +150,36 @@ class Schedule:
 
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
+
+
+    def swap_roomslots(self, roomslot1, roomslot2):
+        # Swap activities in the roomslots
+        save = roomslot1._activity_object
+        roomslot1._activity_object = roomslot2._activity_object
+        roomslot2._activity_object = save
+
+        # Update the data in the roomslots based on their new activities
+        roomslot1.update_data()
+        roomslot2.update_data()
         
+
+        pass
+
+    
+    def two_random_roomslots(self):
+        """
+        Pick at random two nonidentical roomslots from all roomslots
+        """
+        roomslot1 = roomslot = random.choice(tuple(self._roomslots))
+        roomslot2 = roomslot = random.choice(tuple(self._roomslots))
+
+        while roomslot1 == roomslot2:
+            roomslot2 = roomslot = random.choice(tuple(self._roomslots))
+        
+        return roomslot1, roomslot2
+        
+
+
 
     def add_to_roomslot(self, activity, roomslot):
         roomslot.assign_activity(activity)
@@ -245,17 +264,6 @@ class Schedule:
         return students
     
     
-<<<<<<< HEAD
-    def save_schedule(self):
-        self.show_schedule().to_csv("Rooster.csv")
-
-
-    def check(self):
-        for student in self._students.values():
-            print(f"MP: {student.malus_conflict()}")
-            student.malus_gap_hours()
-        
-=======
     def show_student(self, studentnumber):
         data = {}
         student = self._students[studentnumber]
@@ -280,4 +288,3 @@ class Schedule:
         self.show_schedule().to_csv("Rooster.csv")
 
     
->>>>>>> b050de394c6ccb83ffff44e0a3fddbc9a32b8137

@@ -6,6 +6,7 @@ from code.classes import Schedule
 from code.classes import Student
 
 from code.algorithms import random
+from code.algorithms import hillclimber
 
 if __name__ == "__main__":
     # Initialize schedule
@@ -28,11 +29,15 @@ if __name__ == "__main__":
 
 
     #-----------------------Random
-    random_algorithm = random.Random(schedule)
-    random_algorithm.run(10, animate=False)
+    if False: # TODO Dit moet ff mooier
+        random_algorithm = random.Random(schedule)
+        random_algorithm.run(iterations=10, animate=False)
 
 
     #-----------------------Hillclimber random
+    if True:
+        random_hillclimber = hillclimber.Hillclimber_activities(schedule)
+        random_hillclimber.run(100)
 
 
     #-----------------------Greedy ()

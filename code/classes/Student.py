@@ -47,11 +47,7 @@ class Student:
             day = set()
             remove = []
 
-<<<<<<< HEAD
-            for timeslot in timeslots:
-=======
             for timeslot in timeslots:         
->>>>>>> c21e64da7c2edf671c1730d3df0d1a12b0a9de16
                 if timeslot is not None and timeslot < i:
                     day.add(timeslot)
                     remove.append(timeslot)

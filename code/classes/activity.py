@@ -8,10 +8,11 @@ class Activity:
     def __init__(self, activitytype, name, student_list, group_id):
         self._type = activitytype
         self._course_name = name
-        self._student_set = set(student_list.values())
+        self._student_list = set(student_list.values())
         self._timeslot = None
         self._group_id = group_id
         self._roomslot = None
+        self._student_amount = len(self._student_list)
        
 
     def add_student(self, students):
@@ -24,7 +25,7 @@ class Activity:
         """
         Returns the total amount of students in the activity
         """
-        return len(self._student_set)
+        return len(self._student_list)
 
     def remove_student(self, student):
         """

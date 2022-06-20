@@ -12,6 +12,7 @@ class Activity:
         self._timeslot = None
         self._group_id = group_id
         self._roomslot = None
+        self._student_amount = len(student_list)
        
 
     def add_student(self, students):

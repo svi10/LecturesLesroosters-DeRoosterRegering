@@ -25,7 +25,7 @@ class Schedule:
         self._courses =  self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
-        self._activities = self.activity_set() # TODO Aantal activities berekenen.
+        self._activities = self.activity_list() # TODO Aantal activities berekenen.
         self._roomslots = self.roomslot_list()
         # self.make_random_schedule()
 
@@ -123,15 +123,15 @@ class Schedule:
         return self._rooms_df['Max. capaciteit'].tolist()
 
 
-    def activity_set(self):
+    def activity_list(self):
         """
         Make a list of all possible activities. TODO
         """
-        activities = set()
+        activities = []
 
         for course in self._courses.values():
             for activity in course.activities:
-                activities.add(activity)
+                activities.append(activity)
 
         return activities
         
@@ -151,11 +151,26 @@ class Schedule:
 
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
+    
+    def make_greedy_schedule_topdown(self) -> None:
+        """
+        Make a very greedy schedule
+        """
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
+        
+        for activity,roomslot in zip(self._activities,self._roomslots):
+            activity._roomslot = roomslot            
+            self.add_to_roomslot(activity, roomslot)
+            activity._timeslot = roomslot._timeslot
+            
         
 
     def add_to_roomslot(self, activity, roomslot):
-        roomslot.assign_activity(activity)
+        
+        roomslot.assign_activity(activity)    
         roomslot._N_participants = activity.total_students()
+        
 
 
     def show_schedule(self):
@@ -168,16 +183,17 @@ class Schedule:
         activity_type = []
         capacity = []
         N_students = []
-    
-        for roomslot in self._roomslots:
-            data = roomslot.get_data()
 
+        for roomslot in self._roomslots:
+            
+            data = roomslot.get_data()
             timeslot.append(data["Timeslot"])
             room.append(data["Room ID"])
             course_name.append(data["Course name"])
             activity_type.append(data["Type"])
             capacity.append(data["Capacity"])
             N_students.append(data["Number of participants"])
+            
 
         data = {}
         data["Timeslot"] = timeslot

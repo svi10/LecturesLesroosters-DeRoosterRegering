@@ -151,12 +151,14 @@ class Schedule:
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
     
+
     def make_greedy_schedule_topdown(self) -> None:
         """
         Make a very greedy schedule
         """
-        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=False)
-        self._activities.sort(key=lambda activity:activity._student_amount, reverse=False)
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
+        print(self._roomslots)
         
         for activity,roomslot in zip(self._activities,self._roomslots):
             activity._roomslot = roomslot            
@@ -164,15 +166,15 @@ class Schedule:
             activity._timeslot = roomslot._timeslot
             
         
-    def make_greedy_schedule_bottomup(self):
+    def make_greedy_schedule_bottomup(self) -> None:
         """
         Puts activities with lowest number of students into smallest rooms
         """
         # Sort roomslots according to capacity and activities according to groupsize
-        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-        self._activities.sort(key=lambda activities:activities._student_amount, reverse=True)
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=False)
+        self._activities.sort(key=lambda activities:activities._student_amount, reverse=False)
     
-        # Link activities to roomslots
+        # Link activities to roomslots and roomslots to activities
         for activity, roomslot in zip(self._activities, self._roomslots):
             activity._roomslot = roomslot 
             activity._timeslot = roomslot._timeslot

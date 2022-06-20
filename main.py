@@ -11,7 +11,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_greedy_schedule_topdown()
+    schedule.make_greedy_schedule_bottomup()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 

@@ -10,7 +10,7 @@ class Hillclimber_activities:
     
     def run(self, threshold: int, animated: bool=False) -> None:
         # Make a random schedule
-        self.schedule.make_random_schedule()
+        self.schedule.make_greedy_schedule_bottomup()
         roomslots = self.schedule._roomslots
         # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()

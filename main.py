@@ -13,7 +13,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_greedy_schedule_bottomup()
+    schedule.make_greedy_schedule_fitting()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 
@@ -29,15 +29,15 @@ if __name__ == "__main__":
 
 
     #-----------------------Random
-    if False: # TODO Dit moet ff mooier
-        random_algorithm = random.Random(schedule)
-        random_algorithm.run(iterations=10, animate=False)
+    # if False: # TODO Dit moet ff mooier
+    #     random_algorithm = random.Random(schedule)
+    #     random_algorithm.run(iterations=10, animate=False)
 
 
-    #-----------------------Hillclimber random
-    if True:
-        random_hillclimber = hillclimber.Hillclimber_activities(schedule)
-        random_hillclimber.run(100)
+    # #-----------------------Hillclimber random
+    # if True:
+    #     random_hillclimber = hillclimber.Hillclimber_activities(schedule)
+    #     random_hillclimber.run(100)
 
 
     #-----------------------Greedy ()

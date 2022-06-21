@@ -169,9 +169,8 @@ class Schedule:
         """
         self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
         self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
-        print(self._roomslots)
         
-        for activity,roomslot in zip(self._activities,self._roomslots):
+        for activity,roomslot in zip(self._activities, self._roomslots):
             activity._roomslot = roomslot            
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
@@ -190,10 +189,35 @@ class Schedule:
             activity._roomslot = roomslot 
             activity._timeslot = roomslot._timeslot
             self.add_to_roomslot(activity, roomslot)
+
+
+    def make_greedy_schedule_fitting(self) -> None:
+        """
+        Iterates over activities and links activities to biggest room all students fit in
+        """
+        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
         
+        roomslots = []
 
-        pass
+        for activity in self._activities:
+            for index, roomslot in enumerate(self._roomslots):
+                if (index+1 < len(self._roomslots) and index-1 >= 0):
+                    if activity._student_amount < roomslot._capacity:
+                        # Ga door naar volgende roomslot
+                        continue
+                    else:
+                        # Ga 1 roomslot terug en plaats activiteit daar
+                        prev_roomslot = self._roomslots[index-1]
+                        activity._roomslot = prev_roomslot            
+                        activity._timeslot = prev_roomslot._timeslot
 
+                        self.add_to_roomslot(activity, prev_roomslot)
+                        roomslots.append(prev_roomslot)
+                        self._roomslots.remove(prev_roomslot)
+                        
+        
+        self._roomslots = roomslots        
     
     def two_random_roomslots(self):
         """
@@ -211,7 +235,9 @@ class Schedule:
 
 
     def add_to_roomslot(self, activity, roomslot):
-        
+        """
+        Assign activity to roomslot
+        """
         roomslot.assign_activity(activity)    
         roomslot._N_participants = activity.total_students()
 

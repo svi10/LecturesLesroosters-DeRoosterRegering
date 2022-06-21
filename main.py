@@ -5,6 +5,8 @@ Wij gaan een rooster maken
 from code.classes import Schedule
 from code.classes import Student
 
+from code import helpers
+
 from code.algorithms import random
 from code.algorithms import hillclimber
 
@@ -32,17 +34,32 @@ if __name__ == "__main__":
     if False: # TODO Dit moet ff mooier
         random_algorithm = random.Random(schedule)
         random_algorithm.run(iterations=10, animate=False)
+        print("Random Algorithm DONE \n\n")
 
 
     #-----------------------Hillclimber random
-    if True:
+    if False:
+        # Run 1 Time
         random_hillclimber = hillclimber.Hillclimber_activities(schedule)
         random_hillclimber.run(100)
+        random_hillclimber.plot_results(animate=True)
+        print("Hillclimber DONE \n\n")
+    
+    if True:
+        print("Run hillclimber N times")
+        # helpers.blockPrint()
+        # Run N times
+        random_hillclimber = hillclimber.Hillclimber_activities(schedule)
+        random_hillclimber.run_batch(N=10, threshold=100)
+        # helpers.enablePrint()
+
+
 
 
     #-----------------------Greedy ()
-    # schedule.make_greedy_schedule_bottomup()
-    # schedule.make_greedy_schedule_topdown()
+    if False:
+        schedule.make_greedy_schedule_bottomup()
+        schedule.make_greedy_schedule_topdown()
     
 
     #-----------------------Hillclimber greedy

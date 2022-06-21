@@ -15,7 +15,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_greedy_schedule_topdown()
+    schedule.make_greedy_schedule_fitting()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 
@@ -52,8 +52,6 @@ if __name__ == "__main__":
         random_hillclimber = hillclimber.Hillclimber_activities(schedule)
         random_hillclimber.run_batch(N=10, threshold=100)
         # helpers.enablePrint()
-
-
 
 
     #-----------------------Greedy ()

@@ -80,9 +80,6 @@ class Hillclimber_activities:
         mp_list = sum(mp_list, [])
         iterations_list = sum(iterations_list, [])
 
-        print(f"MP: \n {len(mp_list)}")
-        print(f"iterations: \n {len(iterations_list)}")
-
         # Plot and save results
         fig, ax = plt.subplots()
         ax.set_title(f"Hillclimber {N} times")

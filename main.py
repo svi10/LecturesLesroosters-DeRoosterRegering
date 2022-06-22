@@ -38,14 +38,15 @@ if __name__ == "__main__":
 
 
     #-----------------------Hillclimber random
-    if False:
+    if True:
         # Run 1 Time
         random_hillclimber = hillclimber.Hillclimber_activities(schedule)
-        random_hillclimber.run(100)
-        random_hillclimber.plot_results(animate=True)
+        mp_list, iterations_list = random_hillclimber.run(100)
+        print(mp_list, iterations_list)
+        random_hillclimber.plot_results(mp_list, iterations_list, animate=True)
         print("Hillclimber DONE \n\n")
     
-    if True:
+    if False:
         print("Run hillclimber N times")
         # helpers.blockPrint()
         # Run N times

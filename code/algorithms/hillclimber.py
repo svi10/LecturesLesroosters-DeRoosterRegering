@@ -53,8 +53,8 @@ class Hillclimber_activities:
                 self.schedule.swap_roomslots(roomslot1, roomslot2)
                 unsuccessful += 1
             
-            if plot:
-                self.plot_results(mp_list, iterations_list)
+        if plot:
+            self.plot_results(mp_list, iterations_list)
 
         return mp_list, iterations_list
 
@@ -86,7 +86,8 @@ class Hillclimber_activities:
 
         # Plot and save results
         fig, ax = plt.subplots()
-        ax.set_title(f"Hillclimber {N} times")
+        plt.suptitle(f"Hillclimber {N} keer met threshold {threshold}")
+        ax.set_title(f"Beste resultaat: {min(mp_list)}MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.set_xlim(0, max(iterations_list))
@@ -103,7 +104,8 @@ class Hillclimber_activities:
         # Set plot limits
         ax.set_xlim(0, max(iterations_list))
         ax.set_ylim(0, max(mp_list) + 10)
-        plt.suptitle("Hillclimber")
+        plt.suptitle("Hillclimber (Random)")
+        ax.set_title(f"Start: {mp_list[0]} MP   Eind: {mp_list[-1]} MP   \u0394MP = {mp_list[-1] - mp_list[0]} MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.plot(iterations_list, mp_list, color = "blue")

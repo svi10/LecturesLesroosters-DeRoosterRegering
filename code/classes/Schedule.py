@@ -191,33 +191,54 @@ class Schedule:
             self.add_to_roomslot(activity, roomslot)
 
 
-    def make_greedy_schedule_fitting(self) -> None:
-        """
-        Iterates over activities and links activities to biggest room all students fit in
-        """
-        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
+    # def make_greedy_schedule_fitting(self) -> None:
+    #     """
+    #     Iterates over activities and links activities to biggest room all students fit in
+    #     """
+    #     self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+    #     self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
         
-        roomslots = []
+    #     for activity in self._activities:
+    #         for index, roomslot in enumerate(self._roomslots):
+    #             if activity._roomslot == self._roomslots[index-1]:
+    #                 break
+                    
+    #             # Continue to next roomslot    
+    #             if roomslot._course_name != "Available":
+    #                 continue                 
 
-        for activity in self._activities:
-            for index, roomslot in enumerate(self._roomslots):
-                if (index+1 < len(self._roomslots) and index-1 >= 0):
-                    if activity._student_amount < roomslot._capacity:
-                        # Ga door naar volgende roomslot
-                        continue
-                    else:
-                        # Ga 1 roomslot terug en plaats activiteit daar
-                        prev_roomslot = self._roomslots[index-1]
-                        activity._roomslot = prev_roomslot            
-                        activity._timeslot = prev_roomslot._timeslot
+    #             if (index-1 >= 0 and activity._student_amount < roomslot._capacity):
+    #                 # Assign activity to previous roomslot
+    #                 activity._roomslot = self._roomslots[index-1]           
+    #                 activity._timeslot = self._roomslots[index-1]._timeslot
 
-                        self.add_to_roomslot(activity, prev_roomslot)
-                        roomslots.append(prev_roomslot)
-                        self._roomslots.remove(prev_roomslot)
-                        
-        
-        self._roomslots = roomslots        
+    #                 self.add_to_roomslot(activity, self._roomslots[index-1])
+    #                 continue
+    #         else:
+    #             continue
+
+    #     for activity in self._activities:
+    #         while activity._roomslot == None:
+    #             for index, roomslot in enumerate(self._roomslots):
+                
+                    
+    #             if activity._roomslot == self._roomslots[index-1]:
+    #                 break
+                    
+    #             # Continue to next roomslot    
+    #             if roomslot._course_name != "Available":
+    #                 continue                 
+
+    #             if (index-1 >= 0 and activity._student_amount < roomslot._capacity):
+    #                 # Assign activity to previous roomslot
+    #                 activity._roomslot = self._roomslots[index-1]           
+    #                 activity._timeslot = self._roomslots[index-1]._timeslot
+
+    #                 self.add_to_roomslot(activity, self._roomslots[index-1])
+    #                 continue
+    #         else:
+    #             continue
+
     
     def two_random_roomslots(self):
         """

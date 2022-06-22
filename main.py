@@ -8,7 +8,6 @@ from code.classes import Student
 from code import helpers
 
 from code.algorithms import random
-from code.algorithms import greedy
 from code.algorithms import hillclimber
 
 if __name__ == "__main__":
@@ -58,21 +57,17 @@ if __name__ == "__main__":
     #-----------------------Greedy ()
     if False:
         schedule.make_greedy_schedule_topdown()
-        greedy_algorithm = greedy.Greedy(schedule)
-        greedy_algorithm.run(iterations=100, animate=True)
-        print("Random Algorithm DONE \n\n")
+        print("Greedy Algorithm DONE \n\n")
 
         
     if False:
         schedule.make_greedy_schedule_bottomup()
-        greedy_algorithm = greedy.Greedy(schedule)
-        greedy_algorithm.run(iterations=100, animate=True)
-        print("Random Algorithm DONE \n\n")
+        print("Greedy Algorithm DONE \n\n")
     
 
     #-----------------------Hillclimber greedy
 
-    if False:
+    if True:
         # Run 1 Time
         greedy_hillclimber = hillclimber.Hillclimber_activities(schedule)
         greedy_hillclimber.run(100)

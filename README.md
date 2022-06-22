@@ -1,8 +1,22 @@
 # LecturesLesroosters-DeRoosterRegering
 
+## Introduction case
+
+
 ## Representation
 ### Overview of classes
-![](Images/UML.jpeg)
+![](images/UML.jpeg)
 
 ### Output
-![](Images/Output.jpg)
+![](images/Output.jpg)
+
+## Algorithms
+### Random
+Wat moet hier nog komen te staan?
+- Command line interface
+- Argumenten
+
+### Greedy
+Wat moet hier nog komen te staan?
+- Command line interface
+- Argumenten

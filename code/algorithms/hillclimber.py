@@ -72,6 +72,10 @@ class Hillclimber_activities:
             # Hillclimber
             mp, iterations = self.run(threshold, False)
             
+            if i != 0:
+                end = iterations_list[-1][-1]
+                iterations = [(x + end) for x in iterations]
+
             # Save results
             mp_list.append(mp)
             iterations_list.append(iterations)
@@ -114,7 +118,7 @@ class Hillclimber_activities:
             plt.suptitle("Hillclimber")
             ax.set_xlabel("Iteraties")
             ax.set_ylabel("Malus punten")
-            
+
             ims = []
 
             x = []

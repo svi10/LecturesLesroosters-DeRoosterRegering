@@ -49,11 +49,9 @@ if __name__ == "__main__":
     
     if True:
         print("RANDOM HILLCLIMBER")
-        # helpers.blockPrint()
         # Run N times
         random_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Random")
         random_hillclimber.run_batch(N=10, threshold=100)
-        # helpers.enablePrint()
         print("DONE")
 
     #-----------------------Greedy ()

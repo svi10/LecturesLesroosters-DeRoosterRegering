@@ -8,6 +8,7 @@ from code.classes.course import Course
 from . import Roomslot, Student
 from . import activity, course
 from code import helpers
+import matplotlib.pyplot as plt
 
 import numpy as np
 
@@ -190,55 +191,6 @@ class Schedule:
             activity._timeslot = roomslot._timeslot
             self.add_to_roomslot(activity, roomslot)
 
-
-    # def make_greedy_schedule_fitting(self) -> None:
-    #     """
-    #     Iterates over activities and links activities to biggest room all students fit in
-    #     """
-    #     self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-    #     self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
-        
-    #     for activity in self._activities:
-    #         for index, roomslot in enumerate(self._roomslots):
-    #             if activity._roomslot == self._roomslots[index-1]:
-    #                 break
-                    
-    #             # Continue to next roomslot    
-    #             if roomslot._course_name != "Available":
-    #                 continue                 
-
-    #             if (index-1 >= 0 and activity._student_amount < roomslot._capacity):
-    #                 # Assign activity to previous roomslot
-    #                 activity._roomslot = self._roomslots[index-1]           
-    #                 activity._timeslot = self._roomslots[index-1]._timeslot
-
-    #                 self.add_to_roomslot(activity, self._roomslots[index-1])
-    #                 continue
-    #         else:
-    #             continue
-
-    #     for activity in self._activities:
-    #         while activity._roomslot == None:
-    #             for index, roomslot in enumerate(self._roomslots):
-                
-                    
-    #             if activity._roomslot == self._roomslots[index-1]:
-    #                 break
-                    
-    #             # Continue to next roomslot    
-    #             if roomslot._course_name != "Available":
-    #                 continue                 
-
-    #             if (index-1 >= 0 and activity._student_amount < roomslot._capacity):
-    #                 # Assign activity to previous roomslot
-    #                 activity._roomslot = self._roomslots[index-1]           
-    #                 activity._timeslot = self._roomslots[index-1]._timeslot
-
-    #                 self.add_to_roomslot(activity, self._roomslots[index-1])
-    #                 continue
-    #         else:
-    #             continue
-
     
     def two_random_roomslots(self):
         """
@@ -251,8 +203,6 @@ class Schedule:
             roomslot2 = roomslot = random.choice(tuple(self._roomslots))
         
         return roomslot1, roomslot2
-        
-
 
 
     def add_to_roomslot(self, activity, roomslot):
@@ -301,33 +251,61 @@ class Schedule:
         Calculate the malus points for the schedule. The more malus points a 
         schedule has, the worse it is.
         """
-        total_malus_points = 0
+        malus_capacity = 0
+        malus_evening = 0
+        
         for roomslot in self._roomslots:
            
             # There is 1 malus point for each student that is to many in a room
-            malus_points = roomslot._N_participants - roomslot._capacity
+            over_capacity = roomslot._N_participants - roomslot._capacity
             # If the capacity is sufficient, no malus points are awarded
-            if malus_points <= 0:
-                malus_points = 0
+            if over_capacity > 0:
+                malus_capacity += over_capacity
 
             # If an activity is at a timeslot from 17h-19h, 5 malus points are awarded
             if (roomslot._timeslot + 1) % 5 == 0 and roomslot._course_name != 'Available':
-                malus_points += 5
-
-            total_malus_points += malus_points
+                malus_evening += 5
         
-        return total_malus_points
+        schedule_malus_points = malus_evening + malus_capacity
+
+        return schedule_malus_points, malus_capacity, malus_evening
+
 
     def students_malus_points(self):
-        malus_points = 0
-        for student in self._students.values():
-            malus_points += student.malus_conflict()
-            malus_points += student.malus_gap_hours()
 
-        return malus_points
+        malus_conflict = 0
+        malus_gaphour = 0
+
+        for student in self._students.values():
+            malus_conflict += student.malus_conflict()
+            malus_gaphour += student.malus_gap_hours()
+
+        student_malus_points = malus_conflict + malus_gaphour
+
+        return student_malus_points, malus_conflict, malus_gaphour
+
 
     def total_malus_points(self):
-        return (self.students_malus_points() + self.schedule_malus_points())
+        return (self.students_malus_points()[0] + self.schedule_malus_points()[0])
+
+
+    def malus_analysis(self, name=""):
+        """
+        Analysis of the origin of the malus points
+        """
+        # Get malus points
+        schedule_malus_points, malus_capacity, malus_evening = self.schedule_malus_points()
+        student_malus_points, malus_conflict, malus_gaphour = self.students_malus_points()
+
+        # Distribute data
+        data = {'Capacity': malus_capacity, 'Evening': malus_evening, 'conflict': malus_conflict, 'gaphour': malus_gaphour}
+        names = list(data.keys())
+        values = list(data.values())
+
+        # Make plot
+        plt.bar(range(len(data)),values,tick_label=names)
+        plt.savefig(f"images/malus_analysis{name}")
+        plt.clf()
 
 
     def student_dict(self):

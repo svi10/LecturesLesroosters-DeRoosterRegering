@@ -1,19 +1,25 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
+import string
+import sys
 
 class Hillclimber_activities:
     """
     A hillclimber algorithm
     """
 
-    def __init__(self, schedule) -> None:
+    def __init__(self, schedule, type) -> None:
         self.schedule = schedule
-
+        self.type = type
 
     def run(self, threshold: int, plot=True, animate=False) -> None:
-        # Make a random schedule
-        self.schedule.make_greedy_schedule_bottomup()
+        # Make schedule (greedy or random)
+        if self.type == "Greedy":
+            self.schedule.make_greedy_schedule_topdown()
+        if self.type == "Random":
+            self.schedule.make_random_schedule()
+
         # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
 
@@ -53,15 +59,15 @@ class Hillclimber_activities:
                 self.schedule.swap_roomslots(roomslot1, roomslot2)
                 unsuccessful += 1
             
-            if plot:
-                self.plot_results(mp_list, iterations_list)
+        if plot:
+            self.plot_results(mp_list, iterations_list)
 
         return mp_list, iterations_list
 
 
     def run_batch(self, N, threshold):
         
-        print(f"Run random hillclimber {N} times")
+        print(f"Run {self.type} hillclimber {N} times")
         # Lists to save the data
         mp_list = []
         iterations_list = []
@@ -69,6 +75,10 @@ class Hillclimber_activities:
         # Run hillclimber N times
         for i in range(N):
             print(f"Running: {i}", end='\r')
+            # Nice print statements
+            if i != 0:
+                sys.stdout.write("\033[F") #back to previous line 
+                sys.stdout.write("\033[K") #clear line 
             # Hillclimber
             mp, iterations = self.run(threshold, False)
             
@@ -86,13 +96,14 @@ class Hillclimber_activities:
 
         # Plot and save results
         fig, ax = plt.subplots()
-        ax.set_title(f"Hillclimber {N} times")
+        plt.suptitle(f"{self.type} Hillclimber {N} keer met threshold {threshold}")
+        ax.set_title(f"Beste resultaat: {min(mp_list)}MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.set_xlim(0, max(iterations_list))
         ax.set_ylim(0, max(mp_list))
         ax.plot(iterations_list, mp_list)
-        fig.savefig("images/NHillclimber_plot")
+        fig.savefig(f"images/NHillclimber_plot_{self.type}")
 
 
     def plot_results(self, mp_list, iterations_list, animate: bool=False):
@@ -103,11 +114,12 @@ class Hillclimber_activities:
         # Set plot limits
         ax.set_xlim(0, max(iterations_list))
         ax.set_ylim(0, max(mp_list) + 10)
-        plt.suptitle("Hillclimber")
+        plt.suptitle(f"Hillclimber ({self.type})")
+        ax.set_title(f"Start: {mp_list[0]} MP   Eind: {mp_list[-1]} MP   \u0394MP = {mp_list[-1] - mp_list[0]} MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.plot(iterations_list, mp_list, color = "blue")
-        fig.savefig("images/Hillclimber_plot")
+        fig.savefig(f"images/Hillclimber_plot_{self.type}")
         ax.clear()
 
         if animate:
@@ -134,6 +146,6 @@ class Hillclimber_activities:
             ani = animation.ArtistAnimation(fig, ims, interval=50, blit=True,
                                         repeat_delay=100)
             print("SAVING>>>")
-            ani.save("images/Hillclimber_animation.gif")
+            ani.save(f"images/Hillclimber_animation_{self.type}.gif")
             
 

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_greedy_schedule_bottomup()
+    schedule.make_greedy_schedule_topdown()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 
@@ -40,19 +40,18 @@ if __name__ == "__main__":
     #-----------------------Hillclimber random
     if False:
         # Run 1 Time
-        random_hillclimber = hillclimber.Hillclimber_activities(schedule)
-        random_hillclimber.run(100)
-        random_hillclimber.plot_results(animate=True)
-        print("Hillclimber DONE \n\n")
+        print("RANDOM HILLCLIMBER")
+        random_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Random")
+        mp_list, iterations_list = random_hillclimber.run(100)
+        random_hillclimber.plot_results(mp_list, iterations_list, animate=True)
+        print("DONE \n\n")
     
     if False:
-        print("Run hillclimber N times")
-        # helpers.blockPrint()
+        print("RANDOM HILLCLIMBER")
         # Run N times
-        random_hillclimber = hillclimber.Hillclimber_activities(schedule)
+        random_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Random")
         random_hillclimber.run_batch(N=10, threshold=100)
-        # helpers.enablePrint()
-
+        print("DONE")
 
     #-----------------------Greedy ()
     if False:
@@ -66,18 +65,19 @@ if __name__ == "__main__":
     
 
     #-----------------------Hillclimber greedy
-
-    if True:
-        # Run 1 Time
-        greedy_hillclimber = hillclimber.Hillclimber_activities(schedule)
-        greedy_hillclimber.run(100)
-        greedy_hillclimber.plot_results(animate=True)
-        print("Hillclimber DONE \n\n")
-    
     if False:
-        print("Run hillclimber N times")
+        # Run 1 Time
+        print("GREEDY HILLCLIMBER")
+        greedy_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Greedy")
+        mp_list, iterations_list = greedy_hillclimber.run(100)
+        greedy_hillclimber.plot_results(mp_list, iterations_list, animate=False)
+        print("DONE \n\n")
+    
+    if True:
+        print("GREEDY HILLCLIMBER")
         # helpers.blockPrint()
         # Run N times
-        greedy_hillclimber = hillclimber.Hillclimber_activities(schedule)
-        greedy_hillclimber.run_batch(N=10, threshold=100)
+        greedy_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Greedy")
+        greedy_hillclimber.run_batch(N=50, threshold=100)
         # helpers.enablePrint()
+        print("DONE")

@@ -63,12 +63,12 @@ class Random:
             print(f"Runtime Animation: {end_animation - end_model}s")
 
         ax.clear()
-         # Set plot limits
+        # Set plot limits
         ax.set_xlim(0, iterations)
         ax.set_ylim(0, max(data_malus))
 
-        plt.suptitle("Random Algoritme")
-        ax.set_title(f"Malus punten gemiddeld: {average}")
+        plt.suptitle(f"Random Algoritme ({iterations} keer)")
+        ax.set_title(f"Gemiddeld: {average} MP   Max: {max(data_malus)} MP   Min: {min(data_malus)} MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.plot(iters, data_malus)

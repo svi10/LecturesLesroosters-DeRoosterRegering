@@ -32,6 +32,7 @@ class Student:
         malus_points: int = helpers.doubles_counter(timeslots)
 
         self._malus_points += malus_points
+
         return malus_points
 
 
@@ -75,6 +76,7 @@ class Student:
                     if gap_hours == 3:
                         malus_points += 30
         self._malus_points += malus_points
+        
         return malus_points
         
         

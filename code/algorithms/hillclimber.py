@@ -10,10 +10,17 @@ class Hillclimber_activities:
     """
 
     def __init__(self, schedule, type) -> None:
+        assert type == "Random" or type == "Greedy", f"Only algorithm choices: Random, Greedy. Not {type}"
         self.schedule = schedule
         self.type = type
+        self.threshold = None
 
-    def run(self, threshold: int, plot=True, animate=False) -> None:
+
+    def run(self, threshold: int, plot=True) -> None:
+        """
+        Run random or greedy hillclimber.
+        """
+        self.threshold = threshold
         # Make schedule (greedy or random)
         if self.type == "Greedy":
             self.schedule.make_greedy_schedule_topdown()
@@ -24,8 +31,8 @@ class Hillclimber_activities:
         malus_current = self.schedule.total_malus_points()
 
         # Save the progress
-        mp_list = []
-        iterations_list = []
+        mp_list = [malus_current]
+        iterations_list = [0]
 
         # Make changes until there is not have been made an approvement for "threshold" times
         unsuccessful = 0
@@ -60,13 +67,34 @@ class Hillclimber_activities:
                 unsuccessful += 1
             
         if plot:
-            self.plot_results(mp_list, iterations_list)
+            self.plot_results(x=iterations_list, y=mp_list)
 
         return mp_list, iterations_list
 
 
+    def plot_results(self, x, y):
+        """
+        Make plot of the given lists
+        """
+
+        fig, ax = plt.subplots()
+
+        # Customize plot
+        ax.set_title(f"Max: {max(y)} MP   Min: {min(y)} MP   Gemiddeld: {round(sum(y) / len(y))} MP")
+        # ax.set_xlim(0, max(x))
+        ax.set_ylim(0, max(y) + 10)
+        ax.set_xlabel("Iteraties")
+        ax.set_ylabel("Malus punten")
+        plt.suptitle(f"Hillclimber {self.type} (Threshold = {self.threshold})")
+
+        ax.plot(x, y, color='blue')
+        fig.savefig(f"Images/Hillclimber_plot_{self.type}")
+
+
     def run_batch(self, N, threshold):
-        
+        """
+        Run random hillclimber N times and plot the results
+        """
         print(f"Run {self.type} hillclimber {N} times")
         # Lists to save the data
         mp_list = []
@@ -80,7 +108,7 @@ class Hillclimber_activities:
                 sys.stdout.write("\033[F") #back to previous line 
                 sys.stdout.write("\033[K") #clear line 
             # Hillclimber
-            mp, iterations = self.run(threshold, False)
+            mp, iterations = self.run(threshold, plot=False)
             
             if i != 0:
                 end = iterations_list[-1][-1]
@@ -96,56 +124,18 @@ class Hillclimber_activities:
 
         # Plot and save results
         fig, ax = plt.subplots()
+        
+        # Customize plot
         plt.suptitle(f"{self.type} Hillclimber {N} keer met threshold {threshold}")
         ax.set_title(f"Beste resultaat: {min(mp_list)}MP")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
         ax.set_xlim(0, max(iterations_list))
         ax.set_ylim(0, max(mp_list))
+
+        # Plot results
         ax.plot(iterations_list, mp_list)
         fig.savefig(f"images/NHillclimber_plot_{self.type}")
 
 
-    def plot_results(self, mp_list, iterations_list, animate: bool=False):
-
-         # Make animation
-        fig, ax = plt.subplots()
-        
-        # Set plot limits
-        ax.set_xlim(0, max(iterations_list))
-        ax.set_ylim(0, max(mp_list) + 10)
-        plt.suptitle(f"Hillclimber ({self.type})")
-        ax.set_title(f"Start: {mp_list[0]} MP   Eind: {mp_list[-1]} MP   \u0394MP = {mp_list[-1] - mp_list[0]} MP")
-        ax.set_xlabel("Iteraties")
-        ax.set_ylabel("Malus punten")
-        ax.plot(iterations_list, mp_list, color = "blue")
-        fig.savefig(f"images/Hillclimber_plot_{self.type}")
-        ax.clear()
-
-        if animate:
-
-            # Set plot limits
-            ax.set_xlim(0, max(iterations_list))
-            ax.set_ylim(0, max(mp_list) + 10)
-            plt.suptitle("Hillclimber")
-            ax.set_xlabel("Iteraties")
-            ax.set_ylabel("Malus punten")
-
-            ims = []
-
-            x = []
-            y = []
-            for iteration, mp in zip(iterations_list, mp_list):
-                x.append(iteration)
-                y.append(mp)
-
-                im = ax.scatter(x, y, color='orange', animated=True)
-                ims.append([im])
-            
-            # Make animation
-            ani = animation.ArtistAnimation(fig, ims, interval=50, blit=True,
-                                        repeat_delay=100)
-            print("SAVING>>>")
-            ani.save(f"images/Hillclimber_animation_{self.type}.gif")
-            
 

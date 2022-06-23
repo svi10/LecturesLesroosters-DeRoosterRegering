@@ -27,62 +27,64 @@ if __name__ == "__main__":
     total_malus_points = schedule.total_malus_points()
 
     print(f'\n The total number of malus points for this schedule is: {total_malus_points}. \n')
-    print(generated_schedule.to_string(index=False))
+    print(generated_schedule.to_string(index=False), "\n")
     # print(df_student.to_string(index=False))
 
 
     #-----------------------Random
     if False: # TODO Dit moet ff mooier
+        print("RANDOM 1X")
         random_algorithm = random.Random(schedule)
-        random_algorithm.run(iterations=10, animate=False)
-        print("Random Algorithm DONE \n\n")
+        random_algorithm.run(iterations=100)
+        print("DONE \n\n")
 
 
     #-----------------------Hillclimber random
-    if True:
+    if False:
         # Run 1 Time
-        print("RANDOM HILLCLIMBER")
+        print("RANDOM HILLCLIMBER 1 KEER")
         random_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Random")
-        mp_list, iterations_list = random_hillclimber.run(100)
-        random_hillclimber.plot_results(mp_list, iterations_list, animate=True)
-        print("DONE \n\n")
+        # mp_list, iterations_list = 
+        random_hillclimber.run(100, plot=True)
+        # random_hillclimber.plot_results(mp_list, iterations_list)
+        print("DONE \n \n")
     
-    if True:
+    if False:
         print("RANDOM HILLCLIMBER")
         # Run N times
         random_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Random")
-        random_hillclimber.run_batch(N=10, threshold=100)
+        random_hillclimber.run_batch(N=10, threshold=20)
         print("DONE")
 
     #-----------------------Greedy ()
     if False:
         schedule.make_greedy_schedule_topdown()
         greedy_algorithm = greedy.Greedy(schedule)
-        greedy_algorithm.run(iterations=100, animate=True)
+        greedy_algorithm.run(iterations=100)
         print("Random Algorithm DONE \n\n")
 
         
     if False:
         schedule.make_greedy_schedule_bottomup()
         greedy_algorithm = greedy.Greedy(schedule)
-        greedy_algorithm.run(iterations=100, animate=True)
+        greedy_algorithm.run(iterations=100)
         print("Random Algorithm DONE \n\n")
     
 
     #-----------------------Hillclimber greedy
-    if True:
+    if False:
         # Run 1 Time
         print("GREEDY HILLCLIMBER")
         greedy_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Greedy")
         mp_list, iterations_list = greedy_hillclimber.run(100)
-        greedy_hillclimber.plot_results(mp_list, iterations_list, animate=False)
+        greedy_hillclimber.plot_results(mp_list, iterations_list)
         print("DONE \n\n")
     
-    if True:
+    if False:
         print("GREEDY HILLCLIMBER")
         # helpers.blockPrint()
         # Run N times
         greedy_hillclimber = hillclimber.Hillclimber_activities(schedule, type="Greedy")
-        greedy_hillclimber.run_batch(N=10, threshold=100)
+        greedy_hillclimber.run_batch(N=50, threshold=10)
         # helpers.enablePrint()
         print("DONE")

@@ -8,9 +8,13 @@ class Greedy:
     def __init__(self, schedule) -> None:
         self.schedule = schedule
 
-    def run(self, iterations, animate=False):
+
+    def run(self, iterations):
+        """
+        Run the greedy algorithm and plot the results
+        """
         print(f"\nRun Greedy Algorithm {iterations} times...")
-        # Make animation
+        # Make plot
         fig, ax = plt.subplots()
 
         data_malus = []
@@ -36,17 +40,16 @@ class Greedy:
         # Calculate average amount of malus points of all iterations
         average = round(sum(data_malus) / len(data_malus))
 
+        # Customize plot
         ax.set_xlim(0, iterations)
         ax.set_ylim(0, max(data_malus))
-
         plt.suptitle("Greedy Algoritme")
         ax.set_title(f"Malus punten gemiddeld: {average}")
         ax.set_xlabel("Iteraties")
         ax.set_ylabel("Malus punten")
+
+        # Plot results
         ax.plot(iters, data_malus)
         fig.savefig("images/greedy_algorithm_plot")
-        
+
         print(f"Average amount of malus points: {average}")
-
-
-

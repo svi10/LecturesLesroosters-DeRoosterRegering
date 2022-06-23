@@ -90,7 +90,9 @@ class Course:
 
 
     def divide_students(self, student_list: Dict, number_of_groups: int):
-        
+        """
+        Distribute students in list of students over number of groups
+        """
         def split_dict(d, n):
             keys = list(d.keys())
             for i in range(0, len(keys), n):

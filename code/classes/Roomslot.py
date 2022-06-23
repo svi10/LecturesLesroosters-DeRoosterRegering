@@ -15,19 +15,24 @@ class Roomslot:
     
 
     def assign_activity(self, activity):
-        "Assign an activity to this roomslot"
+        """
+        Assign an activity to this roomslot
+        """
         self._course_name = activity.get_course_name()
         self._activity_object = activity
 
 
     def get_data(self):
-        
+        """
+        Put data of Roomslot into a dictionary, data
+        """
         data = {}
 
         data["Timeslot"] = self._timeslot
         data["Capacity"] = self._capacity
         data["Room ID"] = self._roomID
         
+        # If roomslot not occupied by activity, 
         if self._activity_object == None:
             data["Course name"] = "Empty"
             data["Number of participants"] = 0

@@ -48,6 +48,7 @@ The most important files are:
 | 13 - 15 | 2 | 7 | 12 | 17 | 22 |
 | 15 - 17 | 3 | 8 | 13 | 18 | 23 |
 | 17 - 19 | 4 | 9 | 14 | 19 | 24 |
+
 *The timeslots in the table refer to the timeslots in the output. For example, timeslot 3 is a timeslot 15-17h on monday.*
 
 ### Output

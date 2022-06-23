@@ -7,17 +7,17 @@ The compilation of schedules can be hard. A schedule contains information on cou
 - 5 MP when the eveningslot (17-19h) is used by room C1.110.
 
 ## Let's get started
-### requirements
+### Requirements
 This code was written in Python 3.8. requirements.txt contains all packages that are needed to run the code. These packages can be installed using:
-'''
+```
 pip install -r requirements.txt
-'''
+```
 
 ## Usage
 The code can be used by running:
-'''
+```
 python3 main.py [arg]
-'''
+```
 
 [arg] can be replaced by:
 - **random**: construct a schedule with random placement of activities and students

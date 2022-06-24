@@ -8,6 +8,7 @@ from code.classes import Student
 from code import helpers
 
 from code.algorithms import random
+from code.algorithms import greedy
 from code.algorithms import hillclimber
 
 

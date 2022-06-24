@@ -4,6 +4,7 @@ import time
 import string
 import sys
 from typing import Type
+import copy
 
 from code.classes.Schedule import Schedule
 
@@ -23,6 +24,7 @@ class Hillclimber_activities:
         """
          # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
+        print(f"START MP: {malus_current}")
 
         # Save the progress
         mp_list = [malus_current]
@@ -77,6 +79,10 @@ class Hillclimber_activities:
         mp_list = []
         iterations_list = []
 
+        initial_state = copy.copy(self.schedule)
+        print(f"Self: {self.schedule}")
+        print(f"initial state: {initial_state}")
+
         # Run hillclimber N times
         for i in range(N):
             print(f"Running: {i}", end='\r')
@@ -86,7 +92,8 @@ class Hillclimber_activities:
                 sys.stdout.write("\033[K") #clear line 
             # Hillclimber
             mp, iterations = self.hillclimber(threshold=threshold)
-            
+            self.schedule = copy.copy(initial_state)
+
             if i != 0:
                 end = iterations_list[-1][-1]
                 iterations = [(x + end) for x in iterations]

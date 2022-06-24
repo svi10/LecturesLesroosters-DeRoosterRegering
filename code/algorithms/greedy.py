@@ -81,7 +81,6 @@ class Greedy:
             self.schedule.make_greedy_schedule_topdown()
 
         hillclimber = Hillclimber_activities(self.schedule)
-
         mp_data, iterations_data = hillclimber.run_N_times(N, threshold)
 
         self.plot(x=iterations_data, y=mp_data, title=f"Greedy Hillclimber ({N} keer)", savename="NHillclimber_Greedy")

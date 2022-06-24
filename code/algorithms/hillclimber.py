@@ -80,8 +80,6 @@ class Hillclimber_activities:
         iterations_list = []
 
         initial_state = copy.copy(self.schedule)
-        print(f"Self: {self.schedule}")
-        print(f"initial state: {initial_state}")
 
         # Run hillclimber N times
         for i in range(N):

@@ -58,6 +58,6 @@ The most important files are:
 *An example of output that will be printed when code is run. Columns from left to right: Timeslot, RoomID, Course name, Type, Number of participants and Room capacity. Timeslots indicate a certain day and time (0-24). A clarification of this number can be found under Timeslot clarification. The timeslots 17-19h can only be used by room C1.110. RoomID displays the assigned room. Course name contains the name of the assigned course. Type indicates the type of activity. Number of participants shows the number of participants for the assigned activity. Room capacity displays the capacity for the room.*
 
 ## Authors
-- Victor Storm van 's Gravesande
-- Luuk van Vliet
-- Sharon Visser
+- Victor Storm van 's Gravesande, [studentnummer]
+- Luuk van Vliet, [studentnummer]
+- Sharon Visser, 12228451

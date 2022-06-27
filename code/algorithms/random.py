@@ -74,8 +74,8 @@ class Random:
         ax.set_ylim(0, max(y))
         plt.suptitle(f"{title}")
         ax.set_title(f"Gemiddeld: {round(sum(y) / len(y))} MP   Max: {max(y)} MP   Min: {min(y)} MP")
-        ax.set_xlabel("Iteraties")
-        ax.set_ylabel("Malus punten")
+        ax.set_xlabel("Iteraties", size=12)
+        ax.set_ylabel("Malus punten", size=12)
 
         ax.plot(x, y, color='blue')
         fig.savefig(f"images/{savename}")

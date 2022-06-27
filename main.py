@@ -1,5 +1,5 @@
 """
-Wij gaan een rooster maken
+We are going to make a schedule.
 """
 
 from code import helpers

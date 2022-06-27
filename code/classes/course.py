@@ -22,6 +22,9 @@ class Course:
         self.student_list = {}
         
         self.activities = []
+        
+        self.activity_amount = self.activity_amount()
+        
 
     
     def value(self, value):
@@ -32,12 +35,37 @@ class Course:
             return 0
         return value
 
+    def sort_greedy(self):
 
-    def make_activities(self): 
+        student_activity_dict = {}
+        for student in self.student_list.values():
+            student_activity_dict[student._studentnumber] = student.activity_amount
+
+        dictionary_tuples = []
+        for item in student_activity_dict.items():
+            dictionary_tuples.append(item)
+        
+
+
+        dictionary_tuples.sort(key=lambda a: a[1])
+        
+            
+        
+        student_sorted = {}
+        for studentnr,activity in dictionary_tuples:
+            student_sorted[studentnr] = self.student_list[studentnr]
+
+    
+        self.student_list = student_sorted
+
+    def make_activities(self, greedy=False): 
         """
         TODO Maak de activiteiten
         """
-
+        
+        if greedy:
+            self.sort_greedy()
+        
         for activity in self.N_activities:
             # Make an activity of every lecture
             if activity == "Lectures" and self.N_activities[activity] > 0 and len(self.student_list) > 0:
@@ -60,6 +88,15 @@ class Course:
 
                 # Make the groups
                 self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
+
+    
+    def activity_amount(self):
+
+        activity_amount = 0 
+        for activity in self.N_activities.values():
+            activity_amount += activity
+        return activity_amount
+
 
 
     def make_groups(self, groups, N_activities, activity_type, course_name):

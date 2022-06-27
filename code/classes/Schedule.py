@@ -92,7 +92,7 @@ class Schedule:
             # Add students to course
             course.student_list = students
             # Divide the students over the course activities
-            course.make_activities()
+            course.make_activities(False)
 
 
     def sort_roomslots(self):
@@ -314,8 +314,12 @@ class Schedule:
         """
         students = dict()
 
-        for row in self._students_df.iterrows():
-            students[row[1]["Stud.Nr."]] = Student.Student(row[1])
+        for row in self._students_df.iterrows():            
+            courses = []
+            for i in range (0, 5):                
+                    if isinstance((row[1][f"Vak{i + 1}"]),str):
+                        courses.append(self._courses[(row[1][f"Vak{i + 1}"])])
+            students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses) 
 
         return students
     

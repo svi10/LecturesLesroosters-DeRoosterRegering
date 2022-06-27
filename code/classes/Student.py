@@ -1,18 +1,18 @@
 from code import helpers
 
-
 class Student:
     """
     This class includes all student information
     """
     
-    def __init__(self, data):
+    def __init__(self, data, course_objects):
         self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
         self._studentnumber = data["Stud.Nr."]
         self._activities = set()
-        self._courses = self.add_all_courses(data)
+        self._courses = course_objects
         self._malus_points = 0
-
+        self._activity_amount = 0
+        self.activity_amount()
 
     def add_all_courses(self, data):
         courses = []
@@ -22,6 +22,12 @@ class Student:
                     courses.append(course)
         return courses
 
+    def activity_amount(self):
+        activity_amount = 0
+        courses = self._courses
+        for course in courses:
+            activity_amount += course.activity_amount 
+        self.activity_amount = activity_amount
 
     def malus_conflict(self):
         """
@@ -35,6 +41,8 @@ class Student:
 
         return malus_points
 
+    def test(self):
+        print("test")
 
     def malus_gap_hours(self):
         """

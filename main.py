@@ -7,7 +7,7 @@ from code.classes import Student
 
 from code import helpers
 
-from code.algorithms import random
+from code.algorithms import random, greedy
 from code.algorithms import hillclimber
 
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         greedy_algorithm.hillclimber(threshold=100)
         print("DONE \n \n")
     
-    if True:
-        print("GREEDY HILLCLIMBER N KEER")
-        greedy_algorithm.N_hillclimber(N=10, threshold=10)
-        print("DONE \n\n")
+    # if True:
+    #     print("GREEDY HILLCLIMBER N KEER")
+    #     greedy_algorithm.N_hillclimber(N=10, threshold=10)
+    #     print("DONE \n\n")

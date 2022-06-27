@@ -1,6 +1,7 @@
 """
 We are going to make a schedule.
 """
+from sys import argv
 
 from code import helpers
 from code.classes import Schedule
@@ -11,6 +12,13 @@ from code.algorithms import hillclimber
 
 
 if __name__ == "__main__":
+    if len(argv) == 2 and (argv[1] == 'random' or argv[1] == 'greedy_topdown' or argv[1] == 'greedy_bottomup' or argv[1] == 'random_hillclimber' or argv[1] == 'greedy_bottomup_hillclimber' or argv[1] == 'greedy_topdown_hillclimber'):
+        algortihm = argv[1]
+    else:
+        print("Usage: python3 main.py [arg] \n")
+        print("Replace [arg] with 'random', 'greedy_topdown', 'greedy_bottomup', 'random_hillclimber', 'greedy_bottomup_hillclimber' OR 'greedy_topdown_hillclimber'")
+        exit(1)
+    
     # Initialize schedule
     schedule = Schedule.Schedule()
 
@@ -72,7 +80,7 @@ if __name__ == "__main__":
         greedy_algorithm.hillclimber(threshold=100)
         print("DONE \n \n")
     
-    if True:
+    if False:
         print("GREEDY HILLCLIMBER N KEER")
         greedy_algorithm.N_hillclimber(N=10, threshold=100)
         print("DONE \n\n")

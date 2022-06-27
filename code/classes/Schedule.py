@@ -314,7 +314,7 @@ class Schedule:
             courses = []
             for i in range (0, 5):                
                     if isinstance((row[1][f"Vak{i + 1}"]),str):
-                        courses.append(self._courses[(row[1][f"Vak{i + 1}"])])
+                        courses.append(self.courses[(row[1][f"Vak{i + 1}"])])
             students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses) 
 
         return students

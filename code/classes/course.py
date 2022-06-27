@@ -88,7 +88,7 @@ class Course:
         if greedy:
             self.sort_greedy()
         
-        for activity in self.N_activities:
+        for activity in self._N_activities:
             # Make an activity of every lecture
             if activity == "Lectures" and self._N_activities[activity] > 0 and len(self.student_list) > 0:
                 # TODO: Group number
@@ -109,13 +109,13 @@ class Course:
                 divided_groups = self.divide_students(self.student_list, group_size)
 
                 # Make the groups
-                self.make_groups(divided_groups, self.N_activities[activity], activity, self.course_name)
+                self.make_groups(divided_groups, self._N_activities[activity], activity, self.course_name)
 
     
     def activity_amount(self):
 
         activity_amount = 0 
-        for activity in self.N_activities.values():
+        for activity in self._N_activities.values():
             activity_amount += activity
         return activity_amount
 

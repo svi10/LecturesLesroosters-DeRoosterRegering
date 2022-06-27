@@ -2,12 +2,11 @@
 Wij gaan een rooster maken
 """
 
+from code import helpers
 from code.classes import Schedule
 from code.classes import Student
-
-from code import helpers
-
 from code.algorithms import random
+from code.algorithms import greedy
 from code.algorithms import hillclimber
 
 
@@ -16,7 +15,7 @@ if __name__ == "__main__":
     schedule = Schedule.Schedule()
 
     # Generate schedule
-    schedule.make_greedy_schedule_topdown()
+    schedule.make_greedy_schedule_bottomup()
     generated_schedule = schedule.show_schedule()
     schedule.save_schedule()
 
@@ -69,5 +68,5 @@ if __name__ == "__main__":
     
     if True:
         print("GREEDY HILLCLIMBER N KEER")
-        greedy_algorithm.N_hillclimber(N=10, threshold=10)
+        greedy_algorithm.N_hillclimber(N=10, threshold=100)
         print("DONE \n\n")

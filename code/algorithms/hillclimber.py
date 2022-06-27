@@ -1,21 +1,28 @@
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import time
 import string
 import sys
 from typing import Type
 
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 from code.classes.Schedule import Schedule
+
 
 class Hillclimber_activities:
     """
-    A hillclimber algorithm
-    """
+    A hillclimber algorithm that randomly swaps two roomslots in a schedule.
+    
+    ...
 
+    Attributes
+    ----------
+    self.schedule : schedule instance
+        contains a schedule instance
+
+    """
     def __init__(self, schedule: Type[Schedule]) -> None:
         self.schedule: Type[Schedule] = schedule
-        self.threshold = None
-
 
     def hillclimber(self, threshold, plot=False):
         """
@@ -66,7 +73,6 @@ class Hillclimber_activities:
         self.schedule.malus_analysis("_Random hillclimber")
         return mp_list, iterations_list
 
-
     def run_N_times(self, N, threshold):
         """
         Run random hillclimber N times and plot the results
@@ -100,8 +106,3 @@ class Hillclimber_activities:
         iterations_list = sum(iterations_list, [])
 
         return mp_list, iterations_list
-        
-
-
-    
-

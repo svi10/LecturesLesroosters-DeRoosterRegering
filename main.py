@@ -42,6 +42,12 @@ if __name__ == "__main__":
 
 
     #-----------------------Hillclimber random
+    if True:
+        # Random N keer
+        print("RANDOM N KEER")
+        random_algorithm.run_N_times(N=1000)
+        print("DONE \n\n")
+
     if False:
         # Run 1 Time
         print("RANDOM HILLCLIMBER 1 KEER")
@@ -66,7 +72,7 @@ if __name__ == "__main__":
         greedy_algorithm.hillclimber(threshold=100)
         print("DONE \n \n")
     
-    if True:
+    if False:
         print("GREEDY HILLCLIMBER N KEER")
         greedy_algorithm.N_hillclimber(N=10, threshold=100)
         print("DONE \n\n")

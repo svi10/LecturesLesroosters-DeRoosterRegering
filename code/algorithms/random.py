@@ -1,6 +1,7 @@
 import time
 from typing import List
 
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -40,7 +41,7 @@ class Random:
         for i in range(N):
             malus_points.append(self.run())
 
-        self.plot("empty", malus_points, title=f"Random Schedule ({N} keer)", savename="NRandom")
+        self.histogram(malus_points, title=f"Random ({N} keer)")
 
         return malus_points
 
@@ -78,6 +79,28 @@ class Random:
 
         ax.plot(x, y, color='blue')
         fig.savefig(f"images/{savename}")
+        plt.clf()
+
+
+    def histogram(self, data: List, title: str) -> None:
+        """
+        Make a histogram of the input data.
+        """
+        average = round(sum(data) / len(data))
+        standard_deviation = round(np.std(data))
+
+        fig, ax = plt.subplots()
+        
+        plt.suptitle(f"{title}")
+        ax.hist(data, bins=20)
+        ax.axvline(average, color='orange')
+        ax.set_xlabel("MP")
+        ax.set_ylabel("N schedules")
+        ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
+
+        fig.savefig("Images/Random_Histogram_Nkeer")
+        
+
 
     def N_hillclimber(self, N: int, threshold: int):
         """

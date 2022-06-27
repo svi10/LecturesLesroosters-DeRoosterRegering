@@ -1,6 +1,9 @@
+import sys
+import os
 from typing import List
+
 import pandas as pd
-import sys, os
+
 
 def import_data(destination):
     """
@@ -15,8 +18,12 @@ def import_data(destination):
 
     return df
 
+
 def doubles_counter(input: List) -> int:
-    
+    """
+    Count all double timeslots in students activities. 
+    Return number of doubles.
+    """
     doubles = {i:input.count(i) for i in input}
     N_doubles = 0
     for i in doubles.values():
@@ -25,11 +32,11 @@ def doubles_counter(input: List) -> int:
     return N_doubles
 
 
-# Disable
-def blockPrint():
-    sys.stdout = open(os.devnull, 'w')
+# # Disable
+# def blockPrint():
+#     sys.stdout = open(os.devnull, 'w')
 
-# Restore
-def enablePrint():
-    sys.stdout = sys.__stdout__
 
+# # Restore
+# def enablePrint():
+#     sys.stdout = sys.__stdout__

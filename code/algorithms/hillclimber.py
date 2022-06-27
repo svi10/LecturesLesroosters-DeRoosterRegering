@@ -1,21 +1,29 @@
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import time
 import string
 import sys
 from typing import Type
+import copy
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 from code.classes.Schedule import Schedule
 
+
 class Hillclimber_activities:
     """
-    A hillclimber algorithm
-    """
+    A hillclimber algorithm that randomly swaps two roomslots in a schedule.
+    
+    ...
 
+    Attributes
+    ----------
+    self.schedule : schedule instance
+        contains a schedule instance
+
+    """
     def __init__(self, schedule: Type[Schedule]) -> None:
         self.schedule: Type[Schedule] = schedule
-        self.threshold = None
-
 
     def hillclimber(self, threshold, plot=False):
         """
@@ -23,6 +31,7 @@ class Hillclimber_activities:
         """
          # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
+        print(f"START MP: {malus_current}")
 
         # Save the progress
         mp_list = [malus_current]
@@ -66,7 +75,6 @@ class Hillclimber_activities:
         self.schedule.malus_analysis("_Random hillclimber")
         return mp_list, iterations_list
 
-
     def run_N_times(self, N, threshold):
         """
         Run random hillclimber N times and plot the results
@@ -77,6 +85,8 @@ class Hillclimber_activities:
         mp_list = []
         iterations_list = []
 
+        initial_state = copy.copy(self.schedule)
+
         # Run hillclimber N times
         for i in range(N):
             print(f"Running: {i}", end='\r')
@@ -86,7 +96,8 @@ class Hillclimber_activities:
                 sys.stdout.write("\033[K") #clear line 
             # Hillclimber
             mp, iterations = self.hillclimber(threshold=threshold)
-            
+            self.schedule = copy.copy(initial_state)
+
             if i != 0:
                 end = iterations_list[-1][-1]
                 iterations = [(x + end) for x in iterations]
@@ -100,8 +111,3 @@ class Hillclimber_activities:
         iterations_list = sum(iterations_list, [])
 
         return mp_list, iterations_list
-        
-
-
-    
-

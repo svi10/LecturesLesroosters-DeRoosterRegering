@@ -3,8 +3,23 @@ from code import helpers
 class Student:
     """
     This class includes all student information
-    """
     
+    ...
+
+    Attributes
+    ----------
+    self._student_name : str
+        contains name of the student
+    self.studentnumber : int
+        contains the studentsnumber of the student
+    self._activities : set
+        contains all activity instances that the student participates in
+    self._courses : list
+        contains all courses that the student participates in 
+    self._malus_points : int
+        contains the number of maluspoints that the student has
+
+    """
     def __init__(self, data, course_objects):
         self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
         self._studentnumber = data["Stud.Nr."]
@@ -41,9 +56,6 @@ class Student:
 
         return malus_points
 
-    def test(self):
-        print("test")
-
     def malus_gap_hours(self):
         """
         Calculate malus points for the student caused by gap hours in the schedule. 1 gap hours gives 
@@ -72,7 +84,7 @@ class Student:
            
             for i in range(len(day)):
                 if day[i] != day[-1]:
-                    gap_hours = day[i+1] - day[i] - 1
+                    gap_hours = day[i + 1] - day[i] - 1
 
                     # Reward malus points
                     if gap_hours == 1:
@@ -86,15 +98,12 @@ class Student:
         self._malus_points += malus_points
         
         return malus_points
-        
-        
-    def add_course(self, course):
-        self._courses.add(course)
-
 
     def add_activity(self, activity):
+        """
+        Add activity object to student
+        """
         self._activities.add(activity)
-
 
     def __repr__(self):
         return f"{self._student_name}"

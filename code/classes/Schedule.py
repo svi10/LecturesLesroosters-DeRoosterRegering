@@ -1,39 +1,57 @@
-from tokenize import String
-import pandas as pd
 import math
 import random
 import copy
 from typing import List, Set, Dict, Tuple, Optional
+from tokenize import String
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+from code import helpers
 from code.classes.course import Course
 from . import Roomslot, Student
 from . import activity, course
-from code import helpers
-import matplotlib.pyplot as plt
 
-import numpy as np
 
 class Schedule:
     """
     This class can be used to devide the courses over the 
     roomslots (room-timeslot pair)
-    """
 
+    ...
+
+    Attributes
+    ----------
+    self.courses_df : pandas dataframe 
+        contains data about the courses
+    self.rooms_df : pandas dataframe
+        contains data about the rooms
+    self._students_df : pandas dataframe
+        contains data about the students
+    self.courses : dict
+        contains all course instances 
+    self._students : dict
+        contains all student instances
+    self._activities : list
+        contains all activity instances
+    self._roomslots : list
+        contains all roomslot instances
+    """
     def __init__(self):
         self._courses_df = helpers.import_data("vakken")
         self._rooms_df = helpers.import_data("zalen")
         self._students_df = helpers.import_data("studenten_en_vakken")
 
-        self._courses =  self.course_dict()
+        self.courses =  self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
-        self._activities = self.activity_list() # TODO Aantal activities berekenen.
+        self._activities = self.activity_list()
         self._roomslots = self.roomslot_list()
         
-       
-
     def roomslot_list(self):
         """
-        Create roomslots by linking every room to a timeslot
+        Create roomslots by linking every room to a timeslot ()
         """
         roomslots = []
 
@@ -42,7 +60,8 @@ class Schedule:
         largest_room_ID = self._rooms_df['Zaalnummber'].iloc[-1]
         largest_room_capacity = self._rooms_df['Max. capaciteit'].iloc[-1]
         
-        # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots). Largest room has an extra timeslot (17-19u every day, so +5 timeslots)
+        # Make for every room in every timeslot a roomslot (there are 4*5=20 timeslots) 
+        # Largest room has an extra timeslot (17-19u every day, so +5 timeslots)
         for timeslot in range(0, 25):
             # Make roomslots for largest room, 17-19u every day
             if (timeslot + 1) % 5 == 0:
@@ -54,7 +73,6 @@ class Schedule:
                     roomslots.append(roomslot)
         
         return roomslots
-
 
     def course_dict(self):
         """
@@ -70,9 +88,8 @@ class Schedule:
         """
         Add to each course the students that signed in for that course
         """
-
-        for course in self._courses.values():
-            # Filter the students that are signed in to "course"
+        for course in self.courses.values():
+            # Filter students that are signed in to "course"
             selected_students = self._students_df[(self._students_df["Vak1"] == f"{course.course_name}") | 
                                                   (self._students_df["Vak2"] == f"{course.course_name}") |
                                                   (self._students_df["Vak3"] == f"{course.course_name}") |
@@ -84,7 +101,7 @@ class Schedule:
             # Get student object
             students_object = [self._students.get(key) for key in students_Nrs]
 
-            # Make dictionary of students participating in the course
+            # Make dictionary of students participating in course
             students = {}
             for student_Nr, students_object in zip(students_Nrs, students_object):
                 students[student_Nr] = students_object
@@ -94,66 +111,54 @@ class Schedule:
             # Divide the students over the course activities
             course.make_activities(False)
 
-
-    def sort_roomslots(self):
-        """
-        Sort the roomslots by capacity (largest -> smallest)
-        """
-        roomslot_tuple = []
-        # Make list of tuples of the roomslots [(Capacity, Roomslot), (Capacity, Roomslot)]
-        for roomslot in self._roomslots:
-            roomslot_tuple.append((roomslot._capacity, roomslot))
-        
-        # Sort dictionary on capacity
-        sorted_list = sorted(roomslot_tuple, key=lambda tup: tup[0])
-
-        # Make list of sorted roomslots
-        self._roomslots = []
-        for item in sorted_list:
-            self._roomslots.append(item[1])
-
-
     def room_ids(self) -> list:
-        """Make list of all room ids"""
+        """
+        Make list of all room ids
+        """
         return self._rooms_df['Zaalnummber'].tolist()
 
-
     def room_capacities(self) -> list:
-        """Make list of all room capacities"""
+        """
+        Make list of all room capacities
+        """
         return self._rooms_df['Max. capaciteit'].tolist()
-
 
     def activity_list(self):
         """
-        Make a list of all possible activities. TODO
+        Make a list of all possible activities TODO
         """
         activities = []
 
-        for course in self._courses.values():
+        for course in self.courses.values():
             for activity in course.activities:
                 activities.append(activity)
 
         return activities
         
-
     def make_random_schedule(self) -> None:
         """
         Add all activities to a different timeslot
         """
         roomslots = set(self._roomslots)
-        # Add all activities to the schedule
+        # Add all activities to schedule
         for activity in self._activities:
 
             # Get random roomslot 
             roomslot = random.choice(tuple(roomslots))
+
+            # Place roomslot in activity
             activity._roomslot = roomslot 
+            activity._timeslot = roomslot._timeslot
             roomslots.remove(roomslot)
 
+            # Place activity in roomslot
             self.add_to_roomslot(activity, roomslot)
-            activity._timeslot = roomslot._timeslot
-
+            
 
     def swap_roomslots(self, roomslot1, roomslot2):
+        """
+        Swap two activities in roomslots
+        """
         # Swap activities in the roomslots
         save = roomslot1._activity_object
         roomslot1._activity_object = roomslot2._activity_object
@@ -162,28 +167,27 @@ class Schedule:
         # Update the data in the roomslots based on their new activities
         roomslot1.update_data()
         roomslot2.update_data()
-    
 
     def make_greedy_schedule_topdown(self) -> None:
         """
-        Make a very greedy schedule
+        Make a greedy schedule in which the activities with the highest 
+        number of students are put into biggest rooms
         """
         self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
-        self._activities.sort(key=lambda activity:activity._student_amount, reverse=True)
+        self._activities.sort(key=lambda activity:activity.total_students(), reverse=True)
         
         for activity,roomslot in zip(self._activities, self._roomslots):
             activity._roomslot = roomslot            
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
             
-        
     def make_greedy_schedule_bottomup(self) -> None:
         """
         Puts activities with lowest number of students into smallest rooms
         """
         # Sort roomslots according to capacity and activities according to groupsize
         self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=False)
-        self._activities.sort(key=lambda activities:activities._student_amount, reverse=False)
+        self._activities.sort(key=lambda activities:activities.total_students(), reverse=False)
     
         # Link activities to roomslots and roomslots to activities
         for activity, roomslot in zip(self._activities, self._roomslots):
@@ -191,7 +195,6 @@ class Schedule:
             activity._timeslot = roomslot._timeslot
             self.add_to_roomslot(activity, roomslot)
 
-    
     def two_random_roomslots(self):
         """
         Pick at random two nonidentical roomslots from all roomslots
@@ -204,14 +207,12 @@ class Schedule:
         
         return roomslot1, roomslot2
 
-
     def add_to_roomslot(self, activity, roomslot):
         """
         Assign activity to roomslot
         """
         roomslot.assign_activity(activity)    
         roomslot._N_participants = activity.total_students()
-
 
     def show_schedule(self):
         """
@@ -224,8 +225,8 @@ class Schedule:
         capacity = []
         N_students = []
 
+        # Get data from roomslot per roomslot
         for roomslot in self._roomslots:
-            
             data = roomslot.get_data()
             timeslot.append(data["Timeslot"])
             room.append(data["Room ID"])
@@ -234,7 +235,6 @@ class Schedule:
             capacity.append(data["Capacity"])
             N_students.append(data["Number of participants"])
             
-
         data = {}
         data["Timeslot"] = timeslot
         data["RoomID"] = room
@@ -244,7 +244,6 @@ class Schedule:
         data["Room capacity"] = capacity
         
         return pd.DataFrame(data=data).sort_values(by="Timeslot")
-    
 
     def schedule_malus_points(self):
         """
@@ -255,7 +254,6 @@ class Schedule:
         malus_evening = 0
         
         for roomslot in self._roomslots:
-           
             # There is 1 malus point for each student that is to many in a room
             over_capacity = roomslot._N_participants - roomslot._capacity
             # If the capacity is sufficient, no malus points are awarded
@@ -270,9 +268,10 @@ class Schedule:
 
         return schedule_malus_points, malus_capacity, malus_evening
 
-
     def students_malus_points(self):
-
+        """
+        Calculate malus points per student
+        """
         malus_conflict = 0
         malus_gaphour = 0
 
@@ -284,10 +283,8 @@ class Schedule:
 
         return student_malus_points, malus_conflict, malus_gaphour
 
-
     def total_malus_points(self):
         return (self.students_malus_points()[0] + self.schedule_malus_points()[0])
-
 
     def malus_analysis(self, name=""):
         """
@@ -307,12 +304,11 @@ class Schedule:
         plt.savefig(f"images/malus_analysis{name}")
         plt.clf()
 
-
     def student_dict(self):
         """
         Makes a list with all students as Student class instances
         """
-        students = dict()
+        students = {}
 
         for row in self._students_df.iterrows():            
             courses = []
@@ -323,8 +319,11 @@ class Schedule:
 
         return students
     
-    
     def show_student(self, studentnumber):
+        """
+        Get student schedule and put this information in data
+        Return data
+        """
         data = {}
         student = self._students[studentnumber]
         student.malus_conflict()
@@ -332,19 +331,26 @@ class Schedule:
         course_name = []
         timeslot = []
         roomslot = []
+
+        # Get activity information 
         for activity in student._activities:
             course_name.append(activity._course_name)
             timeslot.append(activity._timeslot)
             roomslot.append(activity._roomslot)
 
+        # Put student information in data
         data["course_name"] = course_name
         data["timeslot"] = timeslot
         data["roomslot"] = roomslot
         data["malus_points"] = student._malus_points
-        return pd.DataFrame(data=data).sort_values(by="timeslot")
 
+        return pd.DataFrame(data=data).sort_values(by="timeslot")
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
 
     
+    def __copy__(self):
+        new_instance = Schedule()
+        new_instance.__dict__.update(self.__dict__)
+        return new_instance

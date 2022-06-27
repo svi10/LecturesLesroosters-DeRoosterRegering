@@ -1,21 +1,43 @@
-from typing import Dict
-import numpy as np
-from . import activity as act
 import math
+from typing import Dict
+
+import numpy as np
+
+from . import activity as act
 
 
 class Course:
+    """
+    This class contains the name of the course, all activities of the course, the attending 
+    students and the maximum capactity of each activity.
+    
+    ...
 
+    Attributes
+    ----------
+    self.course_name : str
+        contains name of the course
+    self.student_list : dict
+        contains all students instances participating in the course {studentsnumber: student instance}
+    self.activities : list
+        contains all activity instances in the course
+    self._N_activities : dict
+        contains the number of each activity 
+    self._capacity : dict
+        contains the number of participants and the maximum of participants per practical or tutorial
+
+    """
     def __init__(self, data) -> None:
-
         self.course_name = data["Vak"]
+        self.student_list = {}        
+        self.activities = []
 
         # Number of activities and max amount of students per activity type
-        self.N_activities = {"Lectures": self.value(data["#Hoorcolleges"]), 
+        self._N_activities = {"Lectures": self.value(data["#Hoorcolleges"]), 
                              "Tutorials": self.value(data["#Werkcolleges"]), 
                              "Practicals": self.value(data["#Practica"])}
 
-        self.capacity = {"Lectures": self.value(data["Verwacht"]), 
+        self._capacity = {"Lectures": self.value(data["Verwacht"]), 
                          "Tutorials": self.value(data["Max. stud. Werkcollege"]), 
                          "Practicals": self.value(data["Max. stud. Practicum"])}
         
@@ -68,17 +90,17 @@ class Course:
         
         for activity in self.N_activities:
             # Make an activity of every lecture
-            if activity == "Lectures" and self.N_activities[activity] > 0 and len(self.student_list) > 0:
+            if activity == "Lectures" and self._N_activities[activity] > 0 and len(self.student_list) > 0:
                 # TODO: Group number
-                for i in range(self.N_activities[activity]):
+                for i in range(self._N_activities[activity]):
                     new_activity = act.Activity(activity, self.course_name, self.student_list, i) 
                     self.activities.append(new_activity)
                     self.activity_to_students(new_activity, self.student_list)
 
             # Make activities for all practicals and tutorials
-            elif self.N_activities[activity] > 0 and len(self.student_list) > 0: 
+            elif self._N_activities[activity] > 0 and len(self.student_list) > 0: 
                 # Calculate the number of groups are needed for the amount of students
-                number_of_groups = math.ceil( float(len(self.student_list) / self.capacity[activity]))
+                number_of_groups = math.ceil( float(len(self.student_list) / self._capacity[activity]))
 
                 # Number of students per groups
                 group_size = math.ceil(len(self.student_list) / number_of_groups)
@@ -104,7 +126,6 @@ class Course:
         The student groups are assigned to individual activities. If there are for example 3 tutorials,
         then each group is assigned to 3 tutorials.
         """
-
         group_id = 1
         # Assign groups to activity
         for group in groups:
@@ -117,7 +138,6 @@ class Course:
            
             group_id += 1
 
-
     def activity_to_students(self, activity, students: Dict) -> None:
         """
         Add the activity to the students in that group
@@ -125,9 +145,10 @@ class Course:
         for student in students.values():
             student.add_activity(activity)
 
-
     def divide_students(self, student_list: Dict, number_of_groups: int):
-        
+        """
+        Distribute students in list of students over number of groups
+        """
         def split_dict(d, n):
             keys = list(d.keys())
             for i in range(0, len(keys), n):

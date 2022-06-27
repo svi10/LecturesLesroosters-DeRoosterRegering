@@ -98,7 +98,7 @@ class Random:
         ax.set_ylabel("N schedules")
         ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
 
-        fig.savefig("Images/Random_Histogram_Nkeer")
+        fig.savefig("images/Random_Histogram_Nkeer")
         
 
 

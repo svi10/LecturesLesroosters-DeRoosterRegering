@@ -108,8 +108,8 @@ class Schedule:
 
             # Add students to course
             course.student_list = students
-            # Divide students over course activities
-            course.make_activities()
+            # Divide the students over the course activities
+            course.make_activities(False)
 
     def room_ids(self) -> list:
         """
@@ -134,6 +134,14 @@ class Schedule:
                 activities.append(activity)
 
         return activities
+
+    def make_schedule(self, algorithm):
+        if algorithm == "random" or algorithm == "random_hillclimber":
+            self.make_random_schedule()
+        elif algorithm == "greedy_topdown" or algorithm == "greedy_topdown_hillclimber":
+            self.make_greedy_schedule_topdown()
+        elif algorithm == "greedy_bottomup" or algorithm == "greedy_bottomup_hillclimber":
+            self.make_schedule_greedy_bottomup()
         
     def make_random_schedule(self) -> None:
         """
@@ -181,14 +189,14 @@ class Schedule:
             self.add_to_roomslot(activity, roomslot)
             activity._timeslot = roomslot._timeslot
             
-    def make_greedy_schedule_bottomup(self) -> None:
+    def make_schedule_greedy_bottomup(self) -> None:
         """
         Puts activities with lowest number of students into smallest rooms
         """
         # Sort roomslots according to capacity and activities according to groupsize
         self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=False)
         self._activities.sort(key=lambda activities:activities.total_students(), reverse=False)
-    
+
         # Link activities to roomslots and roomslots to activities
         for activity, roomslot in zip(self._activities, self._roomslots):
             activity._roomslot = roomslot 
@@ -310,8 +318,12 @@ class Schedule:
         """
         students = {}
 
-        for row in self._students_df.iterrows():
-            students[row[1]["Stud.Nr."]] = Student.Student(row[1])
+        for row in self._students_df.iterrows():            
+            courses = []
+            for i in range (0, 5):                
+                    if isinstance((row[1][f"Vak{i + 1}"]),str):
+                        courses.append(self.courses[(row[1][f"Vak{i + 1}"])])
+            students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses) 
 
         return students
     

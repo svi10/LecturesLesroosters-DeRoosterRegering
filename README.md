@@ -16,16 +16,18 @@ pip install -r requirements.txt
 ## Usage
 The code can be used by running:
 ```
-python3 main.py [arg]
+python3 main.py [algorithm] [number]
 ```
 
-[arg] can be replaced by:
-- **random**: construct a schedule with random placement of activities and students
-- **greedy_topdown**: construct a schedule that places the greatest groups of activities into the biggest rooms.
-- **greedy_bottomup**: construct a schedule that places the smallest groups of activities into the smallest rooms.
- - **random_hillclimber**: apply a hillclimber to a random schedule.
- - **greedy_topdown_hillclimber**: apply a hillclimber to a greedy topdown schedule.
- - **greedy_bottomup_hillclimber**: apply a hillclimber to a greedy bottomup schedule.
+[algorithm] can be replaced by:
+- **random**: Construct a schedule with random placement of activities and students.
+- **greedy_topdown**: Construct a schedule that sorts all the groups of activities from largest group of participating students to smallest and also sorts all roomslots based on their capacity from largest to smallest. This algorithm then matches the two starting from the top going downwards.
+- **greedy_bottomup**: Construct a schedule that sorts all the groups of activities from smallest group of participating students to largest and also sorts all roomslots based on their capacity from smallest to largest. This algorithm then matches the two starting from the bottom going up.
+ - **random_hillclimber**: This algorithm uses the random algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
+ - **greedy_topdown_hillclimber**: This algorithm uses the greedy topdown algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
+ - **greedy_bottomup_hillclimber**: This algorithm uses the greety bottomup algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
+
+ [number] can be replaced by a number, which indicates the number of repetitions of the algorithm.
 
 ## Structure
 The most important files are:
@@ -58,6 +60,6 @@ The most important files are:
 *An example of output that will be printed when code is run. Columns from left to right: Timeslot, RoomID, Course name, Type, Number of participants and Room capacity. Timeslots indicate a certain day and time (0-24). A clarification of this number can be found under Timeslot clarification. The timeslots 17-19h can only be used by room C1.110. RoomID displays the assigned room. Course name contains the name of the assigned course. Type indicates the type of activity. Number of participants shows the number of participants for the assigned activity. Room capacity displays the capacity for the room.*
 
 ## Authors
-- Victor Storm van 's Gravesande
-- Luuk van Vliet
-- Sharon Visser
+- Victor Storm van 's Gravesande, 13141406
+- Luuk van Vliet, 12251925
+- Sharon Visser, 12228451

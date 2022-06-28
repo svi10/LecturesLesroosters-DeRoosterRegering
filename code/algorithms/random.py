@@ -129,6 +129,8 @@ class Random:
         self.plot(x=iterations_data, y=mp_data, title=f"Random Hillclimber ({N} keer)", savename="NHillclimber_random")
         self.histogram(data=mp_data, title=f"Hillclimber random ({N} keer)", savename=f"Random_Hillclimber_Nkeer")
 
+        print(f"Lowest amount of MP: {min(mp_data)}")
+
 
     def malus_analysis_random(self):
         self.schedule.make_random_schedule()

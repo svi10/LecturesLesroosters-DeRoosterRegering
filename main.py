@@ -49,35 +49,13 @@ def main(algorithm, N_repetitions):
         print("DONE \n\n")
 
     #-----------------------Hillclimber random
-<<<<<<< HEAD
-    if False:
-        # Random N keer
-        print("RANDOM N KEER")
-        random_algorithm.run_N_times(N=1000)
-        print("DONE \n\n")
 
-    if False:
-=======
     if algorithm == "random_hillclimber":
->>>>>>> 50fccf0e9438554019b57eb098733320248e2301
         # Run 1 Time
         print(f"RANDOM HILLCLIMBER {N_repetitions} KEER")
         random_algorithm.N_hillclimber(N=N_repetitions, threshold=10)
         print("DONE \n \n")
-<<<<<<< HEAD
     
-    if False:
-        print("RANDOM HILLCLIMBER")
-        random_algorithm.N_hillclimber(N=10, threshold=40)
-        print("DONE \n\n")
-
-    if False:
-        print("RANDOM SIMULATED ANNEALING")
-        random_algorithm.simulated_annealing(threshold=100)
-        print("DONE \n\n")
-=======
->>>>>>> 50fccf0e9438554019b57eb098733320248e2301
-
     #-----------------------Greedy
     if algorithm == "greedy_topdown" or algorithm == "greedy_bottomup":
         print("GREEDY 1X")

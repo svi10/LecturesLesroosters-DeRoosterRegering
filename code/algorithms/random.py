@@ -1,4 +1,3 @@
-import time
 from typing import List
 
 import numpy as np
@@ -6,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from code.algorithms.hillclimber import Hillclimber_activities
+from code.algorithms.simulated_annealing import SimulatedAnnealing
 
 
 class Random:
@@ -41,9 +41,10 @@ class Random:
         for i in range(N):
             malus_points.append(self.run())
 
-        self.histogram(malus_points, title=f"Random ({N} keer)")
+        self.histogram(malus_points, title=f"Random ({N} keer)", savename=f"Random_histogram_Nkeer")
 
         return malus_points
+
 
     def hillclimber(self, threshold: int):
         """
@@ -57,6 +58,21 @@ class Random:
 
         self.plot(x=iterations_data, y=mp_data, 
                   title=f"Random Hillclimber (Threshold = {threshold})", savename="Hillclimber_random")
+
+
+    def simulated_annealing(self, threshold: int):
+        """
+        Apply simulated annealing algorithm on random schedule and plot results.
+        """
+        self.schedule.make_random_schedule()
+
+        simulated_annealing = SimulatedAnnealing(self.schedule)
+        # Assign hillclimber information to data
+        mp_data, iterations_data = simulated_annealing.simulated_annealing(threshold=threshold)
+
+        self.plot(x=iterations_data, y=mp_data, 
+                  title=f"Random Simulated annealing (Threshold = {threshold})", savename="SimulatedAnnealing_random")
+
 
     def plot(self, x: List, y: List, title: str, savename: str) -> None:
         """
@@ -82,7 +98,7 @@ class Random:
         plt.clf()
 
 
-    def histogram(self, data: List, title: str) -> None:
+    def histogram(self, data: List, title: str, savename: str) -> None:
         """
         Make a histogram of the input data.
         """
@@ -98,19 +114,21 @@ class Random:
         ax.set_ylabel("N schedules")
         ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
 
-        fig.savefig("Images/Random_Histogram_Nkeer")
+        fig.savefig(f"Images/{savename}")
         
-
 
     def N_hillclimber(self, N: int, threshold: int):
         """
         Run hillclimber N times on the same schedule
         """
+        self.schedule.make_random_schedule()
         hillclimber = Hillclimber_activities(self.schedule)
 
         mp_data, iterations_data = hillclimber.run_N_times(N, threshold)
 
         self.plot(x=iterations_data, y=mp_data, title=f"Random Hillclimber ({N} keer)", savename="NHillclimber_random")
+        self.histogram(data=mp_data, title=f"Hillclimber random ({N} keer)", savename=f"Random_Hillclimber_Nkeer")
+
 
     def malus_analysis_random(self):
         self.schedule.make_random_schedule()

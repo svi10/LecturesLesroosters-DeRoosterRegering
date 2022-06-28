@@ -8,6 +8,7 @@ from code.classes import Student
 from code.algorithms import random
 from code.algorithms import greedy
 from code.algorithms import hillclimber
+import copy
 
 
 if __name__ == "__main__":
@@ -42,7 +43,7 @@ if __name__ == "__main__":
 
 
     #-----------------------Hillclimber random
-    if True:
+    if False:
         # Random N keer
         print("RANDOM N KEER")
         random_algorithm.run_N_times(N=1000)
@@ -56,7 +57,12 @@ if __name__ == "__main__":
     
     if False:
         print("RANDOM HILLCLIMBER")
-        random_algorithm.N_hillclimber(N=10, threshold=10)
+        random_algorithm.N_hillclimber(N=10, threshold=40)
+        print("DONE \n\n")
+
+    if False:
+        print("RANDOM SIMULATED ANNEALING")
+        random_algorithm.simulated_annealing(threshold=100)
         print("DONE \n\n")
 
     #-----------------------Greedy ()

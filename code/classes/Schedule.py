@@ -344,9 +344,3 @@ class Schedule:
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
-
-    
-    def __copy__(self):
-        new_instance = Schedule()
-        new_instance.__dict__.update(self.__dict__)
-        return new_instance

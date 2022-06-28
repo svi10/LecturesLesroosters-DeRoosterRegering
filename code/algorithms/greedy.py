@@ -31,7 +31,7 @@ class Greedy:
         Make Greedy schedule and return the amount of malus points.
         """
         if type == "bottomup":
-            self.schedule.make_greedy_schedule_bottomup()
+            self.schedule.make_schedule_greedy_bottomup()
         if type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
 
@@ -45,7 +45,7 @@ class Greedy:
         the results.
         """
         if type == "bottomup":
-            self.schedule.make_greedy_schedule_bottomup()
+            self.schedule.make_schedule_greedy_bottomup()
         if type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
 
@@ -85,7 +85,7 @@ class Greedy:
         """
         # Make greedy schedule
         if type == "bottomup":
-            self.schedule.make_greedy_schedule_bottomup()
+            self.schedule.make_schedule_greedy_bottomup()
         if type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
 

@@ -10,7 +10,7 @@ from code.algorithms import greedy
 
 def main(algorithm: str, N_repetitions: int) -> None:
     # Initialize schedule
-    schedule = Schedule.Schedule()
+    schedule = Schedule.Schedule(algorithm)
 
     # Generate schedule
     schedule.make_schedule(algorithm)
@@ -29,6 +29,8 @@ def main(algorithm: str, N_repetitions: int) -> None:
         greedy_algorithm = greedy.Greedy(schedule, type="topdown")
     elif algorithm == "greedy_bottomup" or algorithm == "greedy_bottomup_hillclimber":
         greedy_algorithm = greedy.Greedy(schedule, type="bottomup")
+    elif algorithm == "greedy_students" or algorithm == "greedy_students_hillclimber":
+        greedy_algorithm = greedy.Greedy(schedule, type="students")
 
     # -----------------------Random
     if algorithm == "random":
@@ -47,13 +49,13 @@ def main(algorithm: str, N_repetitions: int) -> None:
 
     # -----------------------Greedy
     # Since Greedy is always sorted in the same manner, the outcome (MP) will always be the same.
-    if algorithm == "greedy_topdown" or algorithm == "greedy_bottomup":
+    if algorithm == "greedy_topdown" or algorithm == "greedy_bottomup" or algorithm == "greedy_students":
         print(f"GREEDY {N_repetitions} X")
         print(f"The greedy schedule has: {greedy_algorithm.run()} MP")
         print("DONE \n\n")
 
     # -----------------------Hillclimber Greedy
-    if algorithm == "greedy_topdown_hillclimber" or algorithm == "greedy_bottomup_hillclimber":
+    if algorithm == "greedy_topdown_hillclimber" or algorithm == "greedy_bottomup_hillclimber" or algorithm == "greedy_students_hillclimber":
         print(f"GREEDY HILLCLIMBER {N_repetitions} X")
         greedy_algorithm.N_hillclimber(N=N_repetitions, threshold=100)
         print("DONE \n\n")
@@ -66,9 +68,11 @@ if __name__ == "__main__":
         'random',
         'greedy_topdown',
         'greedy_bottomup',
+        'greedy_students',
         'random_hillclimber',
         'greedy_bottomup_hillclimber',
-        'greedy_topdown_hillclimber'
+        'greedy_topdown_hillclimber',
+        'greedy_students_hillclimber'
         ])
     parser.add_argument("N", type=int, help="Number of runs")
     args = parser.parse_args()

@@ -24,7 +24,7 @@ class Activity:
     def __init__(self, activitytype, name, student_list, group_id):
         self._type = activitytype
         self.course_name = name
-        self._student_list = set(student_list.values())
+        self.student_list = set(student_list.values())
         self._group_id = group_id
         self.timeslot = None
         self.roomslot = None
@@ -39,7 +39,7 @@ class Activity:
         """
         Returns the total amount of students in the activity
         """
-        return len(self._student_list)
+        return len(self.student_list)
 
     def get_course_name(self):
         return self.course_name

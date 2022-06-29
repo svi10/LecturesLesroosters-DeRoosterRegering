@@ -38,14 +38,14 @@ class Schedule:
     self._roomslots : list
         contains all roomslot instances
     """
-    def __init__(self):
+    def __init__(self, algorithm):
         self._courses_df = helpers.import_data("vakken")
         self._rooms_df = helpers.import_data("zalen")
         self._students_df = helpers.import_data("studenten_en_vakken")
 
         self.courses = self.course_dict()
         self._students = self.student_dict()
-        self.add_students_to_courses()
+        self.add_students_to_courses(algorithm)
         self._activities = self.activity_list()
         self._roomslots = self.roomslot_list()
         
@@ -84,7 +84,7 @@ class Schedule:
         
         return courses
 
-    def add_students_to_courses(self):
+    def add_students_to_courses(self, algorithm):
         """
         Add to each course the students that signed in for that course
         """
@@ -109,7 +109,7 @@ class Schedule:
             # Add students to course
             course.student_dict = students
             # Divide the students over the course activities
-            course.make_activities(False)
+            course.make_activities(algorithm)
 
     def room_ids(self) -> list:
         """
@@ -135,7 +135,7 @@ class Schedule:
         return activities
 
     def make_schedule(self, algorithm):
-        if algorithm == "random" or algorithm == "random_hillclimber":
+        if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students":
             self.make_random_schedule()
         elif algorithm == "greedy_topdown" or algorithm == "greedy_topdown_hillclimber":
             self.make_greedy_schedule_topdown()

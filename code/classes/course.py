@@ -27,6 +27,7 @@ class Course:
     self._capacity : dict
         contains the number of participants and the maximum of participants
         per practical or tutorial
+    self.activity_amount: 
 
     """
     def __init__(self, data: Dict) -> None:
@@ -77,12 +78,12 @@ class Course:
 
         self.student_dict = student_sorted
 
-    def make_activities(self, greedy=False) -> None:
+    def make_activities(self, algorithm) -> None:
         """
         Makes all activity instances of a course by looping over them and adding a group of students to them
         """
         # If necesarry, sorts the students from most activities in total to least
-        if greedy:
+        if algorithm == "greedy_students":
             self.sort_greedy()
 
         for activity in self._N_activities:

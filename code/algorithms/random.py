@@ -114,7 +114,7 @@ class Random:
         ax.set_ylabel("N schedules")
         ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
 
-        fig.savefig(f"Images/{savename}")
+        fig.savefig(f"images/{savename}")
         
 
     def N_hillclimber(self, N: int, threshold: int):

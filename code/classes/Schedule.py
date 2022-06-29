@@ -1,36 +1,30 @@
-import math
 import random
-import copy
-from typing import List, Set, Dict, Tuple, Optional
-from tokenize import String
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 from code import helpers
 from code.classes.course import Course
 from . import Roomslot, Student
-from . import activity, course
 
 
 class Schedule:
     """
-    This class can be used to devide the courses over the 
+    This class can be used to devide the courses over the
     roomslots (room-timeslot pair)
 
     ...
 
     Attributes
     ----------
-    self.courses_df : pandas dataframe 
+    self.courses_df : pandas dataframe
         contains data about the courses
     self.rooms_df : pandas dataframe
         contains data about the rooms
     self._students_df : pandas dataframe
         contains data about the students
     self.courses : dict
-        contains all course instances 
+        contains all course instances
     self._students : dict
         contains all student instances
     self._activities : list
@@ -48,7 +42,7 @@ class Schedule:
         self.add_students_to_courses(algorithm)
         self._activities = self.activity_list()
         self._roomslots = self.roomslot_list()
-        
+    
     def roomslot_list(self):
         """
         Create roomslots by linking every room to a timeslot ()
@@ -135,7 +129,7 @@ class Schedule:
         return activities
 
     def make_schedule(self, algorithm):
-        if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students":
+        if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students" or algorithm == "greedy_students_hillclimber":
             self.make_random_schedule()
         elif algorithm == "greedy_topdown" or algorithm == "greedy_topdown_hillclimber":
             self.make_greedy_schedule_topdown()
@@ -317,15 +311,14 @@ class Schedule:
         """
         students = {}
 
-        for row in self._students_df.iterrows():            
+        for row in self._students_df.iterrows():        
             courses = []
-            for i in range (0, 5):                
-                    if isinstance((row[1][f"Vak{i + 1}"]),str):
-                        courses.append(self.courses[(row[1][f"Vak{i + 1}"])])
-            students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses) 
+            for i in range(0, 5):
+                if isinstance((row[1][f"Vak{i + 1}"]), str):
+                    courses.append(self.courses[(row[1][f"Vak{i + 1}"])])
+            students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses)
 
         return students
-        
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

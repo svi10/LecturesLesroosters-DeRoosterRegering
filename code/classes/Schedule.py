@@ -180,7 +180,7 @@ class Schedule:
         Make a greedy schedule in which the activities with the highest 
         number of students are put into biggest rooms
         """
-        self._roomslots.sort(key=lambda roomslots:roomslots._capacity, reverse=True)
+        self._roomslots.sort(key=lambda roomslots:roomslots.capacity, reverse=True)
         self._activities.sort(key=lambda activity:activity.total_students(), reverse=True)
         
         for activity,roomslot in zip(self._activities, self._roomslots):

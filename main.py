@@ -8,7 +8,7 @@ from code.algorithms import random
 from code.algorithms import greedy
 
 
-def main(algorithm, N_repetitions):
+def main(algorithm: str, N_repetitions: int) -> None:
     # Initialize schedule
     schedule = Schedule.Schedule()
 

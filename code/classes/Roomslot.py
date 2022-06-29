@@ -1,3 +1,5 @@
+from typing import Dict
+
 class Roomslot:
     """
     A roomslot is a room-timeslot pair. A roomslot can only have one activity.
@@ -20,7 +22,7 @@ class Roomslot:
         contains all students instances participating in the activity
 
     """
-    def __init__(self, roomID, timeslot, capacity):
+    def __init__(self, roomID: str, timeslot: int, capacity: int) -> None:
         self._roomID = roomID
         self.capacity = capacity
         self.timeslot = timeslot
@@ -35,7 +37,7 @@ class Roomslot:
         self.course_name = activity.get_course_name()
         self._activity_object = activity
 
-    def get_data(self):
+    def get_data(self) -> Dict:
         """
         Put data of Roomslot into a dictionary, data
         """
@@ -58,7 +60,7 @@ class Roomslot:
 
         return data
 
-    def update_data(self):
+    def update_data(self) -> None:
         """
         Link activity to roomslot and roomslot to activity
         """

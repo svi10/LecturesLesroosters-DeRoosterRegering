@@ -59,6 +59,13 @@ The most important files are:
 
 *An example of output that will be printed when code is run. Columns from left to right: Timeslot, RoomID, Course name, Type, Number of participants and Room capacity. Timeslots indicate a certain day and time (0-24). A clarification of this number can be found under Timeslot clarification. The timeslots 17-19h can only be used by room C1.110. RoomID displays the assigned room. Course name contains the name of the assigned course. Type indicates the type of activity. Number of participants shows the number of participants for the assigned activity. Room capacity displays the capacity for the room.*
 
+## Experiment script
+### Scripts
+The script runs the random algorithm and the greedy with hillclimber algorithm.
+### Instructions
+instruction
+
+
 ## Authors
 - Victor Storm van 's Gravesande, 13141406
 - Luuk van Vliet, 12251925

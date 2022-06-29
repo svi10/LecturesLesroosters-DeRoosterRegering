@@ -29,7 +29,7 @@ class Course:
         per practical or tutorial
 
     """
-    def __init__(self, data) -> None:
+    def __init__(self, data: Dict) -> None:
         self.course_name = data["Vak"]
         self.student_dict = {}
         self.activities = []
@@ -49,7 +49,7 @@ class Course:
         # The amount of activities stored as integer
         self.activity_amount = self.activity_amount()
 
-    def value(self, value) -> None:
+    def value(self, value: int) -> int:
         """
         If value is 'nan' then return 0, else return the value
         """

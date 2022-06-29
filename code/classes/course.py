@@ -87,6 +87,7 @@ class Course:
 
         for activity in self._N_activities:
             # Make an activity of every lecture
+
             if activity == "Lectures" and self._N_activities[activity] > 0 and len(self.student_dict) > 0:
                 for i in range(self._N_activities[activity]):
                     new_activity = act.Activity(activity, self.course_name, self.student_dict, i)

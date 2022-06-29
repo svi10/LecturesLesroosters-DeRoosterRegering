@@ -62,5 +62,15 @@ class Roomslot:
 
         return data
 
+    def update_data(self) -> None:
+        """
+        Link activity to roomslot and roomslot to activity
+        """
+        if self._activity_object is not None:
+            self.course_name = self._activity_object.get_course_name()
+            self.N_participants = len(self._activity_object.student_set)
+            self._activity_object.roomslot = self
+            self._activity_object.timeslot = self.timeslot
+
     def __repr__(self) -> str:
         return f"{self._roomID}"

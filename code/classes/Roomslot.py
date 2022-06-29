@@ -1,4 +1,4 @@
-from typing import Dict, Type
+from typing import Type
 from code.classes.activity import Activity
 
 
@@ -39,7 +39,7 @@ class Roomslot:
         self.course_name = activity.get_course_name()
         self._activity_object = activity
 
-    def get_data(self) -> Dict:
+    def get_data(self) -> dict:
         """
         Put data of Roomslot into a dictionary, data
         """
@@ -49,10 +49,10 @@ class Roomslot:
         data["Capacity"] = self.capacity
         data["Room ID"] = self._roomID
 
-        # If roomslot not occupied by activity,
+        # If roomslot not occupied by activity, set data to empty
         if self._activity_object is None:
             data["Course name"] = "Empty"
-            data["Number of participants"] = 0
+            data["Number of participants"] = self.N_participants
             data["Type"] = "-"
         else:
             data["Course name"] = self._activity_object.get_course_name() + "." \

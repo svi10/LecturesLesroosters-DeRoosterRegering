@@ -1,8 +1,9 @@
-import math
+from math import ceil
+from typing import Dict, Type
 
 import numpy as np
 
-from . import activity as act
+from code.classes.activity import Activity
 
 
 class Course:
@@ -26,7 +27,8 @@ class Course:
     self._capacity : dict
         contains the number of participants and the maximum of participants
         per practical or tutorial
-    self.activity_amount: 
+    self.activity_amount: int
+        contains the total number of activities in the course
 
     """
     def __init__(self, data: dict) -> None:
@@ -63,7 +65,7 @@ class Course:
         """
         student_activity_dict = {}
         for student in self.student_dict.values():
-            student_activity_dict[student._studentnumber] = student.activity_amount
+            student_activity_dict[student.studentnumber] = student.activity_amount
 
         dictionary_tuples = []
         for item in student_activity_dict.items():
@@ -77,7 +79,7 @@ class Course:
 
         self.student_dict = student_sorted
 
-    def make_activities(self, algorithm) -> None:
+    def make_activities(self, algorithm: str) -> None:
         """
         Makes all activity instances of a course by looping over them and adding a group of students to them
         """
@@ -90,17 +92,17 @@ class Course:
 
             if activity == "Lectures" and self._N_activities[activity] > 0 and len(self.student_dict) > 0:
                 for i in range(self._N_activities[activity]):
-                    new_activity = act.Activity(activity, self.course_name, self.student_dict, i)
+                    new_activity = Activity(activity, self.course_name, self.student_dict, i)
                     self.activities.append(new_activity)
                     self.activity_to_students(new_activity, self.student_dict)
 
             # Make activities for all practicals and tutorials
             elif self._N_activities[activity] > 0 and len(self.student_dict) > 0:
                 # Calculate the number of groups are needed for the amount of students
-                number_of_groups = math.ceil(float(len(self.student_dict) / self._capacity[activity]))
+                number_of_groups = ceil(float(len(self.student_dict) / self._capacity[activity]))
 
                 # Number of students per groups
-                group_size = math.ceil(len(self.student_dict) / number_of_groups)
+                group_size = ceil(len(self.student_dict) / number_of_groups)
 
                 # Equally devide the students over the number of groups
                 divided_groups = self.divide_students(self.student_dict, group_size)
@@ -128,13 +130,13 @@ class Course:
 
             # If there are for example 3 tutorials, then 3 tutorials are made for that group
             for i in range(N_activities):
-                new_activity = act.Activity(activity_type, course_name, group, group_id)
+                new_activity = Activity(activity_type, course_name, group, group_id)
                 self.activities.append(new_activity)
                 self.activity_to_students(new_activity, group)
 
             group_id += 1
 
-    def activity_to_students(self, activity, students: dict) -> None:
+    def activity_to_students(self, activity: Type[Activity], students: dict) -> None:
         """
         Add the activity to the students in that group
         """

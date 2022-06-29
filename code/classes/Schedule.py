@@ -1,9 +1,12 @@
 import random
+
 import pandas as pd
 import matplotlib.pyplot as plt
+
 from code import helpers
 from code.classes.course import Course
-from . import Roomslot, Student
+from code.classes.Roomslot import Roomslot
+from code.classes.Student import Student
 
 
 class Schedule:
@@ -57,11 +60,11 @@ class Schedule:
         for timeslot in range(0, 25):
             # Make roomslots for largest room, 17-19u every day
             if (timeslot + 1) % 5 == 0:
-                roomslot = Roomslot.Roomslot(largest_room_ID, timeslot, largest_room_capacity)
+                roomslot = Roomslot(largest_room_ID, timeslot, largest_room_capacity)
                 roomslots.append(roomslot)
             else:
                 for roomID, capacity in zip(room_ids, room_capacities):
-                    roomslot = Roomslot.Roomslot(roomID, timeslot, capacity)
+                    roomslot = Roomslot(roomID, timeslot, capacity)
                     roomslots.append(roomslot)
 
         return roomslots
@@ -127,7 +130,7 @@ class Schedule:
         return activities
 
     def make_schedule(self, algorithm):
-        if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students":
+        if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students" or algorithm == "greedy_students_hillclimber":
             self.make_random_schedule()
         elif algorithm == "greedy_topdown" or algorithm == "greedy_topdown_hillclimber":
             self.make_greedy_schedule_topdown()
@@ -320,7 +323,7 @@ class Schedule:
             for i in range(0, 5):
                 if isinstance((row[1][f"Vak{i + 1}"]), str):
                     courses.append(self.courses[(row[1][f"Vak{i + 1}"])])
-            students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses)
+            students[row[1]["Stud.Nr."]] = Student(row[1], courses)
 
         return students
 

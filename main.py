@@ -10,6 +10,7 @@ from code.classes import Student
 from code.algorithms import random
 from code.algorithms import greedy
 from code.algorithms import hillclimber
+import copy
 
 
 def main(algorithm, N_repetitions):    
@@ -48,12 +49,13 @@ def main(algorithm, N_repetitions):
         print("DONE \n\n")
 
     #-----------------------Hillclimber random
+
     if algorithm == "random_hillclimber":
         # Run 1 Time
         print(f"RANDOM HILLCLIMBER {N_repetitions} KEER")
         random_algorithm.N_hillclimber(N=N_repetitions, threshold=10)
         print("DONE \n \n")
-
+    
     #-----------------------Greedy
     if algorithm == "greedy_topdown" or algorithm == "greedy_bottomup":
         print("GREEDY 1X")

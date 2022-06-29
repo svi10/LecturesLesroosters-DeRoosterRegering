@@ -25,6 +25,7 @@ class Hillclimber_activities:
     def __init__(self, schedule: Type[Schedule]) -> None:
         self.schedule: Type[Schedule] = schedule
 
+
     def hillclimber(self, threshold, plot=False):
         """
         Accepts a schedule and applies the hillclimber algorithm
@@ -40,6 +41,8 @@ class Hillclimber_activities:
         # Make changes until there is not have been made an approvement for "threshold" times
         unsuccessful = 0
         iterations = 0
+
+        save_swaps = []
 
         # Climb the hill
         print(f"Running hillclimber until {threshold} unsuccessful changes")
@@ -67,13 +70,25 @@ class Hillclimber_activities:
                 mp_list.append(malus_current)
                 iterations_list.append(iterations)
 
+                # Remember the swaps done
+                save_swaps.append([roomslot1, roomslot2])
+
             else:
                 # Undo the change
                 self.schedule.swap_roomslots(roomslot1, roomslot2)
                 unsuccessful += 1
 
         self.schedule.malus_analysis("_Random hillclimber")
+        self.undo_changes(save_swaps)
+
         return mp_list, iterations_list
+
+
+    def undo_changes(self, save_swaps):
+
+        for swap in reversed(save_swaps):
+            self.schedule.swap_roomslots(swap[0], swap[1])
+
 
     def run_N_times(self, N, threshold):
         """
@@ -85,8 +100,6 @@ class Hillclimber_activities:
         mp_list = []
         iterations_list = []
 
-        initial_state = copy.copy(self.schedule)
-
         # Run hillclimber N times
         for i in range(N):
             print(f"Running: {i}", end='\r')
@@ -96,7 +109,6 @@ class Hillclimber_activities:
                 sys.stdout.write("\033[K") #clear line 
             # Hillclimber
             mp, iterations = self.hillclimber(threshold=threshold)
-            self.schedule = copy.copy(initial_state)
 
             if i != 0:
                 end = iterations_list[-1][-1]

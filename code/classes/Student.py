@@ -8,13 +8,13 @@ class Student:
     """
     This class includes all student information
 
-
+    ...
 
     Attributes
     ----------
     self._student_name : str
         contains name of the student
-    self._studentnumber : int
+    self.studentnumber : int
         contains the studentsnumber of the student
     self._activities : set
         contains all activity instances that the student participates in
@@ -26,21 +26,20 @@ class Student:
         contains the number of activities the student partakes in
 
     """
-    def __init__(self, data: dict, course_objects: Type[Course]):
+    def __init__(self, data, course_objects: Type[Course]):
         self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
         self.studentnumber = data["Stud.Nr."]
         self._activities = set()
         self._courses = course_objects
         self._malus_points = 0
-        self._activity_amount = 0
-        self.activity_amount()
+        self._activity_amount = self.activity_amount()
 
     def activity_amount(self) -> None:
         activity_amount = 0
         courses = self._courses
         for course in courses:
             activity_amount += course.activity_amount
-        self.activity_amount = activity_amount
+        self._activity_amount = activity_amount
 
     def malus_conflict(self) -> int:
         """

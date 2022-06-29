@@ -22,7 +22,7 @@ class Greedy:
 
     """
     def __init__(self, schedule, type: str) -> None:
-        assert type == "bottomup" or type == "topdown", f"Only choices: bottomup, topdown. Not: {type}"
+        assert type == "bottomup" or type == "topdown" or type == "students", f"Only choices: bottomup, topdown, students. Not: {type}"
         self.schedule = schedule
         self.type = type
 
@@ -32,8 +32,10 @@ class Greedy:
         """
         if type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        if type == "topdown":
+        elif type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
+        else:
+            self.schedule.make_random_schedule()
 
         malus_points: int = self.schedule.total_malus_points()
 
@@ -46,8 +48,10 @@ class Greedy:
         """
         if type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        if type == "topdown":
+        elif type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
+        else:
+            self.schedule.make_random_schedule() 
 
         # Make schedule and safe data
         hillclimber = Hillclimber_activities(self.schedule)
@@ -87,8 +91,10 @@ class Greedy:
         # Make greedy schedule
         if type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        if type == "topdown":
+        elif type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
+        else:
+            self.schedule.make_random_schedule()
 
         # Perform hillclimber over created schedule
         hillclimber = Hillclimber_activities(self.schedule)
@@ -117,4 +123,4 @@ class Greedy:
         ax.set_ylabel("N schedules")
         ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
 
-        fig.savefig(f"Images/{savename}")
+        fig.savefig(f"images/{savename}")

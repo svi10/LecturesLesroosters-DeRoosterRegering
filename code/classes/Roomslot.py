@@ -68,7 +68,11 @@ class Roomslot:
         """
         if self._activity_object is not None:
             self.course_name = self._activity_object.get_course_name()
+<<<<<<< HEAD
             self.N_participants = len(self._activity_object.student_set)
+=======
+            self.N_participants = len(self._activity_object._student_set)
+>>>>>>> fa1d5be70d7421209945303377ec4b9c183969d7
             self._activity_object.roomslot = self
             self._activity_object.timeslot = self.timeslot
 

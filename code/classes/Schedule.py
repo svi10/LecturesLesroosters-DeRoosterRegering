@@ -125,7 +125,7 @@ class Schedule:
 
     def activity_list(self):
         """
-        Make a list of all possible activities TODO
+        Make a list of all possible activities 
         """
         activities = []
         for course in self.courses.values():

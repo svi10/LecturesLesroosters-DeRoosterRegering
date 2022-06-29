@@ -49,7 +49,7 @@ class Student:
         Calculate the malus points for the student caused by conflicting activities.
         Each conflict results in 1 malus point.
         """
-        timeslots = [activity._timeslot for activity in self._activities]
+        timeslots = [activity.timeslot for activity in self._activities]
         malus_points: int = helpers.doubles_counter(timeslots)
 
         self._malus_points += malus_points
@@ -61,7 +61,7 @@ class Student:
         Calculate malus points for the student caused by gap hours in the schedule. 1 gap hours gives 
         1 malus point. 2 consecutive gap hours gives 3 malus points. 3 consecutive gap hours is not allowed.
         """
-        timeslots = [activity._timeslot for activity in self._activities]
+        timeslots = [activity.timeslot for activity in self._activities]
         # Distribute timeslots over the 5 days of the week
         week = []
         for i in range(5,26,5):

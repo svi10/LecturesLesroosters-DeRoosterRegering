@@ -154,8 +154,8 @@ class Schedule:
             roomslot = random.choice(tuple(roomslots))
 
             # Place roomslot in activity
-            activity._roomslot = roomslot 
-            activity._timeslot = roomslot._timeslot
+            activity.roomslot = roomslot 
+            activity.timeslot = roomslot.timeslot
             roomslots.remove(roomslot)
 
             # Place activity in roomslot
@@ -184,9 +184,9 @@ class Schedule:
         self._activities.sort(key=lambda activity:activity.total_students(), reverse=True)
         
         for activity,roomslot in zip(self._activities, self._roomslots):
-            activity._roomslot = roomslot            
+            activity.roomslot = roomslot            
             self.add_to_roomslot(activity, roomslot)
-            activity._timeslot = roomslot._timeslot
+            activity.timeslot = roomslot.timeslot
             
     def make_schedule_greedy_bottomup(self) -> None:
         """
@@ -198,8 +198,8 @@ class Schedule:
 
         # Link activities to roomslots and roomslots to activities
         for activity, roomslot in zip(self._activities, self._roomslots):
-            activity._roomslot = roomslot 
-            activity._timeslot = roomslot._timeslot
+            activity.roomslot = roomslot 
+            activity.timeslot = roomslot.timeslot
             self.add_to_roomslot(activity, roomslot)
 
     def two_random_roomslots(self):
@@ -219,7 +219,7 @@ class Schedule:
         Assign activity to roomslot
         """
         roomslot.assign_activity(activity)    
-        roomslot._N_participants = activity.total_students()
+        roomslot.N_participants = activity.total_students()
 
     def show_schedule(self):
         """
@@ -262,13 +262,13 @@ class Schedule:
         
         for roomslot in self._roomslots:
             # There is 1 malus point for each student that is to many in a room
-            over_capacity = roomslot._N_participants - roomslot._capacity
+            over_capacity = roomslot.N_participants - roomslot.capacity
             # If the capacity is sufficient, no malus points are awarded
             if over_capacity > 0:
                 malus_capacity += over_capacity
 
             # If an activity is at a timeslot from 17h-19h, 5 malus points are awarded
-            if (roomslot._timeslot + 1) % 5 == 0 and roomslot._course_name != 'Available':
+            if (roomslot.timeslot + 1) % 5 == 0 and roomslot.course_name != 'Available':
                 malus_evening += 5
         
         schedule_malus_points = malus_evening + malus_capacity
@@ -329,9 +329,3 @@ class Schedule:
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")
-
-    
-    def __copy__(self):
-        new_instance = Schedule()
-        new_instance.__dict__.update(self.__dict__)
-        return new_instance

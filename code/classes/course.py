@@ -65,7 +65,7 @@ class Course:
         """
         student_activity_dict = {}
         for student in self.student_dict.values():
-            student_activity_dict[student._studentnumber] = student.activity_amount
+            student_activity_dict[student.studentnumber] = student.activity_amount
 
         dictionary_tuples = []
         for item in student_activity_dict.items():

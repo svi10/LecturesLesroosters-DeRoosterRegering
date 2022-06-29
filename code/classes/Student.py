@@ -18,11 +18,13 @@ class Student:
         contains all courses that the student participates in 
     self._malus_points : int
         contains the number of maluspoints that the student has
+    self._activity_amount: int
+        contains the number of activities the student partakes in
 
     """
     def __init__(self, data, course_objects):
         self._student_name = data["Achternaam"] + ', ' + data["Voornaam"]
-        self._studentnumber = data["Stud.Nr."]
+        self.studentnumber = data["Stud.Nr."]
         self._activities = set()
         self._courses = course_objects
         self._malus_points = 0

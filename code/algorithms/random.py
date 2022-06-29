@@ -2,7 +2,6 @@ from typing import List
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
 from code.algorithms.hillclimber import Hillclimber_activities
 from code.algorithms.simulated_annealing import SimulatedAnnealing
@@ -11,14 +10,14 @@ from code.algorithms.simulated_annealing import SimulatedAnnealing
 class Random:
     """
     Class that creates an algortihm that generates a random schedule
-    
+
     ...
 
     Attribute
     ----------
     self.schedule : schedule instance
         contains a random schedule instance
-    
+
     """
     def __init__(self, schedule) -> None:
         self.schedule = schedule
@@ -41,10 +40,9 @@ class Random:
         for i in range(N):
             malus_points.append(self.run())
 
-        self.histogram(malus_points, title=f"Random ({N} keer)", savename=f"Random_histogram_Nkeer")
+        self.histogram(malus_points, title=f"Random ({N} keer)", savename="Random_histogram_Nkeer")
 
         return malus_points
-
 
     def hillclimber(self, threshold: int):
         """
@@ -56,9 +54,8 @@ class Random:
         # Assign hillclimber information to data
         mp_data, iterations_data = hillclimber.hillclimber(threshold=threshold)
 
-        self.plot(x=iterations_data, y=mp_data, 
+        self.plot(x=iterations_data, y=mp_data,
                   title=f"Random Hillclimber (Threshold = {threshold})", savename="Hillclimber_random")
-
 
     def simulated_annealing(self, threshold: int):
         """
@@ -70,9 +67,8 @@ class Random:
         # Assign hillclimber information to data
         mp_data, iterations_data = simulated_annealing.simulated_annealing(threshold=threshold)
 
-        self.plot(x=iterations_data, y=mp_data, 
+        self.plot(x=iterations_data, y=mp_data,
                   title=f"Random Simulated annealing (Threshold = {threshold})", savename="SimulatedAnnealing_random")
-
 
     def plot(self, x: List, y: List, title: str, savename: str) -> None:
         """
@@ -97,7 +93,6 @@ class Random:
         fig.savefig(f"images/{savename}")
         plt.clf()
 
-
     def histogram(self, data: List, title: str, savename: str) -> None:
         """
         Make a histogram of the input data.
@@ -106,16 +101,16 @@ class Random:
         standard_deviation = round(np.std(data))
 
         fig, ax = plt.subplots()
-        
+
         plt.suptitle(f"{title}")
         ax.hist(data, bins=20)
         ax.axvline(average, color='orange')
         ax.set_xlabel("MP")
         ax.set_ylabel("N schedules")
-        ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
+        ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP    \
+                    Max: {max(data)} MP   Min: {min(data)} MP")
 
         fig.savefig(f"images/{savename}")
-        
 
     def N_hillclimber(self, N: int, threshold: int):
         """
@@ -127,10 +122,9 @@ class Random:
         mp_data, iterations_data = hillclimber.run_N_times(N, threshold)
 
         self.plot(x=iterations_data, y=mp_data, title=f"Random Hillclimber ({N} keer)", savename="NHillclimber_random")
-        self.histogram(data=mp_data, title=f"Hillclimber random ({N} keer)", savename=f"Random_Hillclimber_Nkeer")
+        self.histogram(data=mp_data, title=f"Hillclimber random ({N} keer)", savename="Random_Hillclimber_Nkeer")
 
         print(f"Lowest amount of MP: {min(mp_data)}")
-
 
     def malus_analysis_random(self):
         self.schedule.make_random_schedule()

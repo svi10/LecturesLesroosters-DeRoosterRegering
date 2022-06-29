@@ -71,7 +71,7 @@ class Course:
         for item in student_activity_dict.items():
             dictionary_tuples.append(item)
 
-        dictionary_tuples.sort(key=lambda a: a[1])
+        dictionary_tuples.sort(key=lambda a: a[0])
 
         student_sorted = {}
         for studentnr, activity in dictionary_tuples:

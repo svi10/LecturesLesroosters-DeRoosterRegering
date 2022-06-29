@@ -1,4 +1,5 @@
 import random
+from typing import Type
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,6 +8,7 @@ from code import helpers
 from code.classes.course import Course
 from code.classes.Roomslot import Roomslot
 from code.classes.Student import Student
+from code.classes.activity import Activity
 
 
 class Schedule:
@@ -79,7 +81,7 @@ class Schedule:
 
         return courses
 
-    def add_students_to_courses(self, algorithm):
+    def add_students_to_courses(self, algorithm: str) -> None:
         """
         Add to each course the students that signed in for that course
         """
@@ -129,7 +131,7 @@ class Schedule:
 
         return activities
 
-    def make_schedule(self, algorithm):
+    def make_schedule(self, algorithm: str) -> None:
         if algorithm == "random" or algorithm == "random_hillclimber" or algorithm == "greedy_students" or algorithm == "greedy_students_hillclimber":
             self.make_random_schedule()
         elif algorithm == "greedy_topdown" or algorithm == "greedy_topdown_hillclimber":
@@ -156,7 +158,7 @@ class Schedule:
             # Place activity in roomslot
             self.add_to_roomslot(activity, roomslot)
 
-    def swap_roomslots(self, roomslot1, roomslot2) -> None:
+    def swap_roomslots(self, roomslot1: Type[Roomslot], roomslot2: Type[Roomslot]) -> None:
         """
         Swap two activities in roomslots
         """
@@ -187,7 +189,7 @@ class Schedule:
         Puts activities with lowest number of students into smallest rooms
         """
         # Sort roomslots according to capacity and activities according to groupsize
-        self._roomslots.sort(key=lambda roomslots: roomslots._capacity, reverse=False)
+        self._roomslots.sort(key=lambda roomslots: roomslots.capacity, reverse=False)
         self._activities.sort(key=lambda activities: activities.total_students(), reverse=False)
 
         # Link activities to roomslots and roomslots to activities
@@ -196,7 +198,7 @@ class Schedule:
             activity.timeslot = roomslot.timeslot
             self.add_to_roomslot(activity, roomslot)
 
-    def two_random_roomslots(self):
+    def two_random_roomslots(self) -> Type[Roomslot]:
         """
         Pick at random two nonidentical roomslots from all roomslots
         """
@@ -208,7 +210,7 @@ class Schedule:
 
         return roomslot1, roomslot2
 
-    def add_to_roomslot(self, activity, roomslot) -> None:
+    def add_to_roomslot(self, activity: Type[Activity], roomslot: Type[Roomslot]) -> None:
         """
         Assign activity to roomslot
         """

@@ -1,12 +1,7 @@
-import time
-import string
-import sys
+from sys import stdout
 from typing import Type
 import copy
 import random
-
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
 from code.classes.Schedule import Schedule
 
@@ -14,7 +9,7 @@ from code.classes.Schedule import Schedule
 class SimulatedAnnealing:
     """
     A Simulated annealing algorithm that randomly swaps two roomslots in a schedule.
-    
+
     ...
 
     Attributes
@@ -30,7 +25,7 @@ class SimulatedAnnealing:
         """
         Accepts a schedule and applies the hillclimber algorithm
         """
-         # Calculate starting amount of malus points
+        # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
         print(f"START MP: {malus_current}")
 
@@ -43,8 +38,8 @@ class SimulatedAnnealing:
         iterations = 0
 
         # Simulated Annealing
-        
-        print(f"Running Simulated Anealing until {threshold} unsuccessful changes") # TODO
+
+        print(f"Running Simulated Anealing until {threshold} unsuccessful changes")
         # Starting Temp
         T = 100
         while unsuccessful < threshold:
@@ -53,7 +48,7 @@ class SimulatedAnnealing:
 
             roomslot1, roomslot2 = self.schedule.two_random_roomslots()
 
-            # Swap the activities 
+            # Swap the activities
             self.schedule.swap_roomslots(roomslot1, roomslot2)
 
             # Calculate malus points for new situation
@@ -64,7 +59,7 @@ class SimulatedAnnealing:
                 # Keep the change
                 malus_current = malus_points
                 print(f"Attempts: {unsuccessful}", end='\r')
-                
+
                 # Reset counter
                 unsuccessful = 0
 
@@ -78,7 +73,6 @@ class SimulatedAnnealing:
 
         return mp_list, iterations_list
 
-
     def acceptance_chance(self, oud: int, nieuw: int, T: float) -> float:
         """
         Calculate acceptance chance for new value
@@ -86,13 +80,12 @@ class SimulatedAnnealing:
         chance = 2 ** (oud - nieuw) / T
         return chance
 
-
     def run_N_times(self, N, threshold):
         """
         Run random hillclimber N times and plot the results
         """
         print(f"Run hillclimber {N} times")
-        
+
         # Lists to save the data
         mp_list = []
         iterations_list = []
@@ -104,8 +97,8 @@ class SimulatedAnnealing:
             print(f"Running: {i}", end='\r')
             # Nice print statements
             if i != 0:
-                sys.stdout.write("\033[F") #back to previous line 
-                sys.stdout.write("\033[K") #clear line 
+                stdout.write("\033[F")  # back to previous line
+                stdout.write("\033[K")  # clear line
             # Hillclimber
             mp, iterations = self.simulated_annealing(threshold=threshold)
             self.schedule = copy.copy(initial_state)

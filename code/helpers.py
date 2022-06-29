@@ -1,5 +1,3 @@
-import sys
-import os
 from typing import List
 
 import pandas as pd
@@ -21,22 +19,12 @@ def import_data(destination):
 
 def doubles_counter(input: List) -> int:
     """
-    Count all double timeslots in students activities. 
+    Count all double timeslots in students activities.
     Return number of doubles.
     """
-    doubles = {i:input.count(i) for i in input}
+    doubles = {i: input.count(i) for i in input}
     N_doubles = 0
     for i in doubles.values():
         N_doubles += i - 1
-    
+
     return N_doubles
-
-
-# # Disable
-# def blockPrint():
-#     sys.stdout = open(os.devnull, 'w')
-
-
-# # Restore
-# def enablePrint():
-#     sys.stdout = sys.__stdout__

@@ -1,11 +1,5 @@
-import time
-import string
-import sys
 from typing import Type
-import copy
-
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from sys import stdout
 
 from code.classes.Schedule import Schedule
 
@@ -13,7 +7,7 @@ from code.classes.Schedule import Schedule
 class Hillclimber_activities:
     """
     A hillclimber algorithm that randomly swaps two roomslots in a schedule.
-    
+
     ...
 
     Attributes
@@ -25,12 +19,11 @@ class Hillclimber_activities:
     def __init__(self, schedule: Type[Schedule]) -> None:
         self.schedule: Type[Schedule] = schedule
 
-
     def hillclimber(self, threshold, plot=False):
         """
         Accepts a schedule and applies the hillclimber algorithm
         """
-         # Calculate starting amount of malus points
+        # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
         print(f"START MP: {malus_current}")
 
@@ -51,7 +44,7 @@ class Hillclimber_activities:
 
             roomslot1, roomslot2 = self.schedule.two_random_roomslots()
 
-            # Swap the activities 
+            # Swap the activities
             self.schedule.swap_roomslots(roomslot1, roomslot2)
 
             # Calculate malus points for new situation
@@ -62,7 +55,7 @@ class Hillclimber_activities:
                 # Keep the change
                 malus_current = malus_points
                 print(f"Attempts: {unsuccessful}", end='\r')
-                
+
                 # Reset counter
                 unsuccessful = 0
 
@@ -83,19 +76,17 @@ class Hillclimber_activities:
 
         return mp_list, iterations_list
 
-
     def undo_changes(self, save_swaps):
 
         for swap in reversed(save_swaps):
             self.schedule.swap_roomslots(swap[0], swap[1])
-
 
     def run_N_times(self, N, threshold):
         """
         Run random hillclimber N times and plot the results
         """
         print(f"Run hillclimber {N} times")
-        
+
         # Lists to save the data
         mp_list = []
         iterations_list = []
@@ -105,8 +96,8 @@ class Hillclimber_activities:
             print(f"Running: {i}", end='\r')
             # Nice print statements
             if i != 0:
-                sys.stdout.write("\033[F") #back to previous line 
-                sys.stdout.write("\033[K") #clear line 
+                stdout.write("\033[F")  # back to previous line
+                stdout.write("\033[K")  # clear line
             # Hillclimber
             mp, iterations = self.hillclimber(threshold=threshold)
 

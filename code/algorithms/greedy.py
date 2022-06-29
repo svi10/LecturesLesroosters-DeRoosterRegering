@@ -1,11 +1,10 @@
-import time
 from typing import List
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
 from code.algorithms.hillclimber import Hillclimber_activities
+
 
 class Greedy:
     """
@@ -22,7 +21,8 @@ class Greedy:
 
     """
     def __init__(self, schedule, type: str) -> None:
-        assert type == "bottomup" or type == "topdown" or type == "students", f"Only choices: bottomup, topdown, students. Not: {type}"
+        assert type == "bottomup" or type == "topdown" or type == "students", \
+            f"Only choices: bottomup, topdown, students. Not: {type}"
         self.schedule = schedule
         self.type = type
 
@@ -51,14 +51,14 @@ class Greedy:
         elif type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
         else:
-            self.schedule.make_random_schedule() 
+            self.schedule.make_random_schedule()
 
         # Make schedule and safe data
         hillclimber = Hillclimber_activities(self.schedule)
         mp_data, iterations_data = hillclimber.hillclimber(threshold=threshold)
 
         # Plot Greedy schedule data
-        self.plot(x=iterations_data, y=mp_data, 
+        self.plot(x=iterations_data, y=mp_data,
                   title=f"Greedy Hillclimber (Threshold = {threshold})", savename="Hillclimber_Greedy")
 
     def plot(self, x: List, y: List, title: str, savename: str) -> None:
@@ -83,7 +83,6 @@ class Greedy:
         ax.plot(x, y, color='blue')
         fig.savefig(f"images/{savename}")
 
-
     def N_hillclimber(self, N: int, threshold: int):
         """
         Run hillclimber N times on the same schedule
@@ -104,8 +103,7 @@ class Greedy:
 
         # Plot hillclimber data
         self.plot(x=iterations_data, y=mp_data, title=f"Greedy Hillclimber ({N} keer)", savename="NHillclimber_Greedy")
-        self.histogram(data=mp_data, title=f"Hillclimber Greedy ({N} keer)", savename=f"Greedy_Hillclimber_Nkeer")
-
+        self.histogram(data=mp_data, title=f"Hillclimber Greedy ({N} keer)", savename="Greedy_Hillclimber_Nkeer")
 
     def histogram(self, data: List, title: str, savename: str) -> None:
         """
@@ -115,12 +113,13 @@ class Greedy:
         standard_deviation = round(np.std(data))
 
         fig, ax = plt.subplots()
-        
+
         plt.suptitle(f"{title}")
         ax.hist(data, bins=20)
         ax.axvline(average, color='orange')
         ax.set_xlabel("MP")
         ax.set_ylabel("N schedules")
-        ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
+        ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   \
+        Max: {max(data)} MP   Min: {min(data)} MP")
 
         fig.savefig(f"images/{savename}")

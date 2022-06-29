@@ -1,4 +1,6 @@
-from typing import Dict
+from typing import Dict, Type
+from code.classes.activity import Activity
+
 
 class Roomslot:
     """
@@ -30,7 +32,7 @@ class Roomslot:
         self._activity_object = None
         self.N_participants = 0
 
-    def assign_activity(self, activity):
+    def assign_activity(self, activity: Type[Activity]) -> None:
         """
         Assign an activity to this roomslot
         """
@@ -59,16 +61,6 @@ class Roomslot:
             data["Type"] = self._activity_object.get_activity_type()
 
         return data
-
-    def update_data(self) -> None:
-        """
-        Link activity to roomslot and roomslot to activity
-        """
-        if self._activity_object is not None:
-            self.course_name = self._activity_object.get_course_name()
-            self.N_participants = len(self._activity_object.student_list)
-            self._activity_object.roomslot = self
-            self._activity_object.timeslot = self.timeslot
 
     def __repr__(self) -> str:
         return f"{self._roomID}"

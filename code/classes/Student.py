@@ -1,5 +1,6 @@
 from code import helpers
 from typing import Type
+
 from code.classes.course import Course
 from code.classes.activity import Activity
 

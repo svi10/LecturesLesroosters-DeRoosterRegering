@@ -1,5 +1,4 @@
 import math
-from typing import Dict
 
 import numpy as np
 
@@ -30,7 +29,7 @@ class Course:
     self.activity_amount: 
 
     """
-    def __init__(self, data: Dict) -> None:
+    def __init__(self, data: dict) -> None:
         self.course_name = data["Vak"]
         self.student_dict = {}
         self.activities = []
@@ -118,7 +117,7 @@ class Course:
             activity_amount += activity
         return activity_amount
 
-    def make_groups(self, groups: Dict, N_activities: Dict, activity_type: str, course_name: str) -> None:
+    def make_groups(self, groups: dict, N_activities: dict, activity_type: str, course_name: str) -> None:
         """
         The student groups are assigned to individual activities. If there are for example 3 tutorials,
         then each group is assigned to 3 tutorials.
@@ -135,14 +134,14 @@ class Course:
 
             group_id += 1
 
-    def activity_to_students(self, activity, students: Dict) -> None:
+    def activity_to_students(self, activity, students: dict) -> None:
         """
         Add the activity to the students in that group
         """
         for student in students.values():
             student.add_activity(activity)
 
-    def divide_students(self, student_dict: Dict, number_of_groups: int) -> Dict:
+    def divide_students(self, student_dict: Dict, number_of_groups: int) -> dict:
         """
         Distribute students in list of students over number of groups
         """
@@ -157,5 +156,5 @@ class Course:
 
         return groups
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.course_name}"

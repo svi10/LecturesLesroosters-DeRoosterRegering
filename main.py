@@ -55,7 +55,8 @@ def main(algorithm: str, N_repetitions: int) -> None:
         print("DONE \n\n")
 
     # -----------------------Hillclimber Greedy
-    if algorithm == "greedy_topdown_hillclimber" or algorithm == "greedy_bottomup_hillclimber" or algorithm == "greedy_students_hillclimber":
+    if algorithm == "greedy_topdown_hillclimber" or algorithm == "greedy_bottomup_hillclimber" \
+       or algorithm == "greedy_students_hillclimber":
         print(f"GREEDY HILLCLIMBER {N_repetitions} X")
         greedy_algorithm.N_hillclimber(N=N_repetitions, threshold=100)
         print("DONE \n\n")

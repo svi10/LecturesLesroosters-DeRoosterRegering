@@ -141,7 +141,7 @@ class Course:
         for student in students.values():
             student.add_activity(activity)
 
-    def divide_students(self, student_dict: Dict, number_of_groups: int) -> dict:
+    def divide_students(self, student_dict: dict, number_of_groups: int) -> dict:
         """
         Distribute students in list of students over number of groups
         """

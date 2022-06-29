@@ -1,4 +1,6 @@
-from typing import Dict
+from typing import Dict, Type
+from code.classes.activity import Activity
+
 
 class Roomslot:
     """
@@ -30,7 +32,7 @@ class Roomslot:
         self._activity_object = None
         self.N_participants = 0
 
-    def assign_activity(self, activity):
+    def assign_activity(self, activity: Type[Activity]) -> None:
         """
         Assign an activity to this roomslot
         """
@@ -66,7 +68,7 @@ class Roomslot:
         """
         if self._activity_object is not None:
             self.course_name = self._activity_object.get_course_name()
-            self.N_participants = len(self._activity_object.student_list)
+            self.N_participants = len(self._activity_object._student_set)
             self._activity_object.roomslot = self
             self._activity_object.timeslot = self.timeslot
 

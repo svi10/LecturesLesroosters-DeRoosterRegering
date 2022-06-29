@@ -9,9 +9,9 @@ class Activity:
     ----------
     self._type : str
         contains the type of activity
-    self._course_name : str
+    self.course_name : str
         contains name of the course
-    self._student_list : set
+    self._student_set : set
         contains all students instances participating in the course
     self._group_id : str
         contains the id of the room the activity is in
@@ -21,33 +21,27 @@ class Activity:
         contains the roomslot of the activity (default is 'none')
 
     """
-    def __init__(self, activitytype, name, student_list, group_id):
+    def __init__(self, activitytype: str, name: str, student_dict: dict, group_id: int):
         self._type = activitytype
         self.course_name = name
-        self.student_list = set(student_list.values())
+        self._student_set = set(student_dict.values())
         self._group_id = group_id
         self.timeslot = None
         self.roomslot = None
 
-    def add_student(self, students):
-        """
-        Adds a student to the list of students in a activity
-        """
-        self._student_set.update(students)
-
-    def total_students(self):
+    def total_students(self) -> int:
         """
         Returns the total amount of students in the activity
         """
-        return len(self.student_list)
+        return len(self._student_set)
 
-    def get_course_name(self):
+    def get_course_name(self) -> str:
         return self.course_name
 
-    def get_group_id(self):
+    def get_group_id(self) -> int:
         return self._group_id
 
-    def get_activity_type(self):
+    def get_activity_type(self) -> str:
         return self._type
 
     def __repr__(self) -> str:

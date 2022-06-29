@@ -23,9 +23,9 @@ python3 main.py [algorithm] [number]
 - **random**: Construct a schedule with random placement of activities and students.
 - **greedy_topdown**: Construct a schedule that sorts all the groups of activities from largest group of participating students to smallest and also sorts all roomslots based on their capacity from largest to smallest. This algorithm then matches the two starting from the top going downwards.
 - **greedy_bottomup**: Construct a schedule that sorts all the groups of activities from smallest group of participating students to largest and also sorts all roomslots based on their capacity from smallest to largest. This algorithm then matches the two starting from the bottom going up.
- - **random_hillclimber**: This algorithm uses the random algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
- - **greedy_topdown_hillclimber**: This algorithm uses the greedy topdown algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
- - **greedy_bottomup_hillclimber**: This algorithm uses the greety bottomup algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule untill the swaps stop resulting in a decrease in malus points.
+ - **random_hillclimber**: This algorithm uses the random algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule until the swaps stop resulting in a decrease in malus points.
+ - **greedy_topdown_hillclimber**: This algorithm uses the greedy topdown algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule until the swaps stop resulting in a decrease in malus points.
+ - **greedy_bottomup_hillclimber**: This algorithm uses the greety bottomup algorithm as baseline, and applies a hillclimber on it. The hillclimber swaps roomslots around looking for an alternative schedule until the swaps stop resulting in a decrease in malus points.
 
  [number] can be replaced by a number, which indicates the number of repetitions of the algorithm.
 

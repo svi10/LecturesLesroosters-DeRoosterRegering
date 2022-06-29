@@ -43,7 +43,7 @@ class Schedule:
         self._rooms_df = helpers.import_data("zalen")
         self._students_df = helpers.import_data("studenten_en_vakken")
 
-        self.courses =  self.course_dict()
+        self.courses = self.course_dict()
         self._students = self.student_dict()
         self.add_students_to_courses()
         self._activities = self.activity_list()
@@ -107,7 +107,7 @@ class Schedule:
                 students[student_Nr] = students_object
 
             # Add students to course
-            course.student_list = students
+            course.student_dict = students
             # Divide the students over the course activities
             course.make_activities(False)
 
@@ -128,7 +128,6 @@ class Schedule:
         Make a list of all possible activities TODO
         """
         activities = []
-
         for course in self.courses.values():
             for activity in course.activities:
                 activities.append(activity)
@@ -326,33 +325,7 @@ class Schedule:
             students[row[1]["Stud.Nr."]] = Student.Student(row[1], courses) 
 
         return students
-    
-    def show_student(self, studentnumber):
-        """
-        Get student schedule and put this information in data
-        Return data
-        """
-        data = {}
-        student = self._students[studentnumber]
-        student.malus_conflict()
-        student.malus_gap_hours()
-        course_name = []
-        timeslot = []
-        roomslot = []
-
-        # Get activity information 
-        for activity in student._activities:
-            course_name.append(activity._course_name)
-            timeslot.append(activity._timeslot)
-            roomslot.append(activity._roomslot)
-
-        # Put student information in data
-        data["course_name"] = course_name
-        data["timeslot"] = timeslot
-        data["roomslot"] = roomslot
-        data["malus_points"] = student._malus_points
-
-        return pd.DataFrame(data=data).sort_values(by="timeslot")
+        
 
     def save_schedule(self):
         self.show_schedule().to_csv("Rooster.csv")

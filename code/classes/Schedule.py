@@ -107,7 +107,7 @@ class Schedule:
                 students[student_Nr] = students_object
 
             # Add students to course
-            course.student_list = students
+            course.student_dict = students
             # Divide the students over the course activities
             course.make_activities(False)
 

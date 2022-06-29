@@ -42,7 +42,7 @@ class Activity:
         return len(self._student_list)
 
     def get_course_name(self):
-        return self._course_name
+        return self.course_name
 
     def get_group_id(self):
         return self._group_id

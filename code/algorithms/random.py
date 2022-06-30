@@ -28,18 +28,32 @@ class Random:
         Make random schedule and return amount of malus points.
         """
         self.schedule.make_random_schedule()
+        
+        analysis = self.schedule.malus_analysis()
         malus_points: int = self.schedule.total_malus_points()
 
-        return malus_points
+        return malus_points, analysis
+
 
     def run_N_times(self, N: int) -> List:
         """
         Make N times a random schedule and keep track of malus points
         """
         malus_points: List = []
+        analysis = [0,0,0,0]
 
         for i in range(N):
-            malus_points.append(self.run())
+
+            Mp, data = self.run()
+            malus_points.append(Mp)
+
+            for a in range(len(analysis)):
+                analysis[a] += data[a]
+
+            print(f"Run {i}", end='\r')
+
+        np.savetxt("FinalData/Random100_MP.csv", np.asarray(malus_points))
+        np.savetxt("FinalData/Random100_analysis.csv", np.asarray(analysis))
 
         self.histogram(malus_points, title=f"Random ({N} keer)")
 
@@ -99,18 +113,21 @@ class Random:
         ax.set_title(f"Gemiddeld: {average} MP   \u03C3: {standard_deviation} MP   Max: {max(data)} MP   Min: {min(data)} MP")
 
         fig.savefig("Images/Random_Histogram_Nkeer")
-        
 
 
     def N_hillclimber(self, N: int, threshold: int):
         """
         Run hillclimber N times on the same schedule
         """
+        # Make a random schedule to use in the hillclimber
+        self.schedule.make_random_schedule()
+
         hillclimber = Hillclimber_activities(self.schedule)
 
         mp_data, iterations_data = hillclimber.run_N_times(N, threshold)
 
-        self.plot(x=iterations_data, y=mp_data, title=f"Random Hillclimber ({N} keer)", savename="NHillclimber_random")
+        # self.plot(x=iterations_data, y=mp_data, title=f"Random Hillclimber ({N} keer)", savename="NHillclimber_random")
+
 
     def malus_analysis_random(self):
         self.schedule.make_random_schedule()

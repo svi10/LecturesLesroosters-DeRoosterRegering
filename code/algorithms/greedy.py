@@ -1,6 +1,7 @@
 import time
 from typing import List
 
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -34,6 +35,9 @@ class Greedy:
             self.schedule.make_greedy_schedule_bottomup()
         if type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
+
+        data = self.schedule.malus_analysis()
+        np.savetxt("FinalData/Greedy_Analysis.csv", np.asarray(data))
 
         malus_points: int = self.schedule.total_malus_points()
 
@@ -96,4 +100,4 @@ class Greedy:
         mp_data, iterations_data = hillclimber.run_N_times(N, threshold)
 
         # Plot hillclimber data
-        self.plot(x=iterations_data, y=mp_data, title=f"Greedy Hillclimber ({N} keer)", savename="NHillclimber_Greedy")
+        # self.plot(x=iterations_data, y=mp_data, title=f"Greedy Hillclimber ({N} keer)", savename="NHillclimber_Greedy")

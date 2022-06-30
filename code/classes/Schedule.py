@@ -300,9 +300,11 @@ class Schedule:
         values = list(data.values())
 
         # Make plot
-        plt.bar(range(len(data)),values,tick_label=names)
-        plt.savefig(f"images/malus_analysis{name}")
-        plt.clf()
+        # plt.bar(range(len(data)),values,tick_label=names)
+        # plt.savefig(f"images/malus_analysis{name}")
+        # plt.clf()
+        data_list = [malus_capacity, malus_evening, malus_conflict, malus_gaphour]
+        return data_list
 
     def student_dict(self):
         """

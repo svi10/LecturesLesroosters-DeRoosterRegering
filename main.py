@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # Show indivdual schedule
     df_student = schedule.show_student(52311353)
-    
+
     # Calculate total malus points for this schedule
     total_malus_points = schedule.total_malus_points()
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     if True:
         # Random N keer
         print("RANDOM N KEER")
-        random_algorithm.run_N_times(N=1000)
+        random_algorithm.run_N_times(N=100)
         print("DONE \n\n")
 
     if False:
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     
     if False:
         print("RANDOM HILLCLIMBER")
-        random_algorithm.N_hillclimber(N=10, threshold=10)
+        random_algorithm.N_hillclimber(N=10, threshold=1000)
         print("DONE \n\n")
 
     #-----------------------Greedy ()
@@ -74,5 +74,5 @@ if __name__ == "__main__":
     
     if False:
         print("GREEDY HILLCLIMBER N KEER")
-        greedy_algorithm.N_hillclimber(N=10, threshold=100)
+        greedy_algorithm.N_hillclimber(N=10, threshold=1000)
         print("DONE \n\n")

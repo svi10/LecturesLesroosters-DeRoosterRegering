@@ -32,20 +32,23 @@ def main(algorithm: str, N_repetitions: int) -> None:
     elif algorithm == "greedy_students" or algorithm == "greedy_students_hillclimber":
         greedy_algorithm = greedy.Greedy(schedule, type="students")
 
+
     # -----------------------Random
     if algorithm == "random":
         # Random N time
         print(f"RANDOM {N_repetitions} X")
-        print(f"The random schedule has: {random_algorithm.run_N_times(N=N_repetitions)} MP")
+        print(f"The random schedule has at best: {min(random_algorithm.run_N_times(N=N_repetitions))} MP")
         random_algorithm.malus_analysis_random()
         print("DONE \n\n")
+
 
     # -----------------------Hillclimber random
     if algorithm == "random_hillclimber":
         # Run N time
         print(f"RANDOM HILLCLIMBER {N_repetitions} X")
-        random_algorithm.N_hillclimber(N=N_repetitions, threshold=10)
+        random_algorithm.N_hillclimber(N=N_repetitions, threshold=100)
         print("DONE \n \n")
+
 
     # -----------------------Greedy
     # Since Greedy is always sorted in the same manner, the outcome (MP) will always be the same.
@@ -54,12 +57,14 @@ def main(algorithm: str, N_repetitions: int) -> None:
         print(f"The greedy schedule has: {greedy_algorithm.run()} MP")
         print("DONE \n\n")
 
+
     # -----------------------Hillclimber Greedy
     if algorithm == "greedy_topdown_hillclimber" or algorithm == "greedy_bottomup_hillclimber" \
        or algorithm == "greedy_students_hillclimber":
         print(f"GREEDY HILLCLIMBER {N_repetitions} X")
-        greedy_algorithm.N_hillclimber(N=N_repetitions, threshold=100)
+        print(f"Best schedule: {min(greedy_algorithm.N_hillclimber(N=N_repetitions, threshold=100))}")
         print("DONE \n\n")
+
 
 
 if __name__ == "__main__":
@@ -75,6 +80,7 @@ if __name__ == "__main__":
         'greedy_topdown_hillclimber',
         'greedy_students_hillclimber'
         ])
+
     parser.add_argument("N", type=int, help="Number of runs")
     args = parser.parse_args()
 

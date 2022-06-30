@@ -22,6 +22,7 @@ class Random:
     def __init__(self, schedule) -> None:
         self.schedule = schedule
 
+
     def run(self) -> int:
         """
         Make random schedule and return amount of malus points.
@@ -31,6 +32,7 @@ class Random:
 
         return malus_points
 
+
     def run_N_times(self, N: int) -> List:
         """
         Make N times a random schedule and keep track of malus points
@@ -39,10 +41,13 @@ class Random:
 
         for i in range(N):
             malus_points.append(self.run())
+            print(f"Run: {i}", end='\r')
 
+        print(f"Run: {N}")
         self.histogram(malus_points, title=f"Random ({N} keer)", savename="Random_histogram_Nkeer")
 
         return malus_points
+
 
     def hillclimber(self, threshold: int):
         """

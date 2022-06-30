@@ -26,13 +26,14 @@ class Greedy:
         self.schedule = schedule
         self.type = type
 
+
     def run(self) -> int:
         """
         Make Greedy schedule and return the amount of malus points.
         """
-        if type == "bottomup":
+        if self.type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        elif type == "topdown":
+        elif self.type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
         else:
             self.schedule.make_random_schedule()
@@ -41,14 +42,15 @@ class Greedy:
 
         return malus_points
 
+
     def hillclimber(self, threshold: int):
         """
         Apply hillclimber algorithm on Greedy schedule and plot
         the results.
         """
-        if type == "bottomup":
+        if self.type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        elif type == "topdown":
+        elif self.type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
         else:
             self.schedule.make_random_schedule()
@@ -60,6 +62,7 @@ class Greedy:
         # Plot Greedy schedule data
         self.plot(x=iterations_data, y=mp_data,
                   title=f"Greedy Hillclimber (Threshold = {threshold})", savename="Hillclimber_Greedy")
+
 
     def plot(self, x: List, y: List, title: str, savename: str) -> None:
         """
@@ -83,14 +86,15 @@ class Greedy:
         ax.plot(x, y, color='blue')
         fig.savefig(f"images/{savename}")
 
+
     def N_hillclimber(self, N: int, threshold: int):
         """
         Run hillclimber N times on the same schedule
         """
         # Make greedy schedule
-        if type == "bottomup":
+        if self.type == "bottomup":
             self.schedule.make_schedule_greedy_bottomup()
-        elif type == "topdown":
+        elif self.type == "topdown":
             self.schedule.make_greedy_schedule_topdown()
         else:
             self.schedule.make_random_schedule()
@@ -104,6 +108,9 @@ class Greedy:
         # Plot hillclimber data
         self.plot(x=iterations_data, y=mp_data, title=f"Greedy Hillclimber ({N} keer)", savename="NHillclimber_Greedy")
         self.histogram(data=mp_data, title=f"Hillclimber Greedy ({N} keer)", savename="Greedy_Hillclimber_Nkeer")
+
+        return mp_data
+
 
     def histogram(self, data: List, title: str, savename: str) -> None:
         """

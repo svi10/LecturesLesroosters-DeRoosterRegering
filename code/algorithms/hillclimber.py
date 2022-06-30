@@ -19,13 +19,13 @@ class Hillclimber_activities:
     def __init__(self, schedule: Type[Schedule]) -> None:
         self.schedule: Type[Schedule] = schedule
 
+
     def hillclimber(self, threshold, plot=False):
         """
         Accepts a schedule and applies the hillclimber algorithm
         """
         # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
-        print(f"START MP: {malus_current}")
 
         # Save the progress
         mp_list = [malus_current]
@@ -70,23 +70,26 @@ class Hillclimber_activities:
                 # Undo the change
                 self.schedule.swap_roomslots(roomslot1, roomslot2)
                 unsuccessful += 1
-
+        
         self.schedule.malus_analysis("_Random hillclimber")
         self.undo_changes(save_swaps)
 
         return mp_list, iterations_list
 
-    def undo_changes(self, save_swaps):
 
+    def undo_changes(self, save_swaps):
+        """
+        Undo the swaps done, so that the schedule returns to it's original state 
+        for a new run.
+        """
         for swap in reversed(save_swaps):
             self.schedule.swap_roomslots(swap[0], swap[1])
+
 
     def run_N_times(self, N, threshold):
         """
         Run random hillclimber N times and plot the results
         """
-        print(f"Run hillclimber {N} times")
-
         # Lists to save the data
         mp_list = []
         iterations_list = []

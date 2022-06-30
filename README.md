@@ -63,7 +63,7 @@ The most important files are:
 
 ## Experiment script
 ### Scripts
-The script runs the random algorithm and the greedy with hillclimber algorithm.
+The script runs in total 4 different algorithms; random, random_hillclimber, greedy and greedy_hillclimber. It runs each of these a total of 10000, except for greedy as it will always produce the same results and therefor only runs once. This produces graphs with scores that can be compared.
 ### Instructions
 instruction
 

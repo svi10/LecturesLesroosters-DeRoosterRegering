@@ -24,6 +24,8 @@ class Hillclimber_activities:
         """
         Accepts a schedule and applies the hillclimber algorithm
         """
+
+
         # Calculate starting amount of malus points
         malus_current = self.schedule.total_malus_points()
 
@@ -101,6 +103,10 @@ class Hillclimber_activities:
             if i != 0:
                 stdout.write("\033[F")  # back to previous line
                 stdout.write("\033[K")  # clear line
+            
+            # Make schedule
+            self.schedule.make_schedule_greedy_bottomup()
+
             # Hillclimber
             mp, iterations = self.hillclimber(threshold=threshold)
 

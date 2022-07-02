@@ -83,6 +83,6 @@ if __name__ == "__main__":
 
     parser.add_argument("N", type=int, help="Number of runs")
     args = parser.parse_args()
-
+    
     # Run script using input from user
     main(args.algorithm, args.N)
